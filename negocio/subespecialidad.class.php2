@@ -1,0 +1,35 @@
+<?php
+include 'especialidad.class.php';
+
+class Subespecialidad extends Especialidad
+{
+    var $idespecialidad;
+    var $habilitado;
+    var $idusuario;
+
+    function Subespecialidad()
+    {
+        $this->id = null;
+        $this->detalle = "";
+        $this->idespecialidad = "";
+        $this->habilitado = null;
+        $this->idusuario = "";
+
+    }
+
+    function setEspecialidad($value)
+    {
+        $this->idespecialidad = $value;
+    }
+
+    function setHabilitado($value)
+    {
+        $this->habilitado = $value;
+    }
+
+    function setIdusuario($value)
+    {
+        $this->idusuario = $value;
+    }
+
+}
