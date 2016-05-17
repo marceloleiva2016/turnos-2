@@ -24,7 +24,7 @@ if(!$puede->puede)
 }
 
 ?>
-<!DOCTYPE html PUBLIC>
+<!DOCTYPE html>
 <html>
 <head>
 <title>EGRESO DEMANDA</title>

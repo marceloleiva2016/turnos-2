@@ -743,5 +743,37 @@ class UsuarioDatabaseLinker
 
 		return false;
 	}
+
+    function buscarUsuario($usuario)
+    {
+        $query="SELECT
+                    idusuario,detalle,nombre
+                FROM
+                    usuario
+                WHERE
+                    detalle like '%".$usuario."%' AND habilitado=true;";
+        try
+        {
+            $this->dbusuario->conectar();
+            $this->dbusuario->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error al conectar con la base de datos", 17052013);
+        }
+
+        $arr = array();
+
+        for($i = 0 ; $i < $this->dbusuario->querySize; $i++)
+        {
+            $result = $this->dbusuario->fetchRow($query);
+            $arrdos = array('idusuario' => $result['idusuario'],'detalle' => $result['detalle'],'nombre' => $result['nombre']);
+            $arr[] = $arrdos;
+        }
+
+        $this->dbusuario->desconectar();
+        
+        return $arr;
+    }
 }
 ?>

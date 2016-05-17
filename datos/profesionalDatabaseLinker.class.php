@@ -24,6 +24,7 @@ class ProfesionalDatabaseLinker
                         `matricula_provincial`,
                         `telefono`,
                         `email`,
+                        `idusuario`,
                         `habilitado`)
                 VALUES
                     (
@@ -33,6 +34,7 @@ class ProfesionalDatabaseLinker
                         '".$arrayProfesional['MatProv']."',
                         '".$arrayProfesional['TelProf']."',
                         '".$arrayProfesional['MailProf']."',
+                        ".$arrayProfesional['slctusuario'].",
                         1
                     );";
 
@@ -90,19 +92,21 @@ class ProfesionalDatabaseLinker
         $offset = ($page - 1) * $rows;
 
         $query="SELECT
-                    id,
-                    nombre,
-                    apellido,
-                    matricula_nacional,
-                    matricula_provincial,
-                    email,
-                    telefono,
-                    idusuario,
-                    habilitado
+                    p.id,
+                    p.nombre,
+                    p.apellido,
+                    p.matricula_nacional,
+                    p.matricula_provincial,
+                    p.email,
+                    p.telefono,
+                    u.detalle as idusuario,
+                    p.habilitado
                 FROM
-                    profesional
+                    profesional p LEFT JOIN
+                    usuario u ON(u.idusuario = p.idusuario)
+
                 WHERE
-                    habilitado >= '0' ".$where."
+                    p.habilitado = true ".$where."
                 LIMIT $rows OFFSET $offset;";
 
 
@@ -174,7 +178,6 @@ class ProfesionalDatabaseLinker
             $row[] = $profesionales->email;
             $row[] = $profesionales->telefono;
             $row[] = $profesionales->idusuario;
-            $row[] = $profesionales->habilitado;
             $row[] = '';
             //agrego datos a la fila con clave cell
             $response->rows[$i]['cell'] = $row;
@@ -189,7 +192,6 @@ class ProfesionalDatabaseLinker
         $response->userdata['email']= 'email';
         $response->userdata['telefono']= 'telefono';
         $response->userdata['idusuario']= 'idusuario';
-        $response->userdata['habilitado']= 'habilitado';
         $response->userdata['myac'] = '';
 
         return json_encode($response);

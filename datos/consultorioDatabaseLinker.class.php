@@ -41,4 +41,22 @@ class ConsultorioDatabaseLinker
         return $result['id'];
     }
 
+    function setConsultorio() 
+    {
+        $query="";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar el id del consultorio", 201230);
+        }
+
+        
+    }
 }

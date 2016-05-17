@@ -1,31 +1,62 @@
+function mostrarDialogo(paginaVista, paginaFuncion)
+{
+    $("#dialog:ui-dialog").dialog("destroy");
+    $("#dialog-message").css('visibility',"visible");
+    $("#dialogProf").load("includes/forms/" + paginaVista,function() {
+        $("#dialogProf" ).dialog({
+            modal: true,
+            width: $("#divPrincipal").width()+100,
+            title: $("#divPrincipal").attr('title'),
+            buttons: {
+                "Aceptar": function(){
+                    frmOk = validar();
+                    if(frmOk) {
+                        $.ajax({
+                            data: $("#formProfesional").serialize(),
+                            type: "POST",
+                            dataType: "json",
+                            url: "includes/ajaxFunctions/"+paginaFuncion,
+                            success: function(data) {
+                                if(data.result) {
+                                    $('#formProfesional').get(0).reset();
+                                    $("#jgVerProf").trigger("reloadGrid"); 
+                                    if(data.show) {
+                                        alert(data.message);
+                                    }
+                                    //relodeo la tabla
+                                } else {
+                                    alert(data.message);
+                                }
+                                
+                            }
+                        });
+                        $(this).dialog("close");
+                    }
+                },
+                "Cerrar":function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+}
+
 $(document).ready(function(){
 
     $("#jgVerProf").jqGrid({ 
         url:'includes/ajaxFunctions/verProfesional.php', 
         mtype: "POST",
         datatype: "json",
-        colNames:['idprofesional','nombre','apellido','nacional','provincial','email','telefono','idusuario','habilitado',''],
+        colNames:['Nro','Nombre','Apellido','Mat Nacional','Mat Provincial','Email','Telefono','Usuario'],
         colModel:[ 
-            {name:'idprofesional', index:'pro.idprofesional',width:'100%',align:"left",fixed:true,editable:true},
-            {name:'nombre', index:'pro.nombre',width:'100%',align:"center",fixed:true,editable:true},
+            {name:'idprofesional', index:'pro.idprofesional',width:'30%',align:"left",fixed:true,editable:true},
+            {name:'nombre', index:'pro.nombre',width:'100%',align:"left",fixed:true,editable:true},
             {name:'apellido', index:'pro.apellido',width:'100%',align:"left",fixed:true, editable:true},
             {name:'matricula_n', index:'pro.matricula_nacional',width:'100%',align:"left",fixed:true, editable:true},
             {name:'matricula_p', index:'pro.matricula_provincial',width:'100%',align:"left",fixed:true, editable:true},
             {name:'email', index:'pro.email',width:'100%',align:"left",fixed:true, editable:true},
             {name:'telefono', index:'pro.telefono',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'idusuario', index:'pro.idusuario',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'habilitado', index:'pro.habilitado',width:'100%',align:"left",fixed:true, editable:true},
-            {name: 'myac', width: '40%', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false,
-                formatoptions: 
-                {
-                    keys: true,
-                    delbutton: false,
-                    editbutton: true,
-                    onError: function(_, xhr) {
-                        alert(xhr.responseText);
-                    }
-                }
-            }
+            {name:'idusuario', index:'pro.idusuario',width:'100%',align:"left",fixed:true, editable:true}
         ],
         rowNum:true,
         viewrecords: true,
@@ -36,21 +67,8 @@ $(document).ready(function(){
         pager: '#jqProffoot',
         sortname: 'pro.idprofesional',
         sortorder: "desc",
-        editurl :'includes/ajaxFunctions/modificarProfesional.php',
         width: '100%',
-        height: '100%',
-        gridComplete: function()
-        { 
-            /*var ids = jQuery("#jgVerProf").jqGrid('getDataIDs'); 
-            for(var i=0;i < ids.length;i++)
-            { 
-                var cl = ids[i];
-                be = "<input style='height:22px;width:35px;' class='button-secondary' type='button' value='VER' onclick=\"javascript:detalleReclamo('"+cl+"');\" />";
-                be = be + "<input style='height:22px;width:70px;' class='button-secondary' type='button' value='RECLAMOS' onclick=\"javascript:logReclamos('"+cl+"');\" />";
-                be = be + "<input style='height:22px;width:35px;' class='button-secondary' type='button' value='MAIL' onclick=\"javascript:mailConcatenado('"+cl+"');\" />";
-                jQuery("#jgVerProf").jqGrid('setRowData',ids[i],{act:be});
-            }*/
-        }
+        height: '100%'
     });
 
 
@@ -62,11 +80,14 @@ $(document).ready(function(){
         search:false
     });
 
-     jQuery("#jgVerProf").jqGrid('filterToolbar', {
-        stringResult: true, 
-        searchOnEnter: false, 
+    $("#jgVerProf").jqGrid('filterToolbar', {
+        stringResult: true,
+        searchOnEnter: false,
         defaultSearch : "cn"
-    }); 
+    });
 
-
+    $("#nuevoProfesional").click(function(event){
+        event.preventDefault(event);
+        mostrarDialogo("nuevoProfesional.php", "cargarProfesional.php");
+    });
 });

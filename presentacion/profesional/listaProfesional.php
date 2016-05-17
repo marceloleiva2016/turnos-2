@@ -52,16 +52,15 @@ $data = unserialize($usuario);
     </div>
     <!-- /barra -->
     <div id="container">
-       <div id="demo">
+       <div id="demo" align="center">
             <p align="center">Profesionales </p>
             <table id="jgVerProf"></table>
             <div id="jqProffoot"></div>
+            <input type="submit" value="Nuevo Profesional" id="nuevoProfesional">
         </div>
+        <div id="dialogProf" style="display: none;"></div>
     </div>
 
     <div name="loader" style="display:none;">Cargando...</div>
-
-    
-
 </body>
 </html>
