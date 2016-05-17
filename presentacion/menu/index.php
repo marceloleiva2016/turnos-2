@@ -78,7 +78,7 @@ $data = unserialize($usuario);
 							<li>
 								<a href="#">Administracion</a>
 								<ul class="cbp-hssubmenu cbp-hssub-rows">
-									<li><a href="../profesional/profesional.php"><span>Profesional</span></a></li>
+									<li><a href="../profesional/"><span>Profesional</span></a></li>
 									<li><a href="../paciente/paciente.php"><span>Paciente</span></a></li>
 									<!--<li><a href="#"><span>Usuarios</span></a></li>-->
 									<!--<li><a href="../consultorio/"><span>Consultorios</span></a></li>-->
