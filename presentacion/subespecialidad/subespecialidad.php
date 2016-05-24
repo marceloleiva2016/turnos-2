@@ -17,7 +17,7 @@ $data = unserialize($usuario);
 /*fin de agregado usuario*/
 ?>
 <head>
-    <title>Profesional</title>
+    <title>Subespecialidad</title>
     <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
@@ -50,7 +50,7 @@ $data = unserialize($usuario);
         <!-- /usuario-->
     </div>
     <!-- /barra -->
-    <div id="container">
+    <div id="container" align="center">
        <div id="demo">
             <p align="center">Subespecialidades </p>
 
