@@ -57,7 +57,7 @@ $gen = new GeneralesDatabaseLinker();
         </div>
         <div id="accordionPaciente">
           <h3>Datos Personales</h3>
-            <div>
+            <div align="center" style="display: block; height: auto !important;">
               <select id="tipodoc" name="tipodoc" >
               <option value="">Tipo Documento</option>
               <?php
@@ -66,53 +66,52 @@ $gen = new GeneralesDatabaseLinker();
                 echo "<option value=".$td[$i]['id'].">".$td[$i]['detalle_corto']."</option>";
               }
               ?>
-              </select>
-              <input type="text" name="nrodoc" id="nrodoc" placeholder="Numero" /><br><br>
-              <input type="text" name="nombre" id="nombre" placeholder="Nombre" /><br><br>
+              </select> <input type="number" name="nrodoc" id="nrodoc" placeholder="Numero" /><br><br>
+              <input type="text" name="nombre" id="nombre" placeholder="Nombre" />
               <input type="text" name="apellido" id="apellido" placeholder="Apellido"/><br><br>
               <div id="radioset">
                 <input type="radio" id="generom" name="sexo" value="M" checked="checked"><label for="generom">Masculino</label>
                 <input type="radio" id="generof" name="sexo" value="F" ><label for="generof">Femenino</label>
               </div><br><br>
-              <input type="date" name="fecha_nac" id="fecha_nac" placeholder="Fecha Nacimiento" onchange="calcularEdad();"/><br><br>
+              <input type="text" name="fecha_nac" id="fecha_nac" placeholder="Fecha Nacimiento" onchange="calcularEdad();"/>
               <input type="number" name="edad" id="edad" placeholder="Edad" /><br><br>
               <select id="donante" name="donante">
                 <option value="">Es Donante</option>
                 <option value="1">SI</option>
                 <option value="2">NO</option>
                 <option value="3">NO SABE</option>
-              </select><br>
+              </select>
             </div>
           <h3>Datos de Ubicacion</h3>
-            <div>
+            <div align="center">
 
               <select id="pais" name="pais">
                 <option value="">Pais</option>
-              </select><br>
+              </select>
               <select id="provincia" name="provincia">
                 <option value="">Provincia</option>
-              </select><br>
+              </select>
               <select id="partido" name="partido">
                 <option value="">Partido</option>
-              </select><br>
+              </select>
               <select id="localidad" name="localidad">
                 <option value="">Localidad</option>
-              </select><br>
+              </select><br><br>
 
-              <input type="number" name="cp" id="cp" placeholder="Codigo Postal" onchange="ingresandoCP();" /><br><br>
+              <input type="number" name="cp" id="cp" placeholder="Codigo Postal" onchange="ingresandoCP();" />
 
-              <input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle"/><br><br>
+              <input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle"/>
 
               <input type="number" name="calle_numero" id="calle_numero" placeholder="Numero" /><br><br>
 
-              <input type="text" name="piso" id="piso" placeholder="Piso" /><br><br>
+              <input type="text" name="piso" id="piso" placeholder="Piso" />
 
               <input type="text" name="departamento" id="departamento" placeholder="Departamento"/><br><br>
 
             </div>
 
           <h3>Datos de Contacto</h3>
-            <div>
+            <div align="center">
 
               <input type="number" name="telefono" id="telefono" placeholder="Telefono"/><br><br>
 
@@ -125,8 +124,9 @@ $gen = new GeneralesDatabaseLinker();
             </div>
 
         </div>
-
-        <button id="guardar">Guardar</button>
+        <div align="center">
+          <button id="guardar" style="height:50px; width:200px;">Guardar</button>
+        </div>
 
       </form>
 

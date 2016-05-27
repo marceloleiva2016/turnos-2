@@ -51,8 +51,55 @@ $gen = new GeneralesDatabaseLinker();
     <!-- /usuario-->
   </div>
   <!-- /barra -->
-  <div id="container">
+  <div id="container" align="center">
+    <form id="consultorioForm">
+      <h1>Tipo consultorio</h1>
+      <select>
+        <option>Demanda</option>
+        <option>Interno</option>
+      </select>
 
+      <h1>Dias Anticipacion</h1>
+      <select>
+        <option>30</option>
+        <option>60</option>
+        <option>90</option>
+        <option>120</option>
+        <option>150</option>
+        <option>180</option>
+      </select>
+
+      <h1>Profesional</h1>
+      <select>
+        <option>Lucero Humberto</option>
+      </select>
+
+      <h1>Duracion en minutos</h1>
+      <input type="text">
+
+      <h1>Subespecialidad</h1>
+      <select>
+        <option>Cardiologia</option>
+      </select>
+
+      <h1>Dia de semana</h1>
+      <select>
+        <option>LUNES</option>
+        <option>MERTES</option>
+        <option>MIERCOLES</option>
+        <option>JUEVES</option>
+        <option>VIERNES</option>
+        <option>SABADO</option>
+        <option>DOMINGO</option>
+      </select>
+
+      <h1>Hora Desde</h1>
+      <input type="text">
+
+      <h1>Hora Hasta</h1>
+      <input type="text">
+
+    </form>
   </div>
 
 </body>

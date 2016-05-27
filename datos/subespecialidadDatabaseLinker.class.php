@@ -183,7 +183,7 @@ class SubespecialidadDatabaseLinker
         return $result['idespecialidad'];
     }
 
-    function crearSubespecialidad($arraySubespecialidad)
+    function crearSubespecialidad($arraySubespecialidad, $usuario)
     {
         $response = new stdClass();
         $query="INSERT INTO 
@@ -198,7 +198,7 @@ class SubespecialidadDatabaseLinker
                         '".$arraySubespecialidad['detalle']."',
                         '".$arraySubespecialidad['idespecialidad']."',
                         1,
-                        '".$arraySubespecialidad['idusuario']."'
+                        '".$usuario."'
                     );";
 
 
@@ -257,13 +257,12 @@ class SubespecialidadDatabaseLinker
         $query="SELECT
                     sub.id,
                     sub.detalle,
-                    sub.idespecialidad,
-                    sub.habilitado,
-                    sub.idusuario
+                    esp.detalle as especialidad
                 FROM
-                    subespecialidad sub
+                    subespecialidad sub LEFT JOIN  
+                    especialidad esp ON(sub.idespecialidad = esp.id)
                 WHERE
-                    sub.habilitado = '1' ".$where."
+                    sub.habilitado = true ".$where."
                 LIMIT $rows OFFSET $offset;";
 
 
@@ -277,9 +276,7 @@ class SubespecialidadDatabaseLinker
             $subespecialidad = new Subespecialidad();
             $subespecialidad->setId($result['id']);
             $subespecialidad->setDetalle($result['detalle']);
-            $subespecialidad->setEspecialidad($result['idespecialidad']);
-            $subespecialidad->setHabilitado($result['habilitado']);
-            $subespecialidad->setIdusuario($result['idusuario']);
+            $subespecialidad->setEspecialidad($result['especialidad']);
             $ret[] = $subespecialidad;
         }
 
@@ -289,7 +286,7 @@ class SubespecialidadDatabaseLinker
     private function getCantidadSubespecialidades($filters = null)
     {
 
-        $where = "WHERE sub.habilitado = '1' ";
+        $where = "WHERE sub.habilitado = true ";
 
         $query="SELECT 
                     COUNT(*) as cantidad
@@ -325,9 +322,7 @@ class SubespecialidadDatabaseLinker
             $row = array();
             $row[] = $subespecialidad->id;
             $row[] = $subespecialidad->detalle;
-            $row[] = $subespecialidad->idespecialidad;
-            $row[] = $subespecialidad->habilitado;
-            $row[] = $subespecialidad->idusuario;
+            $row[] = $subespecialidad->especialidad;
             $row[] = '';
             //agrego datos a la fila con clave cell
             $response->rows[$i]['cell'] = $row;
@@ -348,8 +343,7 @@ class SubespecialidadDatabaseLinker
 
         $response = new stdClass();
 
-        $query= "UPDATE subespecialidad SET detalle = '".$data['detalle']."' ,idespecialidad = ".$data['idespecialidad'].", habilitado = ".$data['habilitado']."
-        WHERE id = ".$data['id'].";";
+        $query= "UPDATE subespecialidad SET detalle = '".$data['detalle']."' WHERE id = ".$data['id'].";";
 
         try
         {

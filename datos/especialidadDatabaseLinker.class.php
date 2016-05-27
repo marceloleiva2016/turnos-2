@@ -18,11 +18,11 @@ class EspecialidadDatabaseLinker
 
         $query="SELECT 
                     id,
-                    detalle,
+                    detalle
                 FROM
                     especialidad
                 WHERE
-                    habilitado=1;";
+                    habilitado=true;";
 
         try
         {
@@ -34,7 +34,7 @@ class EspecialidadDatabaseLinker
         catch (Exception $e)
         {
             $this->dbTurnos->desconectar();
-            $response->message = "Consultando las especialidades";
+            $response->message = "Error Consultando las especialidades";
             $response->ret = false;
         }
 
@@ -46,7 +46,7 @@ class EspecialidadDatabaseLinker
             $Especialidad = new Especialidad();
             $Especialidad->setId($result['id']);
             $Especialidad->setDetalle($result['detalle']);
-            $ret[] = $Especialidad;
+            $especialidades[] = $Especialidad;
         }
 
         $response->data = $especialidades;
@@ -100,6 +100,128 @@ class EspecialidadDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return $especialidades;
+    }
+
+    private function getEspecialidades2($page, $rows, $filters)
+    {
+        $where = "";
+        if(count($filters)>0)
+        {
+            for($i=0; $i < count($filters['rules']); $i++ )
+            {
+                $where.=$filters['groupOp']." ";
+                $where.=" ".$filters['rules'][$i]['field']." like '".$filters['rules'][$i]['data']."%'";
+            }
+        }
+
+        $offset = ($page - 1) * $rows;
+
+        $query="SELECT 
+                    id,
+                    detalle
+                FROM
+                    especialidad
+                WHERE
+                    habilitado=true ".$where."
+                LIMIT $rows OFFSET $offset;";
+
+        $this->dbTurnos->ejecutarQuery($query);
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+             $result = $this->dbTurnos->fetchRow($query);
+            $Especialidad = new Especialidad();
+            $Especialidad->setId($result['id']);
+            $Especialidad->setDetalle($result['detalle']);
+            $ret[] = $Especialidad;
+        }
+
+        return $ret;
+    }
+
+    private function getCantidadEspecialidades($servicio, $filters = null)
+    {
+
+        $where = " ";
+
+        $query="SELECT 
+                    COUNT(*) as cantidad
+                FROM
+                    especialidad
+                WHERE
+                    habilitado=true ";
+        $query .= " " . $where;
+        
+        $this->dbTurnos->ejecutarQuery($query);
+        $result = $this->dbTurnos->fetchRow($query);
+        $ret = $result['cantidad'];
+        return $ret;
+    }
+
+
+     function getEspecialidadesJson($page, $rows, $filters)
+    {
+        $response = new stdClass();
+        $this->dbTurnos->conectar();
+
+        $espArray = $this->getEspecialidades2($page, $rows, $filters);
+
+        $response->page = $page;
+        $response->total = ceil($this->getCantidadEspecialidades($filters) / $rows);
+        $response->records = $this->getCantidadEspecialidades($filters);
+
+        $this->dbTurnos->desconectar();
+
+        for ($i=0; $i < count($espArray) ; $i++) 
+        {
+            $especialidad = $espArray[$i];
+            //id de fila
+            $response->rows[$i]['id'] = $especialidad->id; 
+            $row = array();
+            $row[] = $especialidad->id;
+            $row[] = $especialidad->detalle;
+            //agrego datos a la fila con clave cell
+            $response->rows[$i]['cell'] = $row;
+        }
+
+        $response->userdata['id']= 'id';
+        $response->userdata['especialidad']= 'especialidad';
+
+        return json_encode($response);
+    }
+
+
+    function crearEspecialidad($especialidad, $idusuario)
+    {
+        $response = new stdClass();
+        $query="INSERT INTO
+                    especialidad
+                        (`detalle`,
+                        `habilitado`,
+                        `idusuario`)
+                VALUES (
+                        '".$especialidad."',
+                        '1',
+                        '".$idusuario."');";
+
+
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);    
+            $response->message = "Especialidad Agregada";
+            $response->ret = true;
+        }
+        catch (Exception $e)
+        {
+            $response->message = "Ocurrio un error al crear la Especialidad";
+            $response->ret = false;
+        }
+
+        return $response;
     }
 
 }

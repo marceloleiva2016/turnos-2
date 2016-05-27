@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
@@ -16,8 +15,10 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 ?>
+<!DOCTYPE html>
+<html>
 <head>
-    <title>Subespecialidad</title>
+    <title>Especialidad</title>
     <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
@@ -29,7 +30,7 @@ $data = unserialize($usuario);
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
-    <script type="text/javascript" src="includes/js/subespecialidad.js"></script>
+    <script type="text/javascript" src="includes/js/listaEspecialidad.js"></script>
 
 </head>
 <body>
@@ -40,7 +41,7 @@ $data = unserialize($usuario);
             <span style="font-size: 2em;" class="icon icon-about"></span>
         </div>
         <div id="navegar">
-            &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Subespecialidad</a>
+            &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Especialidad</a>
         </div>
         <!-- /navegar-->
         <!-- usuario -->
@@ -50,31 +51,16 @@ $data = unserialize($usuario);
         <!-- /usuario-->
     </div>
     <!-- /barra -->
-    <div id="container" align="center">
-       <div id="demo">
-            <p align="center">Subespecialidades </p>
-
-            <table id="jgVerSubesp"></table>
-
-            <div id="jqSubespfoot"></div>
-
-            <form method="post" name="formSubespecialidad" id="formSubespecialidad">
-                
-                <input type="text" name="detalle" id="detalle" placeholder="Detalle" /><br/><br/>
-
-                <input type="text" name="idespecialidad" id="idespecialidad" placeholder="Especialidad"/><br/><br/>
-
-                <input type="submit" id="btnAgregarSubespecialidad" value="Agregar" class="submit-button"/><br/><br/>
-
-
-        </form>
+    <div id="container">
+       <div id="demo" align="center">
+            <p align="center">Especialidades</p>
+            <table id="jqVerEsp"></table>
+            <div id="jqEspFoot"></div>
+            <input type="submit" value="Nueva Especialidad" id="nuevaEspecialidad">
+        </div>
+        <div id="dialogEsp" style="display: none;"></div>
     </div>
-</div>
 
-    <div name="loader" style="display:none;">Ingresando...</div>
-
+    <div name="loader" style="display:none;">Cargando...</div>
 </body>
-
-
-
-
+</html>

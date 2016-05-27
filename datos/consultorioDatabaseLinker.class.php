@@ -1,6 +1,7 @@
 <?php
 include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
+include_once datos.'utils.php';
 
 class ConsultorioDatabaseLinker
 {
@@ -41,9 +42,29 @@ class ConsultorioDatabaseLinker
         return $result['id'];
     }
 
-    function setConsultorio() 
+    function setConsultorio($idtipo_consultorio, $subespecialidad, $profesional, $dias_anticipacion, $duracion_turno, $idhorarios, $feriados, $fecha_inicio, $fecha_fin) 
     {
-        $query="";
+        $query="INSERT INTO consultorio (
+                        `idtipo_consultorio`, 
+                        `idsubespecialidad`, 
+                        `idprofesional`, 
+                        `dias_anticipacion`, 
+                        `duracion_turno`, 
+                        `idhorarios`, 
+                        `feriados`, 
+                        `fecha_inicio`, 
+                        `fecha_fin`)
+                    VALUES (
+                        ".Utils::phpIntToSQL($idtipo_consultorio).", 
+                        ".Utils::phpIntToSQL($subespecialidad).", 
+                        ".Utils::phpIntToSQL($profesional).", 
+                        ".Utils::phpIntToSQL($dias_anticipacion).", 
+                        ".Utils::phpIntToSQL($duracion_turno).", 
+                        ".Utils::phpIntToSQL($idhorarios).", 
+                        ".Utils::phpIntToSQL($feriados).", 
+                        '".$fecha_inicio."', 
+                        '".$fecha_fin."'
+                        );";
 
         try
         {
@@ -57,6 +78,8 @@ class ConsultorioDatabaseLinker
             throw new Exception("No se pudo consultar el id del consultorio", 201230);
         }
 
-        
+        $result = $this->dbTurnos->fetchRow();
+
+        return $result;
     }
 }

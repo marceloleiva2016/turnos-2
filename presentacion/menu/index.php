@@ -80,8 +80,10 @@ $data = unserialize($usuario);
 								<ul class="cbp-hssubmenu cbp-hssub-rows">
 									<li><a href="../profesional/"><span>Profesional</span></a></li>
 									<li><a href="../paciente/paciente.php"><span>Paciente</span></a></li>
+									<li><a href="../especialidad/"><span>Especialidad</span></a></li>
+									<li><a href="../subespecialidad/"><span>Subespecialidad</span></a></li>
 									<!--<li><a href="#"><span>Usuarios</span></a></li>-->
-									<!--<li><a href="../consultorio/"><span>Consultorios</span></a></li>-->
+									<li><a href="../consultorio/"><span>Consultorios</span></a></li>
 								</ul>
 							</li>
 						</ul>
