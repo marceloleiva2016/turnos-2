@@ -102,6 +102,51 @@ class EspecialidadDatabaseLinker
         return $especialidades;
     }
 
+    function getEspecialidadesConConsultorios()
+    {
+        $query="SELECT 
+                    id,
+                    detalle
+                FROM
+                    especialidad
+                WHERE
+                    habilitado=1 AND
+                    id IN (SELECT
+                                s.idespecialidad
+                            FROM
+                                subespecialidad s LEFT JOIN
+                                consultorio c ON (c.idsubespecialidad = s.id)
+                            WHERE
+                                c.habilitado=1 AND
+                                s.habilitado=1);";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error consultando las especialidades con consultorios de guardia", 1);
+        }
+
+        $especialidades = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $Especialidad = new Especialidad();
+            $Especialidad->setId($result['id']);
+            $Especialidad->setDetalle($result['detalle']);
+            $especialidades[] = $Especialidad;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $especialidades;
+    }
+
     private function getEspecialidades2($page, $rows, $filters)
     {
         $where = "";

@@ -41,7 +41,7 @@ function mostrarDialogo(paginaVista, paginaFuncion)
     });
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
 
      $("#jgVerSubesp").jqGrid({ 
         url:'includes/ajaxFunctions/verSubespecialidad.php', 

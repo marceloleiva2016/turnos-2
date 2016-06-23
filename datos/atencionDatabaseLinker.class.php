@@ -146,6 +146,33 @@ class AtencionDatabaseLinker
         return $result['id'];
     }
 
+    function obtenerIdTurno($idAtencion)
+    {
+        $query="SELECT
+                    idturno as id
+                FROM
+                    atencion
+                WHERE
+                    id=$idAtencion;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error consultando el formulario con el turno en demanda!", 1);
+        }
+
+        $result = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $result['id'];
+    }
+
     function obtenerFormularioPrincipalDeAtencion($idAtencion)
     {
         $query="SELECT

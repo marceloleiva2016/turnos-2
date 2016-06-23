@@ -345,6 +345,14 @@ class Utils {
 		return $phpDateTime;
 	}
 	
+	static function postDateToSqlDate($postDate) {
+
+        $anio = (int) substr($postDate, 6, 4);
+        $mes = (int) substr($postDate, 3, 6);
+        $dia = (int) substr($postDate, 0, 2);
+
+        return $anio."-".str_pad($mes, 2, '0', STR_PAD_LEFT)."-".str_pad($dia, 2, '0', STR_PAD_LEFT);
+	}
 	
 	static function postDateToPHPTimestamp($postDate)
 	{

@@ -2,7 +2,7 @@
 include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
 include_once negocio.'profesional.class.php';
-
+include_once datos.'utils.php';
 
 class ProfesionalDatabaseLinker
 {
@@ -77,7 +77,7 @@ class ProfesionalDatabaseLinker
         return true;
     }
 
-    private function getProfesionales($page, $rows, $filters)
+    function getProfesionales($page, $rows, $filters)
     {
         $where = "";
         if(count($filters)>0)
@@ -108,7 +108,6 @@ class ProfesionalDatabaseLinker
                 WHERE
                     p.habilitado = true ".$where."
                 LIMIT $rows OFFSET $offset;";
-
 
         $this->dbTurnos->ejecutarQuery($query);
 
@@ -151,7 +150,7 @@ class ProfesionalDatabaseLinker
     }
 
 
-     function getProfesionalesJson($page, $rows, $filters)
+    function getProfesionalesJson($page, $rows, $filters)
     {
         $response = new stdClass();
         $this->dbTurnos->conectar();

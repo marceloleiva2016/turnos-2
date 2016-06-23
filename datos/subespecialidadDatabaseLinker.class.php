@@ -62,10 +62,12 @@ class SubespecialidadDatabaseLinker
                     habilitado=1 AND 
                     idespecialidad=$idEspecialidad;";
 
+        $response = new stdClass();
+
         try
         {
             $this->dbTurnos->conectar();
-            $this->dbTurnos->ejecutarAccion($query);    
+            $this->dbTurnos->ejecutarQuery($query);    
             $response->message = "Subspecialidades consultadas";
             $response->ret = true;
         }
@@ -85,7 +87,7 @@ class SubespecialidadDatabaseLinker
             $subespecialidad->setId($result['id']);
             $subespecialidad->setDetalle($result['detalle']);
             $subespecialidad->setEspecialidad($idEspecialidad);
-            $ret[] = $subespecialidad;
+            $subespecialidades[] = $subespecialidad;
         }
 
         $response->data = $subespecialidades;

@@ -2,7 +2,6 @@
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
-include_once datos.'turnoDatabaseLinker.class.php';
 
 session_start();
 
@@ -17,13 +16,7 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 
-$dbTurno = new TurnoDatabaseLinker();
-
-$filter = array();
-
 $idsubespecialidad = $_REQUEST['subespecialidades'];
-
-$turnos = $dbTurno->getTurnosConfirmados2($idsubespecialidad);
 
 ?>
 <!DOCTYPE html>
@@ -43,6 +36,10 @@ $turnos = $dbTurno->getTurnosConfirmados2($idsubespecialidad);
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
   <script type="text/javascript" src="includes/js/listaAtencion.js" ></script>
+
+  <script type="text/javascript">
+    var sub = <?php echo $idsubespecialidad; ?>;
+  </script>
   
 </head>
 <body>
@@ -64,22 +61,8 @@ $turnos = $dbTurno->getTurnosConfirmados2($idsubespecialidad);
   </div>
   <!-- /barra -->
   <div id="container">
-    <div id="demo"  align="center">
-      <br><br>
-      <table align="center" border="1" id="listado">
-          <tr>
-            <th>Hora</th>
-            <th id="tipodoc">Tipo Doc</th>
-            <th id="nrodoc">N&deg; Doc</th>
-            <th>Paciente</th>
-            <th>Accion</th>
-          </tr>
-          <?php
-          for ($i=0; $i < count($turnos); $i++) { 
-            echo "<tr><td>".$turnos[$i]['fecha']."</td><td id='tipodoc'>".$turnos[$i]['tipodoc']."</td><td id='nrodoc'>".$turnos[$i]['nrodoc']."</td><td>".$turnos[$i]['nombre']."</td><td><input style='height:22px; width:100px;' type='button' value='ATENDER' onclick=javascript:mostrarFormulario('".$turnos[$i]['id']."');></td></tr>";
-          }
-          ?>
-        </table>
+    <div id="demo" class="listadoPacientes"  align="center">
+      
     </div>
   </div>
 
