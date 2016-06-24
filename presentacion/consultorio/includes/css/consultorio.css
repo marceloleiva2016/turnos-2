@@ -56,3 +56,10 @@ tr:nth-child(even) {background-color: #f2f2f2}
     background: #17294b; /* this is a light blue */
     height: 40px;
  }
+
+.topright {
+    position: absolute;
+    top: 45px;
+    right: 16px;
+    font-size: 18px;
+}

@@ -30,6 +30,7 @@ $consultorio = $consulDb->getConsultorio($id);
 
 var_dump($consultorio);
 
+$fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,8 +44,11 @@ var_dump($consultorio);
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
   <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
-  <script type="text/javascript" src="includes/js/new.js" ></script>
-  
+  <script type="text/javascript">
+    var id=<?php echo $id; ?>;
+    var tipo_consultorio=<?php echo $consultorio['idtipo_consultorio']; ?>;
+  </script>
+  <script type="text/javascript" src="includes/js/edit.js" ></script>
 </head>
 <body>
 <!-- barra -->
@@ -64,6 +68,9 @@ var_dump($consultorio);
     <!-- /usuario-->
   </div>
   <!-- /barra -->
+  <div class="topright">
+    <input type="submit" class="button-secondary" value="Efectuar Baja" id="baja">
+  </div>
   <div id="container" align="center">
     <form id="consultorioForm" post="includes/ajaxfunctions/guardarConsultorio.php">
       <fieldset>
@@ -88,60 +95,66 @@ var_dump($consultorio);
 
       <fieldset>
         <legend>Comienzo / Finalizacion</legend>
-        Desde:<?php echo Utils:: sqlDateToHtmlDate($consultorio['fecha_inicio']);
-        if(Utils::sqlDateToHtmlDate($consultorio['fecha_fin'])!=null){
+        Desde:<?php echo Utils:: sqlDateToHtmlDate($consultorio['fecha_inicio'])."&nbsp;";
+        if($fecha_fin!='NULL'){
           echo "Hasta:".Utils:: sqlDateToHtmlDate($consultorio['fecha_fin']);
+        } else {
+          echo "Hasta: Indefinido";
         }
         ?>
       </fieldset>
 
-      <div id="divTipoConsultorio" >
+      <?php if($consultorio['idtipo_consultorio']) { ?>
+        <div id="divTipoConsultorio" >
 
         <fieldset>
           <legend>Dias Anticipacion</legend>
-          <select name="dias_anticipacion" id="dias_anticipacion">
-            <option value="30">30</option>
-            <option value="60">60</option>
-            <option value="90">90</option>
-            <option value="120">120</option>
-            <option value="150">150</option>
-            <option value="180">180</option>
-          </select>
+          <?php echo $consultorio['dias_anticipacion']; ?>
         </fieldset>
 
         <fieldset>
           <legend>Duracion Turno</legend>
-          <input name="intervalo_minutos" id="intervalo_minutos" type="text" style="width:30px;">min
+          <?php echo $consultorio['duracion']; ?>min
         </fieldset>
 
         <fieldset>
           <legend>Feriados</legend>
-          SI:<input type="radio" name="feriados" value="true">&nbsp;&nbsp;NO:<input type="radio" name="feriados" value="false">
+          <?php
+          if($consultorio['feriado']=="1"){
+            echo "SI:<input type='radio' name='feriados' value='true' checked>&nbsp;&nbsp;NO:<input type='radio' name='feriados' value='false'>";
+          } else {
+            echo "SI:<input type='radio' name='feriados' value='true'>&nbsp;&nbsp;NO:<input type='radio' name='feriados' value='false' checked>";
+          } ?>
         </fieldset>
 
-        </div>
-        <input type="submit" class="button-secondary" value="Guardar" id="guardarConsultorio">
+      </div>
+
+      <?php } ?>
+
     </form>
 
-    <form id="consultorioForm" post="includes/ajaxfunctions/guardarHorario.php">
-      <fieldset>
-        <legend>Agregar Horario</legend>
-        <select name="dia_semana" id="dia_semana" >
-            <option value="1">LUNES</option>
-            <option value="2">MERTES</option>
-            <option value="3">MIERCOLES</option>
-            <option value="4">JUEVES</option>
-            <option value="5">VIERNES</option>
-            <option value="6">SABADO</option>
-            <option value="7">DOMINGO</option>
-          </select>
-          Desde<input  name="hd_horas" id="hd_horas" type="text" style="width:30px;">:<input  name="hd_minutos" id="hd_minutos" type="text" style="width:30px;">
-          Hasta<input  name="hh_horas" id="hh_horas" type="text" style="width:30px;">:<input  name="hh_minutos" id="hh_minutos" type="text" style="width:30px;">
-          <input type="submit" class="button-secondary" value="Agregar">
-      </fieldset>
-    </form>
-    <div id="horarios">
+    <div id="cargarHorarios">
+      <form id="consultorioForm" post="includes/ajaxfunctions/guardarHorario.php">
+        <fieldset>
+          <legend>Agregar Horario</legend>
+          <select name="dia_semana" id="dia_semana" >
+              <option value="1">LUNES</option>
+              <option value="2">MERTES</option>
+              <option value="3">MIERCOLES</option>
+              <option value="4">JUEVES</option>
+              <option value="5">VIERNES</option>
+              <option value="6">SABADO</option>
+              <option value="7">DOMINGO</option>
+            </select>
+            Desde<input  name="hd_horas" id="hd_horas" type="text" style="width:30px;">:<input  name="hd_minutos" id="hd_minutos" type="text" style="width:30px;">
+            Hasta<input  name="hh_horas" id="hh_horas" type="text" style="width:30px;">:<input  name="hh_minutos" id="hh_minutos" type="text" style="width:30px;">
+            <input type="submit" class="button-secondary" value="Agregar">
+        </fieldset>
+      </form>
+      <div id="horarios">
 
+      </div>
     </div>
+    <div id="dialogBaja" style="display: none;">Esta seguro que desea efectuar la baja del consultorio actual?</div>
 </body>
 </html>

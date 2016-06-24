@@ -240,7 +240,11 @@ class ConsultorioDatabaseLinker
                     c.idprofesional,
                     concat(p.nombre,' ',p.apellido) as profesional,
                     c.fecha_inicio as fecha_inicio,
-                    c.fecha_fin as fecha_fin
+                    c.fecha_fin as fecha_fin,
+                    c.dias_anticipacion as dias_anticipacion, 
+                    c.duracion_turno as duracion,
+                    c.feriados as feriado,
+                    c.habilitado as habilitado
                 FROM
                     consultorio c LEFT JOIN
                     tipo_consultorio tp ON(tp.id = c.idtipo_consultorio) LEFT JOIN
