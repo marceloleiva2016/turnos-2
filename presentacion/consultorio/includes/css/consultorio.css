@@ -63,3 +63,7 @@ tr:nth-child(even) {background-color: #f2f2f2}
     right: 16px;
     font-size: 18px;
 }
+
+a .icon {
+   color: #17294b; 
+}

@@ -1,18 +1,17 @@
 $(document).ready(function() {
 
-    if(tipo_consultorio==1)
-    {
+    if(tipo_consultorio==1) {
         //demanda
         document.getElementById('divTipoConsultorio').style.display = 'none';
         document.getElementById('cargarHorarios').style.display = 'none';
-    }
-    else
-    {
+    } else {
         //programado
         document.getElementById('divTipoConsultorio').style.display = 'block';
+        $("#horarios").load("includes/forms/formTablaHorarios.php",{idconsultorio:id});
+        document.getElementById('cargarHorarios').style.display = 'block';
     }
 
-    $("#baja").click(function(event){
+    $("#baja").click(function(event) {
         event.preventDefault(event);
         $("#dialog:ui-dialog").dialog("destroy");
         $("#dialog-message").css('visibility',"visible");
@@ -46,6 +45,22 @@ $(document).ready(function() {
             }
         });
 
+    });
+
+    $("#submitHorario").click(function(event) {
+        event.preventDefault(event);
+        $.ajax({
+            data: $("#horariosForm").serialize()+"&id="+id,
+            type: "POST",
+            dataType: "json",
+            url: "includes/ajaxFunctions/guardarHorario.php",
+            success: function(data) {
+                alert(data.message);
+                if(data.result) {
+                    $("#horarios").load("includes/forms/formTablaHorarios.php",{idconsultorio:id});
+                }
+            }
+        });
     });
 
 });

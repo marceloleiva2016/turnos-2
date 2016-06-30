@@ -150,6 +150,41 @@ class ConsultorioDatabaseLinker
         }
     }
 
+    function superponeHorario($iddia, $idConsultorio, $horaDesde, $horaHasta) {
+        $query="SELECT
+                    *
+                FROM
+                    consultorio_horarios
+                WHERE
+                    iddia=$iddia AND
+                    idconsultorio=$idConsultorio AND
+                    habilitado=true AND
+                    ('".$horaDesde."' between hora_desde AND hora_hasta OR
+                    '".$horaHasta."' between hora_desde AND hora_hasta);";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar el tipo de consultorio", 201230);
+        }
+
+        $result = $this->dbTurnos->fetchRow();
+
+        $this->dbTurnos->desconectar();
+
+        if($result!=false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function crearHorarioEnConsultorio($iddia, $idConsultorio, $horaDesde, $horaHasta, $idusuario) 
     {
         $query="INSERT INTO
@@ -162,10 +197,10 @@ class ConsultorioDatabaseLinker
                         `habilitado`,
                         `idusuario`
                 ) VALUES (
-                        $iddia, 
-                        $idConsultorio, 
-                        $horaDesde, 
-                        $horaHasta, 
+                        $iddia,
+                        $idConsultorio,
+                        '".$horaDesde."',
+                        '".$horaHasta."',
                         now(),
                         true,
                         $idusuario);";
@@ -179,12 +214,57 @@ class ConsultorioDatabaseLinker
         {
             $this->dbTurnos->desconectar();
             return false;
-            throw new Exception("No se pudo consultar el id del consultorio", 201230);
         }
 
-        $result = $this->dbTurnos->fetchRow();
+        return true;
+    }
 
-        return $result;
+    function getHorarios($idConsultorio)
+    {
+        $query="SELECT
+                    id,
+                    iddia,
+                    hora_desde,
+                    hora_hasta
+                FROM
+                    consultorio_horarios
+                WHERE
+                    idconsultorio=$idConsultorio AND
+                    habilitado=true
+                ORDER BY iddia ASC, hora_desde ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar el tipo de consultorio", 201230);
+        }
+
+        $ret = array();
+
+        $ret[1] = array();//lunes
+        $ret[2] = array();//martes
+        $ret[3] = array();//miercoles
+        $ret[4] = array();//jueves
+        $ret[5] = array();//viernes
+        $ret[6] = array();//sabado
+        $ret[7] = array();//domingo
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $data = $this->dbTurnos->fetchRow($query);
+
+            $ret[$data['iddia']][] = $data;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
     }
 
     function getConsultorios($idespecialidad) 
@@ -226,6 +306,24 @@ class ConsultorioDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return $ret;
+    }
+
+    function borrarHorario($idHorario)
+    {
+        $query="UPDATE consultorio_horarios SET habilitado=false WHERE id=$idHorario;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+
+        return true;
     }
 
     function getConsultorio($idConsultorio)
@@ -271,6 +369,39 @@ class ConsultorioDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return $ret;
+    }
+
+    function getHorario($idHorario)
+    {
+        $query="SELECT
+                    ch.id,
+                    ds.nombre,
+                    ch.hora_desde,
+                    ch.hora_hasta
+                FROM
+                    consultorio_horarios ch LEFT JOIN
+                    dia_semana ds ON(ds.id=ch.iddia)
+                WHERE
+                    ch.id=$idHorario;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar el tipo de consultorio", 201230);
+        }
+
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+
     }
 
 }   

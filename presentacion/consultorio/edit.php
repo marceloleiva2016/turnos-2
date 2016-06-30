@@ -28,14 +28,12 @@ $consulDb = new ConsultorioDatabaseLinker();
 
 $consultorio = $consulDb->getConsultorio($id);
 
-var_dump($consultorio);
-
 $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Consultorio</title>
+  <title>Consultorio N&deg; <?php echo $id; ?></title>
   <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
@@ -71,8 +69,8 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
   <div class="topright">
     <input type="submit" class="button-secondary" value="Efectuar Baja" id="baja">
   </div>
+  N&deg; <?php echo $id; ?>
   <div id="container" align="center">
-    <form id="consultorioForm" post="includes/ajaxfunctions/guardarConsultorio.php">
       <fieldset>
         <legend>Tipo consultorio</legend>
         <?php echo $consultorio['tipo_consultorio']; ?>
@@ -131,30 +129,28 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
 
       <?php } ?>
 
-    </form>
-
     <div id="cargarHorarios">
-      <form id="consultorioForm" post="includes/ajaxfunctions/guardarHorario.php">
+      <form id="horariosForm" >
         <fieldset>
           <legend>Agregar Horario</legend>
           <select name="dia_semana" id="dia_semana" >
               <option value="1">LUNES</option>
-              <option value="2">MERTES</option>
+              <option value="2">MARTES</option>
               <option value="3">MIERCOLES</option>
               <option value="4">JUEVES</option>
               <option value="5">VIERNES</option>
               <option value="6">SABADO</option>
               <option value="7">DOMINGO</option>
             </select>
-            Desde<input  name="hd_horas" id="hd_horas" type="text" style="width:30px;">:<input  name="hd_minutos" id="hd_minutos" type="text" style="width:30px;">
-            Hasta<input  name="hh_horas" id="hh_horas" type="text" style="width:30px;">:<input  name="hh_minutos" id="hh_minutos" type="text" style="width:30px;">
-            <input type="submit" class="button-secondary" value="Agregar">
+            Desde<input name="hd_horas" id="hd_horas" type="text" style="width:40px;">:<input name="hd_minutos" id="hd_minutos" type="text" style="width:40px;">
+            Hasta<input name="hh_horas" id="hh_horas" type="text" style="width:40px;">:<input name="hh_minutos" id="hh_minutos" type="text" style="width:40px;">
+            <input type="submit" class="button-secondary" id="submitHorario" value="Agregar">
         </fieldset>
       </form>
       <div id="horarios">
-
       </div>
     </div>
     <div id="dialogBaja" style="display: none;">Esta seguro que desea efectuar la baja del consultorio actual?</div>
+    <div id="dialogBajaHorario" style="display: none;"></div>
 </body>
 </html>

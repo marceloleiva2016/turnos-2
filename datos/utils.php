@@ -1238,5 +1238,10 @@ class Utils {
 		imagejpeg($thumb, $dst, 90);
 	}
 	
+	static function sqlTimeToHtmlTime($time)
+	{
+		return substr($time,0,-3);
+	}
+
 }
 ?>
