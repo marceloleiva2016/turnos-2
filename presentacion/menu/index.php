@@ -58,14 +58,14 @@ $data = unserialize($usuario);
 				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
-							<!--<li>
+							<li>
 								<a href="#">Turnos Programados</a>
 								<ul class="cbp-hssubmenu">
 									<li><a href="#"><span>Asignar Turno</span></a></li>
 									<li><a href="#"><span>Confirmar Turno</span></a></li>
 									<li><a href="#"><span>Listado de pacientes en espera</span></a></li>
 								</ul>
-							</li>-->
+							</li>
 							<li>
 								<a href="#">Demanda</a>
 								<ul class="cbp-hssubmenu">
@@ -84,6 +84,7 @@ $data = unserialize($usuario);
 									<li><a href="../subespecialidad/"><span>Subespecialidad</span></a></li>
 									<!--<li><a href="#"><span>Usuarios</span></a></li>-->
 									<li><a href="../consultorio/"><span>Consultorios</span></a></li>
+									<li><a href="../feriados/"><span>Feriados / Vacaciones</span></a></li>
 								</ul>
 							</li>
 						</ul>

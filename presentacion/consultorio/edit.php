@@ -71,59 +71,43 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
   </div>
   N&deg; <?php echo $id; ?>
   <div id="container" align="center">
-      <fieldset>
-        <legend>Tipo consultorio</legend>
-        <?php echo $consultorio['tipo_consultorio']; ?>
-      </fieldset>
 
-      <fieldset>
-        <legend>Especialidad</legend>
-        <?php echo $consultorio['especialidad']; ?>
-      </fieldset>
+      Tipo consultorio :
+      <?php echo $consultorio['tipo_consultorio']; ?><br>
 
-      <fieldset>
-        <legend>Subespecialidad</legend>
-        <?php echo $consultorio['subespecialidad']; ?>
-      </fieldset>
+      Especialidad :
+      <?php echo $consultorio['especialidad']; ?><br>
 
-      <fieldset>
-        <legend>Profesional</legend>
-        <?php echo $consultorio['profesional']; ?>
-      </fieldset>
+      Subespecialidad :
+      <?php echo $consultorio['subespecialidad']; ?><br>
 
-      <fieldset>
-        <legend>Comienzo / Finalizacion</legend>
-        Desde:<?php echo Utils:: sqlDateToHtmlDate($consultorio['fecha_inicio'])."&nbsp;";
-        if($fecha_fin!='NULL'){
-          echo "Hasta:".Utils:: sqlDateToHtmlDate($consultorio['fecha_fin']);
-        } else {
-          echo "Hasta: Indefinido";
-        }
-        ?>
-      </fieldset>
+      Profesional :
+      <?php echo $consultorio['profesional']; ?><br>
+
+      Comienzo / Finalizacion :
+      Desde:<?php echo Utils:: sqlDateToHtmlDate($consultorio['fecha_inicio'])."&nbsp;";
+      if($fecha_fin!='NULL'){
+        echo "Hasta:".Utils:: sqlDateToHtmlDate($consultorio['fecha_fin']);
+      } else {
+        echo "Hasta: Indefinido";
+      }
+      ?><br>
 
       <?php if($consultorio['idtipo_consultorio']) { ?>
         <div id="divTipoConsultorio" >
+          Dias Anticipacion :
+          <?php echo $consultorio['dias_anticipacion']; ?><br>
 
-        <fieldset>
-          <legend>Dias Anticipacion</legend>
-          <?php echo $consultorio['dias_anticipacion']; ?>
-        </fieldset>
+          Duracion Turno :
+          <?php echo $consultorio['duracion']; ?>min<br>
 
-        <fieldset>
-          <legend>Duracion Turno</legend>
-          <?php echo $consultorio['duracion']; ?>min
-        </fieldset>
-
-        <fieldset>
-          <legend>Feriados</legend>
+          Feriados :
           <?php
           if($consultorio['feriado']=="1"){
-            echo "SI:<input type='radio' name='feriados' value='true' checked>&nbsp;&nbsp;NO:<input type='radio' name='feriados' value='false'>";
+            echo "SI";
           } else {
-            echo "SI:<input type='radio' name='feriados' value='true'>&nbsp;&nbsp;NO:<input type='radio' name='feriados' value='false' checked>";
-          } ?>
-        </fieldset>
+            echo "NO";
+          } ?><br>
 
       </div>
 

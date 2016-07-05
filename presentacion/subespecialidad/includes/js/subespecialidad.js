@@ -43,7 +43,7 @@ function mostrarDialogo(paginaVista, paginaFuncion)
 
 $(document).ready(function() {
 
-     $("#jgVerSubesp").jqGrid({ 
+    $("#jgVerSubesp").jqGrid({ 
         url:'includes/ajaxFunctions/verSubespecialidad.php', 
         mtype: "POST",
         datatype: "json",
