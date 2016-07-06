@@ -404,4 +404,60 @@ class ConsultorioDatabaseLinker
 
     }
 
+    function getProfesionalesEnSubespecialidadConConsultorioActivo($idsubespecialidad)
+    {
+        $query="SELECT
+                    c.idprofesional as id,
+                    concat(p.nombre,' ', p.apellido) as detalle
+                FROM
+                    consultorio c LEFT JOIN
+                    profesional p ON(p.id = c.idprofesional)
+                WHERE
+                    c.idsubespecialidad = $idsubespecialidad AND
+                    c.idtipo_consultorio=2 AND
+                    c.habilitado = true;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar la consulta", 201230);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getProfesionalesEnSubespecialidadConConsultorioActivo_json($idsub)
+    {
+        $std = new stdClass();
+
+        $profesionales = $this->getProfesionalesEnSubespecialidadConConsultorioActivo($idsub);
+
+        $std->ret=false;
+
+        $std->datos= "";
+
+        if($profesionales!=false)
+        {    
+            $std->ret = true;
+
+            $std->datos = $profesionales;
+        }
+
+        return $std;
+    }
 }   

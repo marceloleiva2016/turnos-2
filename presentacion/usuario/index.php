@@ -1,4 +1,4 @@
-<?
+<?php
 /*Agregado para que valide los usuarios*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';

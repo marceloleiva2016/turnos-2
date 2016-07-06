@@ -109,7 +109,9 @@ class SubespecialidadDatabaseLinker
                     c.habilitado=1 AND
                     c.idtipo_consultorio=1 AND
                     s.habilitado=1 AND
-                    s.idespecialidad=$idEspecialidad;";
+                    s.idespecialidad=$idEspecialidad
+                GROUP BY 
+                    s.id;";
 
         try
         {
@@ -385,5 +387,68 @@ class SubespecialidadDatabaseLinker
         }
 
         return $response;
+    }
+
+    function getSubspecialidadesConConsultoriosProgramadosActivos($idEspecialidad)
+    {
+        $query="SELECT
+                    s.id,
+                    s.detalle
+                FROM
+                    subespecialidad s LEFT JOIN
+                    consultorio c ON (c.idsubespecialidad = s.id)
+                WHERE
+                    c.habilitado=1 AND
+                    c.idtipo_consultorio=2 AND
+                    s.habilitado=1 AND
+                    s.idespecialidad=$idEspecialidad
+                GROUP BY 
+                    s.id;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error consultando las especialidades con consultorios de guardia", 1);
+        }
+
+        $subespecialidades = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $Subespecialidad = new Subespecialidad();
+            $Subespecialidad->setId($result['id']);
+            $Subespecialidad->setDetalle($result['detalle']);
+            $subespecialidades[] = $Subespecialidad;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $subespecialidades;
+    }
+
+    function getSubspecialidadesConConsultoriosProgramadosActivos_json($cp)
+    {
+        $std = new stdClass();
+
+        $subesp = $this->getSubspecialidadesConConsultoriosProgramadosActivos($cp);
+
+        $std->ret=false;
+
+        $std->datos= "";
+
+        if($subesp!=false)
+        {
+            $std->ret = true;
+
+            $std->datos = $subesp;
+        }
+
+        return $std;
     }
 }
