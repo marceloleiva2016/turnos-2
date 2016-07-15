@@ -62,6 +62,55 @@ class TurnoDatabaseLinker
         return true;
     }
 
+    function crearTurnoProgramado($arrayTurno,$idConsultorio, $idtipo_atencion)
+    {
+        $query="INSERT INTO
+                    turno(
+                        tipodoc,
+                        nrodoc,
+                        idestado_turno,
+                        idconsultorio,
+                        idtipo_atencion,
+                        fecha,
+                        hora,
+                        fecha_creacion,
+                        idusuario)
+                VALUES (
+                        '".$arrayTurno['tipoDoc']."',
+                        '".$arrayTurno['nroDoc']."',
+                        '1',
+                        '".$idConsultorio."',
+                        '".$idtipo_atencion."',
+                        '".$arrayTurno['fecha']."',
+                        '".$arrayTurno['hora']."',
+                        now(),
+                        '".$arrayTurno['idusuario']."'
+                        );";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
+        }
+        catch (Exception $e)
+        {
+            return false;
+        }
+
+        try
+        {
+            $idTurno = $this->dbTurnos->ultimoIdInsertado();
+            $this->insertarEnLog($idTurno, 1, $arrayTurno['idusuario']);   
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error insertando en el log del turno", 1);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return true;
+    }
+
     function getTurnosConfirmados2($idsubespecialidad)
     {
         $this->dbTurnos->conectar();
@@ -290,7 +339,6 @@ class TurnoDatabaseLinker
         return true;
     }
 
-
     function actualizarEstadoTurno($idTurno, $idEstado)
     {
         $query="UPDATE
@@ -315,4 +363,50 @@ class TurnoDatabaseLinker
 
         return true;
     }
+
+    function getTurnoAsignadoDePaciente($tipodoc, $nrodoc)
+    {
+        $query="SELECT
+                    t.id as id,
+                    e.detalle as especialidad,
+                    s.detalle as subespecialidad,
+                    concat(p.nombre,' ',p.apellido) as profesional,
+                    t.fecha,
+                    t.hora
+                FROM
+                    turno t LEFT JOIN
+                    consultorio c ON(t.idconsultorio=c.id) LEFT JOIN
+                    subespecialidad s ON(c.idsubespecialidad=s.id) LEFT JOIN
+                    especialidad e ON(s.idespecialidad=e.id) LEFT JOIN
+                    profesional p ON(p.id=c.idprofesional)
+                WHERE
+                    t.tipodoc=$tipodoc AND
+                    t.nrodoc=$nrodoc AND
+                    t.idtipo_atencion=2 AND
+                    t.idestado_turno=1;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar el tipo de consultorio", 201230);
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+
 }

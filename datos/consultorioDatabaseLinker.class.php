@@ -460,4 +460,176 @@ class ConsultorioDatabaseLinker
 
         return $std;
     }
+
+    function getConsultorioPorDatos($idsubespecialidad, $idprofesional)
+    {
+        $query="SELECT
+                    id,
+                    idsubespecialidad,
+                    idprofesional,
+                    dias_anticipacion,
+                    duracion_turno,
+                    feriados,
+                    fecha_inicio,
+                    fecha_fin
+                FROM
+                    consultorio
+                WHERE
+                    idsubespecialidad=$idsubespecialidad AND
+                    idprofesional=$idprofesional AND
+                    idtipo_consultorio=2 AND
+                    habilitado=true;";
+
+        try {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        } catch (Exception $e) {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getDiasEnConsultorio($idConsultorio)
+    {
+        $query="SELECT
+                    ch.iddia,
+                    ds.nombre
+                FROM
+                    consultorio_horarios ch LEFT JOIN
+                    dia_semana ds ON(ch.iddia=ds.id)
+                WHERE
+                    ch.idconsultorio=$idConsultorio AND
+                    ch.habilitado=true
+                GROUP BY ch.iddia;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar la consulta", 201230);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $ret[$result['iddia']] = $result['nombre'];
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getHorariosEnDiaEnConsultorio($idConsultorio, $iddia)
+    {
+        $query="SELECT
+                    ch.hora_desde as desde,
+                    ch.hora_hasta as hasta
+                FROM
+                    consultorio_horarios ch LEFT JOIN
+                    dia_semana ds ON(ch.iddia=ds.id)
+                WHERE
+                    ch.idconsultorio=$idConsultorio AND
+                    ch.iddia=$iddia AND
+                    ch.habilitado=true
+                ORDER BY
+                    ch.hora_desde ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar la consulta", 201230);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $ret[] = $result;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getFechasConsultorio($idsubespecialidad, $idprofesional)
+    {
+        $consultorio = $this->getConsultorioPorDatos($idsubespecialidad, $idprofesional);
+
+        $cantiDias = $consultorio['dias_anticipacion'];
+
+        $diasSemanaConsultorio = $this->getDiasEnConsultorio($consultorio['id']);
+
+        $fechas = array();
+
+        $fecha = date('Y-m-j');
+
+        for ($i=0; $i < $cantiDias; $i++)
+        {
+            $nroSemana = date('N', strtotime($fecha));
+
+            if(array_key_exists($nroSemana, $diasSemanaConsultorio))
+            {
+                $tupla = array();
+                $tupla['iddia'] = $nroSemana;
+                $tupla['dia'] = $diasSemanaConsultorio[$nroSemana];
+                $tupla['fecha'] = $fecha;
+                $fechas[] = $tupla;
+            }
+
+            $fecha = strtotime('+1 day', strtotime($fecha));
+
+            $fecha = date('Y-m-j',$fecha);
+        }
+
+        return $fechas;
+    }
+
+    function getHorariosEnFechaConsultorio($idsubespecialidad, $idprofesional, $fecha, $iddia)
+    {
+        $consultorio = $this->getConsultorioPorDatos($idsubespecialidad, $idprofesional);
+
+        $horariosGen = $this->getHorariosEnDiaEnConsultorio($consultorio['id'], $iddia);
+
+        $minutoAnadir = $consultorio['duracion_turno'];
+
+        $horarios = array();
+
+        for ($i=0; $i < count($horariosGen); $i++) {
+
+            $desde = date('H:i:s', Utils::sqlTimeToPHPTimestamp($horariosGen[$i]['desde']));
+
+            $hasta = date('H:i:s', Utils::sqlTimeToPHPTimestamp($horariosGen[$i]['hasta']));
+
+            while(strtotime($desde)<strtotime($hasta)) {
+
+                $horarios[]['hora'] = $desde;
+
+                $desde = date('H:i:s', strtotime('+'.$minutoAnadir.' minutes', strtotime($desde)));
+            }
+        }
+
+        return $horarios;
+    }
 }   

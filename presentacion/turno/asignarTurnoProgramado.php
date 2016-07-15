@@ -61,7 +61,7 @@ $gen = new GeneralesDatabaseLinker();
                 <ul>
                     <li><a href="#tabs-1">Seleccione Paciente</a></li>
                     <li><a href="#tabs-2">Seleccione Especialidad</a></li>
-                    <li><a href="#tabs-3">Seleccione fecha y horario</a></li>
+                    <li><a href="#tabs-3">Seleccione Fecha y Horario</a></li>
                     <li><a href="#tabs-4">Confirme los datos</a></li>
                 </ul>
                 <div id="tabs-1">
@@ -122,7 +122,14 @@ $gen = new GeneralesDatabaseLinker();
                         </form>
                     </div>
                 </div>
-                <div id="tabs-3">
+                <div id="tabs-3" class="dias">
+                    <div id="fechasLoading" style="display:none;">
+                        <p align="center">
+                            <img id="loading" src="../includes/images/loader.gif" alt="Cargando..."/>
+                            Espere mientras carga
+                        </p>
+                    </div>
+                    <div id="fechasCargador" style="display:none;"></div>
 
                 </div>
                 <div id="tabs-4">
@@ -134,8 +141,10 @@ $gen = new GeneralesDatabaseLinker();
                     <p><b>Especialidad: </b><a id="especialidadAcept"></a></p>
                     <p><b>Subespecialidad: </b><a id="subespecialidadAcept"></a></p>
                     <p><b>Profesional: </b><a id="profesionalAcept"></a></p>
+                    <p><b>Fecha: </b><a id="fechaAcept"></a></p>
+                    <p><b>Hora: </b><a id="horaAcept"></a></p>
                     <div align="center">
-                        <button id="cargarTurnoDemanda">Asignar</button>
+                        <button id="cargarTurnoProgramado">Asignar</button>
                     </div>
                 </div>
             </div>
@@ -151,6 +160,11 @@ $gen = new GeneralesDatabaseLinker();
         <p><b>Especialidad: </b><a id="especialidadDialog"></a></p>
         <p><b>Subespecialidad: </b><a id="subespecialidadDialog"></a></p>
         <p><b>Profesional: </b><a id="profesionalDialog"></a></p>
+        <p><b>Fecha: </b><a id="fechaDialog"></a></p>
+        <p><b>Hora: </b><a id="horaDialog"></a></p>
+    </div>
+
+    <div id="dialogHora"> 
     </div>
 
     <input type="hidden" id="idusuario" name="idusuario" value=<?php echo $data->getId();?> >

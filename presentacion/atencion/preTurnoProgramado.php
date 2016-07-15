@@ -18,7 +18,7 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 $dbEsp = new EspecialidadDatabaseLinker();
-$especialidades = $dbEsp->getEspecialidadesConConsultoriosDeDemandaActivos();
+$especialidades = $dbEsp->getEspecialidadesConConsultoriosProgramadosActivos();
 
 ?>
 <!DOCTYPE html>

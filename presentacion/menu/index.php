@@ -57,7 +57,7 @@ $data = unserialize($usuario);
 			<div class="main">
 				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
 					<div class="cbp-hsinner">
-						<ul class="cbp-hsmenu"><!--
+						<ul class="cbp-hsmenu">
 							<li>
 								<a href="#">Turnos Programados</a>
 								<ul class="cbp-hssubmenu">
@@ -65,7 +65,7 @@ $data = unserialize($usuario);
 									<li><a href="../turno/confirmarTurnoProgramado.php"><span>Confirmar Turno</span></a></li>
 									<li><a href="../atencion/preTurnosProgramados.php"><span>Listado de pacientes en espera</span></a></li>
 								</ul>
-							</li>-->
+							</li>
 							<li>
 								<a href="#">Demanda</a>
 								<ul class="cbp-hssubmenu">

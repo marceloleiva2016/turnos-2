@@ -87,6 +87,11 @@ function ingresandoSubEsp()
                     $("#subespecialidadDialog").html($("#subespecialidad :selected").text());
                     $("#profesionalAcept").html($("#profesional :selected").text());
                     $("#profesionalDialog").html($("#profesional :selected").text());
+
+                    var subesp = $("#subespecialidad").val();
+                    var prof = $("#profesional").val();
+
+                    cargarFechas(subesp,prof);
                 }
             }
         });
@@ -97,31 +102,65 @@ function ingresandoProf()
 {
     $("#profesionalAcept").html($("#profesional :selected").text());
     $("#profesionalDialog").html($("#profesional :selected").text());
+
+    var subesp = $("#subespecialidad").val();
+    var prof = $("#profesional").val();
+
+    cargarFechas(subesp,prof);
 }
 
-function setearValoresDialogos(nrodoc, nombre, especialidad, subespecialidad, profesional)
+function setearValoresDialogos(nrodoc, nombre, especialidad, subespecialidad, profesional, fecha, hora)
 {
     $("#nrodocDialog").html(nrodoc);
     $("#nombreDialog").html(nombre);
     $("#especialidadDialog").html(especialidad);
     $("#subespecialidadDialog").html(subespecialidad);
-    $("#profesionalAcept").html(profesional);
+    $("#profesionalDialog").html(profesional);
+    $("#fechaDialog").html(fecha);
+    $("#horaDialog").html(hora);
 }
 
-function setearValoresChequeo(nrodoc, nombre, especialidad, subespecialidad, profesional)
+function setearValoresChequeo(nrodoc, nombre, especialidad, subespecialidad, profesional, fecha, hora)
 {
     $("#nombrePaciente").html(nombre);
     $("#nrodocPaciente").html(nrodoc);
     $("#especialidadAcept").html(especialidad);
     $("#subespecialidadAcept").html(subespecialidad);
     $("#profesionalAcept").html(profesional);
+    $("#fechaAcept").html(fecha);
+    $("#horaAcept").html(hora);
 }
 
 function resetearVariables()
 {
     $("#nrodoc").val('');
     $("#fichaPaciente").html('');
-    setearValoresChequeo('', '', '', '', '');
+    setearValoresChequeo('', '', '', '', '', '', '');
+    setearValoresDialogos('', '', '', '', '', '', '');
+}
+
+function cargarFechas(subesp, prof)
+{
+    $("#fechasLoading").css("display", "inline");
+    $("#fechasCargador").css("display", "none");
+
+    $("#fechasCargador").load("includes/forms/fechasConsultorio.php",{subespecialidad:subesp,profesional:prof}, function(){
+        $("#fechasLoading").css("display", "none");
+        $("#fechasCargador").css("display", "inline");
+    });
+}
+
+function verHorarios(fechaSeleccionada, dia)
+{
+    var subesp = $("#subespecialidad").val();
+    var prof = $("#profesional").val();
+
+    $("#dialogHora").load("includes/forms/horariosConsultorio.php",{fecha:fechaSeleccionada, iddia:dia, subespecialidad:subesp, profesional:prof}, function(){
+        $("#fechasLoading").css("display", "none");
+        $("#dialogHora").css("display", "inline");
+        $("#dialogHora").dialog('option', 'title', 'Horarios de Fecha '+fechaSeleccionada);
+        $("#dialogHora").dialog("open");
+    });
 }
 
 $(document).ready(function(){
@@ -160,44 +199,54 @@ $(document).ready(function(){
                 pacienteValido = json.ret;
                 if(json.ret)
                 {
-                    setearValoresChequeo(json.nrodoc, json.nombre, $("#especialidad :selected").text(), $("#subespecialidad :selected").text(),$("#profesional :selected").text());
-                    setearValoresDialogos(json.nrodoc, json.nombre, $("#especialidad :selected").text(), $("#subespecialidad :selected").text(),$("#profesional :selected").text());
+                    setearValoresChequeo(json.nrodoc, json.nombre, $("#especialidad :selected").text(), $("#subespecialidad :selected").text(),$("#profesional :selected").text(), '', '');
+                    setearValoresDialogos(json.nrodoc, json.nombre, $("#especialidad :selected").text(), $("#subespecialidad :selected").text(),$("#profesional :selected").text(), '', '');
                 }
             }
         });
     });
 
-    $("#cargarTurnoDemanda").click(function(event){
+    $("#cargarTurnoProgramado").click(function(event){
         event.preventDefault();
 
         var tipodoc = $("#tipodoc").val();
         var nrodoc = $("#nrodoc").val();
         var subesp = $("#subespecialidad").val();
+        var prof = $("#profesional").val();
+        var fech = $("#fechaSeleccionada").val();
+        var hor = $("#horarioRadio:checked").val();
         var usuario = $("#idusuario").val();
 
         if(pacienteValido)
         {
             if(subesp!=null)
             {
-                $.ajax({
-                    type:'post',
-                    dataType:'json',
-                    url:'includes/ajaxFunctions/jsonAgregarTurno.php',
-                    data:{tipoDoc:tipodoc, nroDoc:nrodoc, subespecialidad:subesp, idusuario:usuario},
-                    success: function(json)
-                    {
-                        if (json.ret==true)
+                if(prof!=null && fech!=null && hor!=null)
+                {
+                    $.ajax({
+                        type:'post',
+                        dataType:'json',
+                        url:'includes/ajaxFunctions/jsonAgregarTurnoConsultorio.php',
+                        data:{tipoDoc:tipodoc, nroDoc:nrodoc, subespecialidad:subesp, profesional:prof, fecha:fech ,hora:hor ,idusuario:usuario},
+                        success: function(json)
                         {
-                            $("#dialog").dialog("open");
-                            pacienteValido = false;
-                            resetearVariables();
+                            if (json.ret==true)
+                            {
+                                $("#dialog").dialog("open");
+                                pacienteValido = false;
+                                resetearVariables();
+                            }
+                            else
+                            {
+                                alert("Ocurrio un error al ingresar el turno para el paciente!");
+                            };
                         }
-                        else
-                        {
-                            alert("Ocurrio un error al ingresar el turno para el paciente!");
-                        };
-                    }
-                });
+                    });    
+                }
+                else
+                {
+                    alert("Debe seleccionar un profesional y las fechas con su horario para asigar un turno");
+                }
             }
             else
             {
@@ -210,7 +259,7 @@ $(document).ready(function(){
         };
     });
 
-    $( "#dialog" ).dialog({
+    $("#dialog").dialog({
         autoOpen: false,
         width: 400,
         buttons:
@@ -223,6 +272,27 @@ $(document).ready(function(){
                 text: "Ok",
                 click: function(){
                     $(this).dialog("close");
+                }
+            }]
+    });
+
+    $("#dialogHora").dialog({
+        autoOpen: false,
+        width: 400,
+        buttons:
+            [{
+                text: "Seleccionar",
+                click: function(){
+                    if($('input[name="horarioRadio"]').is(':checked'))
+                    {
+                        setearValoresChequeo($("#nrodocDialog").html(), $("#nombreDialog").html(), $("#especialidad :selected").text(), $("#subespecialidad :selected").text(),$("#profesional :selected").text(),$('#fechaSeleccionada').val(),$('#horarioRadio:checked').val());
+                        setearValoresDialogos($("#nrodocDialog").html(), $("#nombreDialog").html(), $("#especialidad :selected").text(), $("#subespecialidad :selected").text(),$("#profesional :selected").text(),$('#fechaSeleccionada').val(),$('#horarioRadio:checked').val());
+                        $(this).dialog("close");    
+                    }
+                    else
+                    {
+                        alert("Debe seleccionar al menos un horario");
+                    }                    
                 }
             }]
     });
