@@ -15,7 +15,7 @@ function seleccionadoEspecialidad(combo)
     $.ajax({
         type:'post',
         dataType:'json',
-        url:'includes/ajaxFunctions/jsonSubespecialidades.php',
+        url:'includes/ajaxFunctions/jsonSubespecialidadesDemanda.php',
         data:{esp:newesp},
         success: function(json)
         {

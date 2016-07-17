@@ -13,7 +13,7 @@ if($idsubespecialidad==null OR !isset($idsubespecialidad)) {
 }
 
 
-$turnos = $dbTurno->getTurnosConfirmados2($idsubespecialidad);    
+$turnos = $dbTurno->getTurnosConfirmadosDemanda($idsubespecialidad);    
 
 if(count($turnos)==0) {
     echo "<br><br><br><br>Sin pacientes en espera";

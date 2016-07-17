@@ -63,14 +63,14 @@ $data = unserialize($usuario);
 								<ul class="cbp-hssubmenu">
 									<li><a href="../turno/asignarTurnoProgramado.php"><span>Asignar Turno</span></a></li>
 									<li><a href="../turno/confirmarTurnoProgramado.php"><span>Confirmar Turno</span></a></li>
-									<li><a href="../atencion/preTurnosProgramados.php"><span>Listado de pacientes en espera</span></a></li>
+									<li><a href="../atencion/preTurnoProgramado.php"><span>Listado de pacientes en espera</span></a></li>
 								</ul>
 							</li>
 							<li>
 								<a href="#">Demanda</a>
 								<ul class="cbp-hssubmenu">
 									<li><a href="../turno/asignarTurnoDemanda.php"><span>Asignar Turno</span></a></li>
-									<li><a href="../atencion/"><span>Antencion Medica</span></a></li>
+									<li><a href="../atencion/preTurnoDemanda.php"><span>Antencion Medica</span></a></li>
 									<li><a href="../estadisticas/hoja2.0/"><span>Hoja 2</span></a></li>
 									<li><a href="../estadisticas/hoja2.1/"><span>Hoja 2.1</span></a></li>
 								</ul>

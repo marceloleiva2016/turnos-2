@@ -17,8 +17,7 @@ $usuario = $_SESSION['usuario'];
 
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
-$dbEsp = new EspecialidadDatabaseLinker();
-$especialidades = $dbEsp->getEspecialidadesConConsultoriosProgramadosActivos();
+$especialidades = new EspecialidadDatabaseLinker();
 
 ?>
 <!DOCTYPE html>
@@ -43,7 +42,7 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosProgramadosActivos();
         <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
         <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
         <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
-        <script type="text/javascript" src="includes/js/index.js" ></script>
+        <script type="text/javascript" src="includes/js/preTurnoProgramado.js" ></script>
     </head>
     <body>
         <!-- barra -->
@@ -65,29 +64,29 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosProgramadosActivos();
         <!-- /barra -->
         <div id="container" class="container">
             <div class="page" align="center">
-                <form id="form" name="form" method="post" action="listadoDemanda.php">
+                <form id="form" name="form" method="post" action="listadoProgramados.php">
                     <div class="logo">
                         <span style="font-size: 5em;" class="icon icon-edit"></span>
                     </div>
-                    <h2>Especialidad</h2>
-                    <br>
-                    <select id="especialidad" name="especialidad" onchange="seleccionadoEspecialidad(this);">
-                        <option value="">Seleccione una especialidad</option>
-                        <?php
-                        for ($i=0; $i < count($especialidades); $i++) { 
-                            echo "<option value=".$especialidades[$i]->getId().">".$especialidades[$i]->getDetalle()."</option>";
-                        }
-                        ?>
-                    </select>
-                    <br>
-                    <br>
-                    <h2>Subespecialidad</h2>
-                    <br>
-                    <select id="subespecialidades" name="subespecialidades">
-                        <option value=""></option>
-                    </select>
-                    <br>
-                    <br>
+                        <h4>Especialidad</h4>
+                        <select id="especialidad" name="especialidad"  onchange="ingresandoEsp();" >
+                            <option value="">Seleccione</option>
+                            <?php
+                            $lista = $especialidades->getEspecialidadesConConsultoriosProgramadosActivos();
+                            for ($i=0; $i < count($lista); $i++){ 
+                                echo "<option value=".$lista[$i]->getId().">".$lista[$i]->getDetalle()."</option>";
+                            }
+                            ?>
+                        </select><br>
+                        <h4>Subspecialidad</h4>
+                        <select id="subespecialidad" name="subespecialidad" onchange="ingresandoSubEsp();" >
+
+                        </select>
+                         <h4>Profesional</h4>
+                        <select id="profesional" name="profesional" onchange="ingresandoProf();" >
+
+                        </select><br>
+                        <br><br>
                     <input type="submit" name="enviar" id="enviar">
                 </form>
             </div>

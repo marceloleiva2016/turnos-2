@@ -43,7 +43,7 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosDeDemandaActivos();
         <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
         <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
         <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
-        <script type="text/javascript" src="includes/js/index.js" ></script>
+        <script type="text/javascript" src="includes/js/preTurnoDemanda.js" ></script>
     </head>
     <body>
         <!-- barra -->

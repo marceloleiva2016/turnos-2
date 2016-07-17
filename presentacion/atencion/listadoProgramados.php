@@ -2,6 +2,8 @@
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
+include_once datos.'profesionalDatabaseLinker.class.php';
+include_once datos.'subespecialidadDatabaseLinker.class.php';
 
 session_start();
 
@@ -16,7 +18,14 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 
-$idsubespecialidad = $_REQUEST['subespecialidades'];
+$idsubespecialidad = $_REQUEST['subespecialidad'];
+$idprofesional = $_REQUEST['profesional'];
+
+$dbProf = new ProfesionalDatabaseLinker();
+$profesional = $dbProf->getProfesional($idprofesional);
+
+$dbSubs = new SubespecialidadDatabaseLinker();
+$subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
 
 ?>
 <!DOCTYPE html>
@@ -35,10 +44,11 @@ $idsubespecialidad = $_REQUEST['subespecialidades'];
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
-  <script type="text/javascript" src="includes/js/listaAtencion.js" ></script>
+  <script type="text/javascript" src="includes/js/listaAtencionProgramado.js" ></script>
 
   <script type="text/javascript">
     var sub = <?php echo $idsubespecialidad; ?>;
+    var prof = <?php echo $idprofesional; ?>;
   </script>
   
 </head>
@@ -61,7 +71,13 @@ $idsubespecialidad = $_REQUEST['subespecialidades'];
   </div>
   <!-- /barra -->
   <div id="container">
-    <div id="demo" class="listadoPacientes"  align="center">
+  <div  align="center">
+ 		<label>Subespecialidad :</label><?php echo $subesp->getDetalle(); ?><br>
+ 		<label>Profesional :</label><?php echo $profesional->nombre." ".$profesional->apellido; ?>
+  </div>
+  	 
+  
+    <div id="demo" class="listadoPacientesProgramados"  align="center">
       
     </div>
   </div>
