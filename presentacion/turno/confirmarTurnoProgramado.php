@@ -81,9 +81,12 @@ $gen = new GeneralesDatabaseLinker();
             <div id="fichaPaciente" style="display:none;">
 
             </div>
-        </div>
-        <div align="center" id="divConfTurno" style="display:none; position:relative;" >
-            <button id="confirmarTurnoProgramado">Confirmar</button>
+            <div align="center" id="divConfTurno" style="display:none;" >
+            
+	        </div><br>
+	        <div align="center" id="botonConfirmar" style="display:none;">
+	        	<button id="confirmarTurnoProgramado">Confirmar</button>
+	        </div>
         </div>
     </div>
     <input type="hidden" id="idusuario" name="idusuario" value=<?php echo $data->getId();?> >

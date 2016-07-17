@@ -20,6 +20,7 @@ $(document).ready(function(){
                 $("#miCargando").css("display", "none");
                 $("#fichaPaciente").css("display", "inline");
                 $("#divConfTurno").css("display", "inline");
+                $("#botonConfirmar").css("display", "inline");
             });
         }
     });
@@ -42,6 +43,7 @@ $(document).ready(function(){
                     {
                         $("#divConfTurno").css("display", "none");
                         $("#fichaPaciente").css("display", "none");
+                        $("#botonConfirmar").css("display", "none");
                         alert("Turno confirmado correctamente");
                     }
                     else

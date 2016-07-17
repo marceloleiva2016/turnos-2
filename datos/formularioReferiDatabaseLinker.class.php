@@ -70,7 +70,7 @@ class formularioReferiDatabaseLinker
 
         if($formulario!=false)
         {
-            header('Location: ../formularios'.$formulario['ubicacion'].'?id='.$idAtencion);
+            header('Location: ../formulario'.$formulario['ubicacion'].'?id='.$idAtencion);
         }
     }
 }

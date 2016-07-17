@@ -119,7 +119,7 @@ class FormularioDatabaseLinker
         }
         if($idFormulario==null)
         {
-            echo "No se pudo obtener el formulario";
+            echo "No existe formulario para el tipo de atencion, por favor comuniquese con el desarrolador para generar uno nuevo";
         }
         
         return $idFormulario;
