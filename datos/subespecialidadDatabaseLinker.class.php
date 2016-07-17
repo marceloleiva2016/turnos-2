@@ -12,6 +12,40 @@ class SubespecialidadDatabaseLinker
     {
         $this->dbTurnos = new dataBaseConnector(HOSTLocal,0,DB,USRDBAdmin,PASSDBAdmin);
     }
+    
+    function getSubespecialidad($idsubespecialidad)
+    {
+    	$query="SELECT
+                    id,
+                    detalle,
+                    idespecialidad
+                FROM
+                    subespecialidad
+                WHERE
+    				id = $idsubespecialidad AND
+                    habilitado=1";
+    	try
+    	{
+    		$this->dbTurnos->conectar();
+    		$this->dbTurnos->ejecutarAccion($query);
+    	}
+    	catch (Exception $e)
+    	{
+    		$this->dbTurnos->desconectar();
+    		throw new Exception("Error Processing Request", 1);
+    	}
+    	
+    		$result = $this->dbTurnos->fetchRow($query);
+    		$subespecialidad = new Subespecialidad();
+    		$subespecialidad->setId($result['id']);
+    		$subespecialidad->setDetalle($result['detalle']);
+    		$subespecialidad->setEspecialidad($result['idespecialidad']);
+    		$subespecialidades[] = $subespecialidad;
+    	
+    	$this->dbTurnos->desconectar();
+    	
+    	return $subespecialidad;
+    }
 
     function getSubespecialidades()
     {
@@ -389,49 +423,6 @@ class SubespecialidadDatabaseLinker
         return $response;
     }
 
-    function getSubspecialidadesConConsultoriosProgramadosActivos($idEspecialidad)
-    {
-        $query="SELECT
-                    s.id,
-                    s.detalle
-                FROM
-                    subespecialidad s LEFT JOIN
-                    consultorio c ON (c.idsubespecialidad = s.id)
-                WHERE
-                    c.habilitado=1 AND
-                    c.idtipo_consultorio=2 AND
-                    s.habilitado=1 AND
-                    s.idespecialidad=$idEspecialidad
-                GROUP BY 
-                    s.id;";
-
-        try
-        {
-            $this->dbTurnos->conectar();
-            $this->dbTurnos->ejecutarQuery($query);
-        }
-        catch (Exception $e)
-        {
-            $this->dbTurnos->desconectar();
-            throw new Exception("Error consultando las especialidades con consultorios de guardia", 1);
-        }
-
-        $subespecialidades = array();
-
-        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
-        {
-            $result = $this->dbTurnos->fetchRow($query);
-            $Subespecialidad = new Subespecialidad();
-            $Subespecialidad->setId($result['id']);
-            $Subespecialidad->setDetalle($result['detalle']);
-            $subespecialidades[] = $Subespecialidad;
-        }
-
-        $this->dbTurnos->desconectar();
-
-        return $subespecialidades;
-    }
-
     function getSubspecialidadesConConsultoriosProgramadosActivos_json($cp)
     {
         $std = new stdClass();
@@ -450,5 +441,48 @@ class SubespecialidadDatabaseLinker
         }
 
         return $std;
+    }
+    
+    function getSubspecialidadesConConsultoriosProgramadosActivos($idEspecialidad)
+    {
+    	$query="SELECT
+    	s.id,
+    	s.detalle
+    	FROM
+    	subespecialidad s LEFT JOIN
+    	consultorio c ON (c.idsubespecialidad = s.id)
+    	WHERE
+    	c.habilitado=1 AND
+    	c.idtipo_consultorio=2 AND
+    	s.habilitado=1 AND
+    	s.idespecialidad=$idEspecialidad
+    	GROUP BY
+    	s.id;";
+    
+    	try
+    	{
+    		$this->dbTurnos->conectar();
+    		$this->dbTurnos->ejecutarQuery($query);
+    	}
+    	catch (Exception $e)
+    	{
+    		$this->dbTurnos->desconectar();
+    		throw new Exception("Error consultando las especialidades con consultorios de guardia", 1);
+    	}
+    
+    	$subespecialidades = array();
+    
+    	for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+    	{
+    		$result = $this->dbTurnos->fetchRow($query);
+    		$Subespecialidad = new Subespecialidad();
+    		$Subespecialidad->setId($result['id']);
+    		$Subespecialidad->setDetalle($result['detalle']);
+    		$subespecialidades[] = $Subespecialidad;
+    	}
+    
+    	$this->dbTurnos->desconectar();
+    
+    	return $subespecialidades;
     }
 }

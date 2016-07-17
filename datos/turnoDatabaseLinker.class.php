@@ -111,7 +111,7 @@ class TurnoDatabaseLinker
         return true;
     }
 
-    function getTurnosConfirmados2($idsubespecialidad)
+    function getTurnosConfirmadosDemanda($idsubespecialidad)
     {
         $this->dbTurnos->conectar();
 
@@ -131,7 +131,8 @@ class TurnoDatabaseLinker
                     tipo_documento  td ON(t.tipodoc=td.id)
                 WHERE 
                     t.idestado_turno = 2 AND
-                    c.idsubespecialidad = $idsubespecialidad
+                    c.idsubespecialidad = $idsubespecialidad AND
+                    c.idtipo_consultorio = 1
                 ORDER BY t.fecha_creacion ASC;";
 
         $this->dbTurnos->ejecutarQuery($query);
@@ -155,7 +156,54 @@ class TurnoDatabaseLinker
 
         return $ret;
     }
-
+	
+    function getTurnosConfirmadosConsultorio($idsubespecialidad, $idprofesional)
+    {
+    	$this->dbTurnos->conectar();
+    
+    	$query="SELECT
+			    	t.id,
+			    	td.detalle_corto as tipodoc,
+			    	t.nrodoc,
+			    	p.nombre,
+			    	p.apellido,
+			    	ct.detalle,
+			    	t.fecha_creacion
+		    	FROM
+			    	turno t LEFT JOIN
+			    	paciente p ON(t.tipodoc=p.tipodoc AND t.nrodoc=p.nrodoc) LEFT JOIN
+			    	consultorio c ON(t.idconsultorio=c.id) LEFT JOIN
+			    	tipo_consultorio ct ON(c.idtipo_consultorio=ct.id) LEFT JOIN
+			    	tipo_documento  td ON(t.tipodoc=td.id)
+		    	WHERE
+			    	t.idestado_turno = 2 AND
+			    	c.idsubespecialidad = $idsubespecialidad AND
+			    	c.idtipo_consultorio = 2 AND
+                    c.idprofesional = $idprofesional
+			    	ORDER BY t.fecha_creacion ASC;";
+    
+    	$this->dbTurnos->ejecutarQuery($query);
+    
+    	$ret = array();
+    
+    	for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+    	{
+    		$turno = array();
+    
+    		$result = $this->dbTurnos->fetchRow($query);
+    
+    		$turno['id'] = $result['id'];
+    		$turno['tipodoc'] = $result['tipodoc'];
+    		$turno['nrodoc'] = $result['nrodoc'];
+    		$turno['nombre'] = $result['nombre']." ".$result['apellido'];
+    		$turno['tipo_turno'] = $result['detalle'];
+    		$turno['fecha'] = Utils::sqlDateTimeToHtmlDateTime($result['fecha_creacion']);
+    		$ret[] = $turno;
+    	}
+    
+    	return $ret;
+    }
+    
     function getTurnosConfirmados($page, $rows, $filters)
     {
 
