@@ -1,8 +1,8 @@
 <?php
 
-define("HOSTLocal", '192.168.253.102');
+define("HOSTLocal", 'localhost');
 define("DB", 'turnos');
-define("USRDBAdmin", 'sissalud');
-define("PASSDBAdmin", 's20s05');
+define("USRDBAdmin", 'sisturnos');
+define("PASSDBAdmin", 'turn3r0');
 
 ?>
