@@ -15,6 +15,8 @@ function vaciarSubespecialidades()
     $('#especialidadAcept').html('');
     $('#subespecialidadAcept').html('');
     $('#profesionalAcept').html('');
+    $('#fechaAcept').html('');
+    $('#horaAcept').html('');
 }
 
 function vaciarProfesionales()
@@ -23,6 +25,8 @@ function vaciarProfesionales()
     $('#especialidadAcept').html('');
     $('#subespecialidadAcept').html('');
     $('#profesionalAcept').html('');
+    $('#fechaAcept').html('');
+    $('#horaAcept').html('');
 } 
 
 function ingresandoEsp()
@@ -136,7 +140,6 @@ function resetearVariables()
     $("#nrodoc").val('');
     $("#fichaPaciente").html('');
     setearValoresChequeo('', '', '', '', '', '', '');
-    setearValoresDialogos('', '', '', '', '', '', '');
 }
 
 function cargarFechas(subesp, prof)
@@ -213,15 +216,15 @@ $(document).ready(function(){
         var nrodoc = $("#nrodoc").val();
         var subesp = $("#subespecialidad").val();
         var prof = $("#profesional").val();
-        var fech = $("#fechaSeleccionada").val();
-        var hor = $("#horarioRadio:checked").val();
+        var fech = $('#fechaAcept').html();
+        var hor = $('#horaAcept').html();
         var usuario = $("#idusuario").val();
 
         if(pacienteValido)
         {
             if(subesp!=null)
             {
-                if(prof!=null && fech!=null && hor!=null)
+                if(prof!=null && fech!='' && hor!='')
                 {
                     $.ajax({
                         type:'post',
