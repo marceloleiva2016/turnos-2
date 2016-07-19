@@ -606,11 +606,50 @@ class ConsultorioDatabaseLinker
         return $fechas;
     }
 
+    function getTurnosAsignadosEnFecha($idConsultorio, $fecha)
+    {
+        $query="SELECT
+                    t.hora,
+                    concat(p.nombre,' ',p.apellido) as paciente
+                FROM
+                    turno t LEFT JOIN
+                    paciente p ON (t.tipodoc = p.tipodoc AND t.nrodoc = p.nrodoc)
+                WHERE
+                    t.idconsultorio=$idConsultorio AND
+                    t.fecha='".$fecha."' AND
+                    t.idestado_turno=1;";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar la consulta", 201230);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $ret[$result['hora']] = $result['paciente'];
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
     function getHorariosEnFechaConsultorio($idsubespecialidad, $idprofesional, $fecha, $iddia)
     {
         $consultorio = $this->getConsultorioPorDatos($idsubespecialidad, $idprofesional);
 
         $horariosGen = $this->getHorariosEnDiaEnConsultorio($consultorio['id'], $iddia);
+
+        $turnosYaAsignados = $this->getTurnosAsignadosEnFecha($consultorio['id'],$fecha);
 
         $minutoAnadir = $consultorio['duracion_turno'];
 
@@ -623,8 +662,16 @@ class ConsultorioDatabaseLinker
             $hasta = date('H:i:s', Utils::sqlTimeToPHPTimestamp($horariosGen[$i]['hasta']));
 
             while(strtotime($desde)<strtotime($hasta)) {
+                $tupla = array();
+                $tupla['hora'] = $desde;
 
-                $horarios[]['hora'] = $desde;
+                if(array_key_exists($desde, $turnosYaAsignados)) {
+                    $tupla['paciente']  = $turnosYaAsignados[$desde];
+                } else {
+                    $tupla['paciente']  = null; 
+                }
+
+                $horarios[] = $tupla;
 
                 $desde = date('H:i:s', strtotime('+'.$minutoAnadir.' minutes', strtotime($desde)));
             }

@@ -38,7 +38,16 @@ if(!$error)
     <br>
     <?php
 
-    for ($i=0; $i < count($horarios); $i++) { 
-        echo "<input type='radio' id='horarioRadio' name='horarioRadio' value='".$horarios[$i]['hora']."' >".$horarios[$i]['hora']."<br>";
+    $horaActual = date('H:i:s');
+
+    for ($i=0; $i < count($horarios); $i++) {
+
+        $text = "";
+        if($horarios[$i]['paciente']!=null) {
+            $text .= "<span class='icon icon-confirm'> </span>".$horarios[$i]['hora']." ".$horarios[$i]['paciente']."<br>";
+        } else {
+            $text .= "<span class='icon icon-next'> </span>".$horarios[$i]['hora']."<input type='radio' id='horarioRadio' name='horarioRadio' value='".$horarios[$i]['hora']."' /><br>";
+        }
+        echo $text;
     }
 }
