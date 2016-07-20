@@ -100,6 +100,6 @@ $permisos = $obj->traerPermisos($entidad);
 
 	<input type="hidden" name="entidad" value='<?php echo $entidad ?>' >
 
-	<input class="button" type="submit" id="guardarUser" value="Guardar" >
+	<input class='button-secondary' type="submit" id="guardarUser" value="Guardar" >
 
 </form>

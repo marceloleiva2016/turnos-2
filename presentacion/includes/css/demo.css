@@ -165,3 +165,21 @@ p {
 .contenedor{
 	
 }
+
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    background: #17294b; /* this is a light blue */
+    height: 40px;
+ }
+
+.topright {
+    position: absolute;
+    top: 45px;
+    right: 16px;
+    font-size: 18px;
+}
+
+a .icon {
+   color: #17294b; 
+}

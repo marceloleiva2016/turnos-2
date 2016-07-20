@@ -2,7 +2,7 @@
 $entidad = $_POST['entidad'];
 ?>
 <header class="codrops-header">
-	<h1>Ver usuarios</h1>
+	<h2 align="center" >Ver usuarios</h2>
 </header>
 <div id="dialogVerUsuarios">
 	<div align="center">
@@ -110,7 +110,7 @@ $entidad = $_POST['entidad'];
 </script>
 
 <div align="center">
-    <button id="editarPermisos">Editar permisos</button>
+    <button class='button-secondary' id="editarPermisos">Editar permisos</button>
 </div>
 
-<div id="dialogEditarPermisosUsuario" style="visibility: hidden;">
+<div id="dialogEditarPermisosUsuario"  style="visibility: hidden;">

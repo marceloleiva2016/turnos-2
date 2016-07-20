@@ -7,8 +7,8 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 $entidad = $_POST['entidad'];
 ?>
-<header class="codrops-header">
-	<h1>Mi Cuenta</h1>
+<header>
+	<h2 align="center" >Mi Cuenta</h2>
 </header>
 
 <div align="center">
@@ -25,7 +25,7 @@ $entidad = $_POST['entidad'];
                         <input type="text" value="<?=$data->getNombre();?>" name="nombre" />
                     </p>
 
-                    <button id="btnCambiarNombre">Cambiar nombre</button>
+                    <button class='button-secondary' id="btnCambiarNombre">Cambiar nombre</button>
                 </form>
                 
                 <form id="contrasenaForm">
@@ -45,7 +45,7 @@ $entidad = $_POST['entidad'];
                     </p>
                         <input type="hidden" value="<?=$entidad?>" name="entidad" />
 
-                    <button id="btnCambiarContrasena">Cambiar contrase&ntilde;a</button>
+                    <button class='button-secondary' id="btnCambiarContrasena">Cambiar contrase&ntilde;a</button>
                 </form>
             </td>
         </tr>

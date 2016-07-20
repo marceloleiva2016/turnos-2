@@ -43,6 +43,6 @@
 
   <input type="hidden" name="entidad" value=<?php echo $entidad; ?> >
 
-	<input class="button" type="submit" id="eliminarUser" value="Destruir" >
+	<input class='button-secondary' type="submit" id="eliminarUser" value="Destruir" >
 
 </form>

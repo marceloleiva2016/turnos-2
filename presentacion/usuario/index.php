@@ -19,7 +19,7 @@ if(!isset($_SESSION['usuario']))
 <html>
     <head>
         <title>Usuario</title>
-        
+        <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/demo.css" >
         <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
         <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
 
@@ -51,29 +51,21 @@ if(!isset($_SESSION['usuario']))
         </div>
         <!-- /barra -->
         <div class="container">
-            <div id="dialogAgregarUsuario" style="visibility:hidden;"> </div>
-            <div id="dialogEliminarUsuario" style="visibility:hidden;"> </div>
-            <div id="dialogForm" style="visibility:hidden;"> </div>
-
             <table align="center">
                 <tr>
                     <td>
-                        <div id="logo">
-                            <h1>Usuarios</h1>
-                        </div>
+                        <h2>Usuarios</h2>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="content">
-                            <ul class="bmenu">
+                        <div class="content" align="center">
                             <?php
-                            if ($data->tienePermiso('CREAR_USUARIO')){ echo " <li><a id='btnAgregarUsuario' >Nuevo usuario</a></li>";}
-                            if ($data->tienePermiso('ELIMINAR_USUARIO')){ echo "<li><a id='btnEliminarUsuario' >Baja de usuario</a></li>";}
-                            if ($data->tienePermiso('VER_USUARIOS')){ echo "<li><a id='btnVerUsuarios' >Ver usuarios</a></li>";}
-                            echo "<li><a id='btnVerMiUsuario' >Mi Usuario</a></li>";
+                            if ($data->tienePermiso('CREAR_USUARIO')){ echo "<input id='btnAgregarUsuario' class='button-secondary'  type='button' value='Nuevo usuario' /><br>";}
+                            if ($data->tienePermiso('ELIMINAR_USUARIO')){ echo "<input id='btnEliminarUsuario' class='button-secondary'  type='button' value='Baja de usuario' /><br>";}
+                            if ($data->tienePermiso('VER_USUARIOS')){ echo "<input id='btnVerUsuarios' class='button-secondary'  type='button' value='Ver usuarios' /><br>";}
+                            echo "<input id='btnVerMiUsuario' class='button-secondary'  type='button' value='Mi Usuario' /><br>";
                             ?>
-                            </ul>
                         </div>
                     </td>
                 </tr>
@@ -82,5 +74,8 @@ if(!isset($_SESSION['usuario']))
 
             </div>
             <input type="hidden" id='entidad' value="<?php echo $entidad; ?>" >
+            <div id="dialogAgregarUsuario" style="visibility:hidden;"> </div>
+            <div id="dialogEliminarUsuario" style="visibility:hidden;"> </div>
+            <div id="dialogForm" style="visibility:hidden;"> </div>
     </body>
 </html>
