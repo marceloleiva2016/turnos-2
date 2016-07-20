@@ -33,8 +33,8 @@ if(!isset($_REQUEST['profesional']) or $_REQUEST['profesional']=="") {
     $ret->message = "Por favor, ingrese hasta que Fecha"; 
     $ret->result = false;
 } 
-if($ret->result) {+
-    $dbProf = new ProfesionoalDatabaseLinker();
+if($ret->result) {
+    $dbProf = new ProfesionalDatabaseLinker();
 
     $profesional = $dbProf->getProfesional($_POST['profesional']);
 

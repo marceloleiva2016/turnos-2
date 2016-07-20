@@ -62,7 +62,7 @@ $especialidadesRows = $ListaEspecialidades->data;
       <span style="font-size: 2em;" class="icon icon-about"></span>
     </div>
     <div id="navegar">
-        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Consultorios</a>&nbsp;&gt;&nbsp;<a href="#">Nuevo</a>
+        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="index.php">Consultorios</a>&nbsp;&gt;&nbsp;<a href="#">Nuevo</a>
     </div>
     <!-- /navegar-->
     <!-- usuario -->
@@ -126,12 +126,13 @@ $especialidadesRows = $ListaEspecialidades->data;
         <fieldset>
           <legend>Dias Anticipacion</legend>
           <select name="dias_anticipacion" id="dias_anticipacion">
-            <option value="30">30</option>
-            <option value="60">60</option>
-            <option value="90">90</option>
-            <option value="120">120</option>
-            <option value="150">150</option>
-            <option value="180">180</option>
+            <option value="2">2 Dias</option>
+            <option value="30">30 Dias</option>
+            <option value="60">60 Dias</option>
+            <option value="90">90 Dias</option>
+            <option value="120">120 Dias</option>
+            <option value="150">150 Dias</option>
+            <option value="180">180 Dias</option>
           </select>
         </fieldset>
 

@@ -81,10 +81,12 @@ if(!isset($_SESSION['usuario']))
 
             $guardar = $consulDb->setConsultorio($data->getId(), $idtipo_consultorio, $subespecialidad, $profesional, $dias_anticipacion, $duracion_turno, $feriados, $fecha_ini, $fecha_fin);
             
-            if(!$guardar) {
+            if($guardar==false) {
                 $ret->result = false;
                 $ret->message = "Ocurrio un error al guardar el consultorio";
-            }    
+            } else {
+                $ret->id = $guardar;
+            }
         } else {
             $ret->result = false;
             $ret->message = "El consultorio ya existe";

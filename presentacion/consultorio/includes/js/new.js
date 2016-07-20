@@ -52,45 +52,28 @@ function seleccionadoTipoConsul(combo)
 
 }
 
-function loadHorarios()
-{
-    $("#horarios").load("includes/forms/formTablaHorarios.php");
-}
-
-function validar()
-{
-    //TODO: Falta validar todos los campos
-    return true;
-}
-
 $(document).ready(function() {
-
-    loadHorarios();
 
     document.getElementById('divTipoConsultorio').style.display = 'none';
 
     $("#guardarConsultorio").click(function(event) {
         event.preventDefault();
-        formOk = validar();
-        if(formOk) {
-            $.ajax({
-                data: $("#consultorioForm").serialize(),
-                type: "POST",
-                dataType: "json",
-                url: "includes/ajaxFunctions/guardarConsultorio.php",
-                success: function(data) {
-                    if(data.result) {
-                        $('#consultorioForm').get(0).reset();
-                        if(data.show) {
-                            alert(data.message);
-                        }
-                        //relodeo la tabla
-                    } else {
-                        alert(data.message);
-                    }
+        $.ajax({
+            data: $("#consultorioForm").serialize(),
+            type: "POST",
+            dataType: "json",
+            url: "includes/ajaxFunctions/guardarConsultorio.php",
+            success: function(data) {
+                if(data.result) {
+                    $('#consultorioForm').get(0).reset();
+                    alert(data.message);
+                    window.location = "edit.php?id="+data.id;
+                    //relodeo la tabla
+                } else {
+                    alert(data.message);
                 }
-            });
-        }
+            }
+        });
     });
 
     $( "#comienzo" ).datepicker({

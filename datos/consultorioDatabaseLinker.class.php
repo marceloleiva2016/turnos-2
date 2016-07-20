@@ -63,7 +63,7 @@ class ConsultorioDatabaseLinker
                     ".Utils::phpIntToSQL($profesional).",
                     ".Utils::phpIntToSQL($dias_anticipacion).",
                     ".Utils::phpIntToSQL($duracion_turno).",
-                    $feriados, 
+                    ".$feriados.", 
                     '".$fecha_inicio."',
                     '".$fecha_fin."',
                     now(),
@@ -82,7 +82,11 @@ class ConsultorioDatabaseLinker
             return false;
         }
 
-        return true;
+        $id = $this->dbTurnos->ultimoIdInsertado();
+
+        $this->dbTurnos->desconectar();
+
+        return $id;
     }
 
     function getTiposConsultorios()

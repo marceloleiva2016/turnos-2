@@ -134,6 +134,10 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
       <div id="horarios">
       </div>
     </div>
+
+    
+    <input class="button-secondary"  type="button" onclick=" location.href='new.php' " value="NUEVO CONSULTORIO" name="nuevo" />
+
     <div id="dialogBaja" style="display: none;">Esta seguro que desea efectuar la baja del consultorio actual?</div>
     <div id="dialogBajaHorario" style="display: none;"></div>
 </body>
