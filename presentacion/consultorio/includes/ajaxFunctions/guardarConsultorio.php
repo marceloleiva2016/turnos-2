@@ -55,6 +55,7 @@ if(!isset($_SESSION['usuario']))
         $subespecialidad = $_REQUEST['subespecialidad'];
         $profesional = $_REQUEST['profesional'];
         $fecha_inicio = $_REQUEST['comienzo'];
+        $fecha_fi = $_REQUEST['finalizacion'];
 
         if($idtipo_consultorio=='2') {
             $dias_anticipacion = $_REQUEST['dias_anticipacion'];
@@ -66,10 +67,10 @@ if(!isset($_SESSION['usuario']))
             $duracion_turno = null;
         }
 
-        if(!isset($_REQUEST['finalizacion']) or $_REQUEST['finalizacion']=="" OR $_REQUEST['finalizacion']==null) {
-            $fecha_fin = "0000-00-00";
+        if(!isset($_REQUEST['finalizacion']) or $_REQUEST['finalizacion']=='' OR $_REQUEST['finalizacion']==null) {
+            $fecha_fin = 'NULL';
         } else {
-            $fecha_fin = Utils::postDateToSqlDate($fecha_fi);
+            $fecha_fin = "'".Utils::postDateToSqlDate($fecha_fi)."'";
         }
 
         $fecha_ini = Utils::postDateToSqlDate($fecha_inicio);

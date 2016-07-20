@@ -65,11 +65,12 @@ class ConsultorioDatabaseLinker
                     ".Utils::phpIntToSQL($duracion_turno).",
                     ".$feriados.", 
                     '".$fecha_inicio."',
-                    '".$fecha_fin."',
+                    ".$fecha_fin.",
                     now(),
-                    '".$usuario."',
-                    '1'
+                    ".Utils::phpIntToSQL($usuario).",
+                    true
                     );";
+        
 
         try
         {
@@ -78,6 +79,7 @@ class ConsultorioDatabaseLinker
         }
         catch (Exception $e)
         {
+            echo $e;
             $this->dbTurnos->desconectar();
             return false;
         }

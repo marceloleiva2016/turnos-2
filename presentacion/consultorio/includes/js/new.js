@@ -68,7 +68,6 @@ $(document).ready(function() {
                     $('#consultorioForm').get(0).reset();
                     alert(data.message);
                     window.location = "edit.php?id="+data.id;
-                    //relodeo la tabla
                 } else {
                     alert(data.message);
                 }
