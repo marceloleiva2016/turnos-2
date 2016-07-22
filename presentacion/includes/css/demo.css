@@ -52,7 +52,7 @@ select {
     background: none repeat scroll 0 0 #f6f6f6;
     border: 1px solid #c5c5c5;
     position: relative;
-	border-bottom-right-radius: 30px;
+	border-bottom-right-radius: 10px;
 }
 .glyph {
 	font-size: 16px;

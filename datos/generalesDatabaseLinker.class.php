@@ -11,6 +11,35 @@ class GeneralesDatabaseLinker
         $this->dbTurnos = new dataBaseConnector(HOSTLocal,0,DB,USRDBAdmin,PASSDBAdmin);
     }
 
+    function getDescripcionTipoDocumento($id)
+    {
+        $query="SELECT 
+                    id,
+                    detalle_corto,
+                    detalle
+                FROM    
+                    tipo_documento
+                WHERE
+                    id = $id;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos o hacer la consulta", 17052013);
+        }
+        
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
     function getTiposDocumentos()
     {
         $query="SELECT 
@@ -39,78 +68,6 @@ class GeneralesDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return $ret;
-    }
-
-    function getProvincias()
-    {
-        $query="SELECT id, provincia_nombre FROM provincia;";
-
-        try
-        {
-            $this->dbTurnos->conectar();
-            $this->dbTurnos->ejecutarQuery($query);
-        }
-        catch (Exception $e)
-        {
-            $this->dbTurnos->desconectar();
-            throw new Exception("Error al conectar con la base de datos o hacer la consulta", 17052013);
-        }
-        $ret = array();
-
-        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
-        {
-            $ret[] = $this->dbTurnos->fetchRow($query);
-        }
-
-        $this->dbTurnos->desconectar();
-
-        return $ret;
-    }
-
-    function getCiudades($cp)
-    {
-        $query="SELECT id as idc, ciudad_nombre FROM ciudad WHERE cp=$cp;";
-
-        try
-        {
-            $this->dbTurnos->conectar();
-            $this->dbTurnos->ejecutarQuery($query);
-        }
-        catch (Exception $e)
-        {
-            $this->dbTurnos->desconectar();
-            return false;
-        }
-        $ret = array();
-
-        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
-        {
-            $ret[] = $this->dbTurnos->fetchRow($query);
-        }
-
-        $this->dbTurnos->desconectar();
-
-        return $ret;
-    }
-
-    function getCiudades_json($cp)
-    {
-        $std = new stdClass();
-
-        $cpds = $this->getCiudades($cp);
-
-        $std->ret=false;
-
-        $std->datos= "";
-
-        if($cpds!=false)
-        {
-            $std->ret = true;
-
-            $std->datos = $cpds;
-        }
-
-        return $std;
     }
 
     function calcularEdad($fecha_nac)
@@ -198,6 +155,136 @@ class GeneralesDatabaseLinker
         {
             $this->dbTurnos->desconectar();
             return false;
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getPaises()
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    pais
+                ORDER BY descripcion ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar los paises", 17052013);
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getProvincias($idpais)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    provincia
+                WHERE
+                    idresapro_pais=$idpais;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar las provincias", 17052013);
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getPartidos($idpais, $idprovincia)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    partido
+                WHERE
+                    idresapro_pais = $idpais AND
+                    idresapro_provincia = $idprovincia;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar los partidos", 17052013);
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function getLocalidades($idpais, $idprovincia, $idpartido)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    localidad
+                WHERE
+                    idresapro_pais = $idpais AND
+                    idresapro_provincia = $idprovincia AND
+                    idresapro_partido=$idpartido;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar las localidades", 17052013);
         }
         $ret = array();
 

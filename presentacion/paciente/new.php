@@ -22,7 +22,7 @@ $gen = new GeneralesDatabaseLinker();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Paciente</title>
+  <title>Crear Paciente</title>
 	<link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
@@ -30,30 +30,30 @@ $gen = new GeneralesDatabaseLinker();
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
   <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
-  
+  <script type="text/javascript" src="includes/js/new.js" ></script>
 </head>
 <body>
 <!-- barra -->
   <div id="barra" >
-      <!-- navegar -->
-      <div id="barraImage" >
-          <span style="font-size: 2em;" class="icon icon-about"></span>
-      </div>
-      <div id="navegar">
-          &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Paciente</a>
-      </div>
-      <!-- /navegar-->
-      <!-- usuario -->
-      <div id="usuario">
-          <a href="../usuario/"><span class="icon icon-boy"> </span>Usuario | <?=$data->getNombre()?></a>
-      </div>
-      <!-- /usuario-->
+    <!-- navegar -->
+    <div id="barraImage" >
+        <span style="font-size: 2em;" class="icon icon-about"></span>
+    </div>
+    <div id="navegar">
+        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Nuevo Paciente</a>
+    </div>
+    <!-- /navegar-->
+    <!-- usuario -->
+    <div id="usuario">
+        <a href="../usuario/"><span class="icon icon-boy"> </span>Usuario | <?=$data->getNombre()?></a>
+    </div>
+    <!-- /usuario-->
   </div>
     <!-- /barra -->
     <div id="container">
       <form id="formPaciente">
         <div align="center">
-          <h3>Paciente</h3>
+          <h3>Nuevo Paciente</h3>
         </div>
         <div id="accordionPaciente">
           <h3>Datos Personales</h3>
@@ -76,29 +76,31 @@ $gen = new GeneralesDatabaseLinker();
               <input type="text" name="fecha_nac" id="fecha_nac" placeholder="Fecha Nacimiento" onchange="calcularEdad();"/>
               <input type="number" name="edad" id="edad" placeholder="Edad" /><br><br>
               <select id="donante" name="donante">
-                <option value="">Es Donante</option>
+                <option value="">Es Donante?</option>
+                <option value="0">NO</option>
                 <option value="1">SI</option>
-                <option value="2">NO</option>
-                <option value="3">NO SABE</option>
+                <option value="2">NO SABE</option>
               </select>
             </div>
           <h3>Datos de Ubicacion</h3>
             <div align="center">
-
-              <select id="pais" name="pais">
+              <select id="pais" name="pais" onchange="ingresandoPais();">
                 <option value="">Pais</option>
+                <?php
+                  $paises = $gen->getPaises();
+                  for ($i=0; $i < count($paises); $i++) { 
+                    echo "<option value=".$paises[$i]['id'].">".$paises[$i]['descripcion']."</option>";
+                  }
+                ?>
               </select>
-              <select id="provincia" name="provincia">
-                <option value="">Provincia</option>
+              <select id="provincia" name="provincia" onchange="ingresandoProvincia();">
               </select>
-              <select id="partido" name="partido">
-                <option value="">Partido</option>
+              <select id="partido" name="partido" onchange="ingresandoPartido();">
               </select>
               <select id="localidad" name="localidad">
-                <option value="">Localidad</option>
               </select><br><br>
 
-              <input type="number" name="cp" id="cp" placeholder="Codigo Postal" onchange="ingresandoCP();" />
+              <input type="number" name="cp" id="cp" placeholder="Codigo Postal" />
 
               <input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle"/>
 
@@ -125,14 +127,12 @@ $gen = new GeneralesDatabaseLinker();
 
         </div>
         <div align="center">
-          <button id="guardar" style="height:50px; width:200px;">Guardar</button>
+          <button id="guardar" style="height:50px; width:200px;">Crear Paciente</button>
         </div>
 
       </form>
 
     </div>
-
-  <script type="text/javascript" src="includes/js/paciente.js" ></script>
 
 </body>
 

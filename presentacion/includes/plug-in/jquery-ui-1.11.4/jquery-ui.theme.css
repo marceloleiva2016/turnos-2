@@ -391,7 +391,7 @@
 .ui-corner-bottom,
 .ui-corner-right,
 .ui-corner-br {
-	border-bottom-right-radius: 20px;
+	border-bottom-right-radius: 10px;
 }
 
 /* Overlays */

@@ -8,13 +8,10 @@ include_once 'utils.php';
 class PacienteDatabaseLinker
 {
     var $dbTurnos;
-    var $dbGenerales;
 
     function PacienteDatabaseLinker()
     {
         $this->dbTurnos = new dataBaseConnector(HOSTLocal,0,DB,USRDBAdmin,PASSDBAdmin);
-
-        $this->dbGenerales = new generalesDatabaseLinker();
     }
 
     function crearPaciente($arrayPaciente)
@@ -185,11 +182,21 @@ class PacienteDatabaseLinker
         $paciente->setApellido($result['apellido']);
         $paciente->setSexo($result['sexo']);
         $paciente->setFechaNacimiento($result['fecha_nacimiento']);
+        $paciente->setEdadActual(Utils::calcularEdad($result['fecha_nacimiento']));
+        $paciente->setEdadIngreso($result['edad_ingreso']);
+        $paciente->setPais($result['idpais']);
+        $paciente->setProvincia($result['idprovincia']);
+        $paciente->setPartido($result['idpartido']);
+        $paciente->setLocalidad($result['idlocalidad']);
+        $paciente->setCP($result['codigo_postal']);
         $paciente->setCalleNombre($result['calle_nombre']);
-        $paciente->setCalleNumero($result['calle_numero']); 
+        $paciente->setCalleNumero($result['calle_numero']);
+        $paciente->setPiso($result['piso']);
+        $paciente->setDepartamento($result['departamento']);
         $paciente->setTelefono($result['telefono']);
         $paciente->setTelefono2($result['telefono2']);
-        $paciente->setEdadActual($this->dbGenerales->calcularEdad($result['fecha_nacimiento']));
+        $paciente->setEsDonante($result['es_donante']);
+        $paciente->setEmail($result['email']);
 
         $this->dbTurnos->desconectar();
 

@@ -11,6 +11,12 @@ $(document).ready(function() {
         document.getElementById('cargarHorarios').style.display = 'block';
     }
 
+    if(activo==0) {
+        document.getElementById('baja').style.display = 'none';
+        document.getElementById('horariosForm').style.display = 'none';
+    }
+
+
     $("#baja").click(function(event) {
         event.preventDefault(event);
         $("#dialog:ui-dialog").dialog("destroy");
@@ -22,16 +28,15 @@ $(document).ready(function() {
             buttons: {
                 "Aceptar": function(){
                     $.ajax({
-                        data: id,
+                        data: "id="+id,
                         type: "POST",
                         dataType: "json",
                         url: "includes/ajaxFunctions/bajaConsultorio.php",
                         success: function(data) {
                             if(data.result) {
-                                if(data.show) {
-                                    alert(data.message);
-                                }
-                                //relodeo la tabla
+                                alert(data.message);
+                                document.getElementById('baja').style.display = 'none';
+                                document.getElementById('horariosForm').style.display = 'none';
                             } else {
                                 alert(data.message);
                             }

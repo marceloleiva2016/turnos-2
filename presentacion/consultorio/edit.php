@@ -45,6 +45,7 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
   <script type="text/javascript">
     var id=<?php echo $id; ?>;
     var tipo_consultorio=<?php echo $consultorio['idtipo_consultorio']; ?>;
+    var activo=<?php echo $consultorio['habilitado']; ?>;
   </script>
   <script type="text/javascript" src="includes/js/edit.js" ></script>
 </head>

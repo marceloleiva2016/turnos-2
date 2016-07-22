@@ -99,11 +99,6 @@ class Paciente
         $this->cp = $cp;
     }
 
-    function setResidencia($residencia)
-    {
-        $this->residencia = $residencia;
-    }
-
     function setCalleNombre($calleNombre)
     {
         $this->calle_nombre = $calleNombre;
@@ -112,6 +107,16 @@ class Paciente
     function setCalleNumero($calleNumero)
     {
         $this->calle_numero = $calleNumero;
+    }
+
+    function setPiso($piso)
+    {
+        $this->piso = $piso;
+    }
+
+    function setDepartamento($departamento)
+    {
+        $this->departamento = $departamento;
     }
 
     function setTelefono($telefono1)
@@ -124,6 +129,15 @@ class Paciente
         $this->telefono2 = $telefono2;
     }
 
+    function setEsDonante($donante)
+    {
+        $this->esDonante = $donante;
+    }
+
+    function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
 //geters
 
@@ -197,6 +211,26 @@ class Paciente
     function getCalleNumero()
     {
         return $this->calle_numero;
+    }
+
+    function getPiso()
+    {
+        return $this->piso;
+    }
+
+    function getDepartamento()
+    {
+        return $this->departamento;
+    }
+
+    function getDonante()
+    {
+        return $this->esDonante;
+    }
+
+    function getEmail()
+    {
+        return $this->email;
     }
 }
 ?>

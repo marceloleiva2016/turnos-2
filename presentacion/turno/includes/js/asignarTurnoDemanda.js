@@ -172,6 +172,7 @@ $(document).ready(function(){
             [{
                 text: "Imprimir",
                 click: function(){
+                    $('#dialog').jqprint();
                     $(this).dialog("close");
                 }
             },{

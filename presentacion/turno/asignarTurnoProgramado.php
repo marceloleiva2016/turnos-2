@@ -35,6 +35,7 @@ $gen = new GeneralesDatabaseLinker();
     <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
     <script type="text/javascript" src="includes/js/asignarTurnoProgramado.js" ></script>
+    <script type="text/javascript" src="../includes/plug-in/jqPrint/jquery.jqprint-0.3.js" ></script>
 </head>
 <body>
     <!-- barra -->
@@ -152,9 +153,9 @@ $gen = new GeneralesDatabaseLinker();
     </div>
     <div id="dialog" title="Estado Turno">
         <p><b>Turno Asignado</b></p><br>
-        <p>El turno se asigno correctamente.</p>
 
-        Los datos del turno son los siguientes:
+        Los datos del turno son los siguientes:<br>
+        Tipo Turno : PROGRAMADO<br>
         <p><b>Paciente: </b><a id="nombreDialog"></a></p>
         <p><b>Numero Documento: </b><a id="nrodocDialog"></a></p>
         <p><b>Especialidad: </b><a id="especialidadDialog"></a></p>

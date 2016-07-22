@@ -685,4 +685,26 @@ class ConsultorioDatabaseLinker
 
         return $horarios;
     }
+
+    function borrarConsultorio($idconsultorio)
+    {
+        $query="UPDATE
+                    consultorio
+                SET
+                    habilitado=false
+                WHERE
+                    id=$idconsultorio;";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+
+        return true;
+    }
 }   
