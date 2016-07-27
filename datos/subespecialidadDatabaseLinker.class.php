@@ -403,6 +403,8 @@ class SubespecialidadDatabaseLinker
 
     function eliminarSubespecialidad($data)
     {
+        $response = new stdClass();
+        
         $query = "UPDATE subespecialidad SET habilitado = 0 WHERE id = ".$data['id'].";";
 
          try

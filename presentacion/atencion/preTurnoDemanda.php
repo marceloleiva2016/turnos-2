@@ -53,7 +53,7 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosDeDemandaActivos();
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Atencion Medica</a>
+                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Atencion Medica Demanda</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->
@@ -70,7 +70,6 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosDeDemandaActivos();
                         <span style="font-size: 5em;" class="icon icon-edit"></span>
                     </div>
                     <h2>Especialidad</h2>
-                    <br>
                     <select id="especialidad" name="especialidad" onchange="seleccionadoEspecialidad(this);">
                         <option value="">Seleccione una especialidad</option>
                         <?php
@@ -78,17 +77,16 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosDeDemandaActivos();
                             echo "<option value=".$especialidades[$i]->getId().">".$especialidades[$i]->getDetalle()."</option>";
                         }
                         ?>
-                    </select>
-                    <br>
-                    <br>
+                    </select><br>
                     <h2>Subespecialidad</h2>
-                    <br>
                     <select id="subespecialidades" name="subespecialidades">
                         <option value=""></option>
                     </select>
                     <br>
                     <br>
-                    <input type="submit" name="enviar" id="enviar">
+                    <br>
+                    <br>
+                    <input type="submit" class='button-secondary' value="Consultar" name="enviar" id="enviar">
                 </form>
             </div>
         </div>

@@ -49,14 +49,14 @@ $(document).ready(function(){
         datatype: "json",
         colNames:['Nro','Nombre','Apellido','Mat Nacional','Mat Provincial','Email','Telefono','Usuario'],
         colModel:[ 
-            {name:'idprofesional', index:'pro.idprofesional',width:'30%',align:"left",fixed:true,editable:true},
-            {name:'nombre', index:'pro.nombre',width:'100%',align:"left",fixed:true,editable:true},
-            {name:'apellido', index:'pro.apellido',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'matricula_n', index:'pro.matricula_nacional',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'matricula_p', index:'pro.matricula_provincial',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'email', index:'pro.email',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'telefono', index:'pro.telefono',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'idusuario', index:'pro.idusuario',width:'100%',align:"left",fixed:true, editable:true}
+            {name:'idprofesional', index:'p.idprofesional',width:'30%',align:"left",fixed:true,editable:true},
+            {name:'nombre', index:'p.nombre',width:'100%',align:"left",fixed:true,editable:true},
+            {name:'apellido', index:'p.apellido',width:'100%',align:"left",fixed:true, editable:true},
+            {name:'matricula_n', index:'p.matricula_nacional',width:'100%',align:"left",fixed:true, editable:true},
+            {name:'matricula_p', index:'p.matricula_provincial',width:'100%',align:"left",fixed:true, editable:true},
+            {name:'email', index:'p.email',width:'100%',align:"left",fixed:true, editable:true},
+            {name:'telefono', index:'p.telefono',width:'100%',align:"left",fixed:true, editable:true},
+            {name:'idusuario', index:'p.idusuario',width:'100%',align:"left",fixed:true, editable:true}
         ],
         rowNum:true,
         viewrecords: true,
@@ -65,7 +65,7 @@ $(document).ready(function(){
         rowNum:20, 
         rowList:[10,20,30,50],
         pager: '#jqProffoot',
-        sortname: 'pro.idprofesional',
+        sortname: 'p.idprofesional',
         sortorder: "desc",
         width: '100%',
         height: '100%'

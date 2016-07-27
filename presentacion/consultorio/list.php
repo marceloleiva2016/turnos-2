@@ -60,7 +60,7 @@ $consultorios = $dbcons->getConsultorios($idespecialidad);
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="index.php">Fintro Consultorios</a>&nbsp;&gt;&nbsp;<a href="#">Listado Consultorios</a>
+                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="index.php">Filtro Consultorios</a>&nbsp;&gt;&nbsp;<a href="#">Listado Consultorios</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->
@@ -73,7 +73,7 @@ $consultorios = $dbcons->getConsultorios($idespecialidad);
         <div id="container">
             <div id="demo" class="listadoPacientes"  align="center">
                 <br><br>
-                <table align="center" border="1" id="listado">
+                <table align="center" border="1" id="listado" class="tabla">
                     <tr>
                         <th>Nro</th>
                         <th>Tipo Consultorio</th>
@@ -91,7 +91,7 @@ $consultorios = $dbcons->getConsultorios($idespecialidad);
                         }
                     ?>
                 </table>
-                <input class="button-secondary"  type="button" onclick=" location.href='new.php' " value="CREAR" name="crear" />
+                <input class="button-secondary"  type="button" onclick=" location.href='new.php' " value="NUEVO CONSULTORIO" name="crear" />
             </div>
         </div>
         <form method="post" id="formConsultorio" target="_blank" >

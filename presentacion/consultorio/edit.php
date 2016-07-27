@@ -57,7 +57,8 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
       <span style="font-size: 2em;" class="icon icon-about"></span>
     </div>
     <div id="navegar">
-        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Consultorios</a>
+        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="index.php">Consultorios</a>
+        &nbsp;&gt;&nbsp;<a href="#">Editar Consultorio</a>
     </div>
     <!-- /navegar-->
     <!-- usuario -->

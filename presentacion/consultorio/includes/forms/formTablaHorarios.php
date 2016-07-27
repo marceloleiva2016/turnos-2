@@ -44,7 +44,7 @@ $horarios = $consulDb->getHorarios($idConsultorio);
   }
 </script>
 
-<table align="center" border="1" id="listado">
+<table align="center" border="1" id="listado" class="tabla">
   <tr>
     <th>LUNES</th>
     <th>MARTES</th>

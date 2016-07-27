@@ -23,9 +23,8 @@ $data = unserialize($usuario);
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 		<title>Menu</title>
-		<meta name="description" content="Blueprint: Horizontal Slide Out Menu" />
 		<meta name="keywords" content="horizontal, slide out, menu, navigation, responsive, javascript, images, grid" />
-		<meta name="author" content="Codrops" />
+		<meta name="author" content="Juan Ferreyra" />
 		<link rel="shortcut icon" href="../favicon.ico">
 		<link rel="stylesheet" type="text/css" href="css/default.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
@@ -63,7 +62,7 @@ $data = unserialize($usuario);
 								<ul class="cbp-hssubmenu">
 									<li><a href="../turno/asignarTurnoProgramado.php"><span>Asignar Turno</span></a></li>
 									<li><a href="../turno/confirmarTurnoProgramado.php"><span>Confirmar Turno</span></a></li>
-									<li><a href="../atencion/preTurnoProgramado.php"><span>Listado de pacientes en espera</span></a></li>
+									<li><a href="../atencion/preTurnoProgramado.php"><span>Antencion Medica</span></a></li>
 								</ul>
 							</li>
 							<li>
@@ -79,12 +78,18 @@ $data = unserialize($usuario);
 								<a href="#">Administracion</a>
 								<ul class="cbp-hssubmenu cbp-hssub-rows">
 									<li><a href="../profesional/"><span>Profesional</span></a></li>
-									<li><a href="../paciente/new.php"><span>Paciente</span></a></li>
 									<li><a href="../especialidad/"><span>Especialidad</span></a></li>
 									<li><a href="../subespecialidad/"><span>Subespecialidad</span></a></li>
-									<!--<li><a href="#"><span>Usuarios</span></a></li>-->
 									<li><a href="../consultorio/"><span>Consultorios</span></a></li>
 									<li><a href="../feriados/"><span>Feriados / Vacaciones</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Paciente</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a href="../historial_clinico/"><span>Historia Clinica</span></a></li>
+									<li><a href="../paciente/new.php"><span>Nuevo Paciente</span></a></li>
+									<li><a href="../paciente/"><span>Modificar Datos Paciente</span></a></li>
 								</ul>
 							</li>
 						</ul>

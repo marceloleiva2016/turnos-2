@@ -19,22 +19,27 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 
-$tipodoc = 1;//$_REQUEST['tipodoc'];
-$nrodoc = 2548789;//$_REQUEST['nrodoc'];
+if(!isset($_REQUEST['tipodoc']) or !isset($_REQUEST['nrodoc'])) {
+  echo "<div align='center'>
+          <h3>Datos de Paciente Inexistentes</h3>
+        </div>";
+  die();
+} else {
+  $tipodoc = $_REQUEST['tipodoc'];
+  $nrodoc = $_REQUEST['nrodoc'];
+}
 
 $gen = new GeneralesDatabaseLinker();
 $pacDB = new PacienteDatabaseLinker();
 
 $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
 
-var_dump($paciente);
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Paciente</title>
-    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
+  <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
@@ -43,17 +48,63 @@ var_dump($paciente);
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
   <script type="text/javascript" src="includes/js/edit.js" ></script>
   <script type="text/javascript">
-    var pais = <?php  echo $paciente->idpais; ?>;
-    var provincia = <?php  echo $paciente->idprovincia; ?>;
-    var partido = <?php  echo $paciente->idpartido; ?>;
-    var localidad = <?php  echo $paciente->idlocalidad; ?>;
+    var pais = <?php  echo $paciente->getPais(); ?>;
+    var provincia = <?php  echo $paciente->getProvincia(); ?>;
+    var partido = <?php  echo $paciente->getPartido(); ?>;
+    var localidad = <?php  echo $paciente->getLocalidad(); ?>;
 
   $(document).ready(function() {
-    $('#pais option[value=<?php  echo $paciente->idpais; ?>]').prop('selected', 'selected').change();
-    $('#provincia option[value=<?php  echo $paciente->idprovincia; ?>]').prop('selected', 'selected').change();
-    $('#partido option[value=<?php  echo $paciente->idpartido; ?>]').prop('selected', 'selected').change();
-    $('#localidad option[value=<?php  echo $paciente->idlocalidad; ?>]').prop('selected', 'selected').change();
-  });
+
+    $('#donante option[value="<?php  echo $paciente->getDonante(); ?>"]').attr("selected", "selected");
+    $('#pais option[value="<?php  echo $paciente->getPais(); ?>"]').attr("selected", "selected");
+
+    //Cargo Provincias
+    $.ajax({
+        type:'post',
+        dataType:'json',
+        url:'includes/ajaxFunctions/jsonProvincias.php',
+        data:{idPais:pais},
+        success: function(json)
+        {
+            if(json.ret)
+            {
+                cargarOptions($('#provincia'),json.datos);
+                $('#provincia option[value="<?php  echo $paciente->getProvincia(); ?>"]').attr("selected", "selected");
+            }
+        }
+    });
+    //Cargo Partidos
+    $.ajax({
+        type:'post',
+        dataType:'json',
+        url:'includes/ajaxFunctions/jsonPartidos.php',
+        data:{idPais:pais, idProvincia:provincia},
+        success: function(json)
+        {
+            if(json.ret)
+            {
+                cargarOptions($('#partido'),json.datos);
+                $('#partido option[value="<?php  echo $paciente->getPartido(); ?>"]').attr("selected", "selected");
+            }
+        }
+    });
+    //Cargo Localidades
+    $.ajax({
+        type:'post',
+        dataType:'json',
+        url:'includes/ajaxFunctions/jsonLocalidades.php',
+        data:{idPais:pais, idProvincia:provincia, idPartido:partido},
+        success: function(json)
+        {
+            if(json.ret)
+            {
+                cargarOptions($('#localidad'),json.datos);
+                $('#localidad option[value="<?php  echo $paciente->getLocalidad(); ?>"]').attr("selected", "selected");
+            }
+        }
+    });
+
+});
   </script>
 </head>
 <body>
@@ -82,14 +133,16 @@ var_dump($paciente);
         <div id="accordionPaciente">
           <h3>Datos Personales</h3>
             <div align="center" style="display: block; height: auto !important;">
-              <label>Tipo y Numero Documento: </label><h2><?php echo $gen->getDescripcionTipoDocumento($paciente->tipodoc)['detalle_corto']."  ".$paciente->nrodoc;?></h2><br>
-              <label>Nombre y Apellido : </label><input type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?php echo $paciente->nombre; ?>" />
-              <input type="text" name="apellido" id="apellido" placeholder="Apellido" value="<?php echo $paciente->apellido; ?>"/><br><br>
+              <label>Tipo y Numero Documento: </label><h2><?php echo $gen->getDescripcionTipoDocumento($paciente->getTipoDoc())['detalle_corto']."  ".$paciente->getNrodoc();?></h2><br>
+              <input type="hidden" name="tipodoc" value="<?php echo $paciente->getTipoDoc(); ?>" />
+              <input type="hidden" name="nrodoc" value="<?php echo $paciente->getNrodoc(); ?>" />
+              <label>Nombre y Apellido : </label><input type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?php echo $paciente->getNombre(); ?>" />
+              <input type="text" name="apellido" id="apellido" placeholder="Apellido" value="<?php echo $paciente->getApellido(); ?>"/><br><br>
               <div id="radioset">
-                <input type="radio" id="generom" name="sexo" value="M" <?php if($paciente->sexo=='M'){ echo "checked='checked'"; } ?> ><label for="generom">Masculino</label>
-                <input type="radio" id="generof" name="sexo" value="F" <?php if($paciente->sexo=='F'){ echo "checked='checked'"; } ?> ><label for="generof">Femenino</label>
+                <input type="radio" id="generom" name="sexo" value="M" <?php if($paciente->getSexo()=='M'){ echo "checked='checked'"; } ?> ><label for="generom">Masculino</label>
+                <input type="radio" id="generof" name="sexo" value="F" <?php if($paciente->getSexo()=='F'){ echo "checked='checked'"; } ?> ><label for="generof">Femenino</label>
               </div><br>
-              <label>Fecha Nacimiento :</label><input type="text" name="fecha_nac" id="fecha_nac" placeholder="Fecha Nacimiento" value="<?php echo Utils::sqlDateToHtmlDate($paciente->fecha_nac); ?>" /><br><br>
+              <label>Fecha Nacimiento :</label><input type="text" name="fecha_nac" id="fecha_nac" placeholder="Fecha Nacimiento" value="<?php echo Utils::sqlDateToHtmlDate($paciente->getFechaNacimiento()); ?>" /><br><br>
               <select id="donante" name="donante">
                 <option value="">Es Donante?</option>
                 <option value="0">NO</option>
@@ -115,26 +168,26 @@ var_dump($paciente);
               <select id="localidad" name="localidad">
               </select><br><br>
 
-              <input type="number" name="cp" id="cp" placeholder="Codigo Postal" />
+              <label>Codigo Postal :</label><input type="number" name="cp" id="cp" placeholder="Codigo Postal" value="<?php echo $paciente->getCP(); ?>"/>
 
-              <input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle"/>
+              <label>Nombre Calle :</label><input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle" value="<?php echo $paciente->getCalleNombre(); ?>"/>
 
-              <input type="number" name="calle_numero" id="calle_numero" placeholder="Numero" /><br><br>
+              <label>Nro Calle :</label><input type="number" name="calle_numero" id="calle_numero" placeholder="Numero" value="<?php echo $paciente->getCalleNumero(); ?>"/><br><br>
 
-              <input type="text" name="piso" id="piso" placeholder="Piso" />
+              <label>Piso :</label><input type="text" name="piso" id="piso" placeholder="Piso" value="<?php echo $paciente->getPiso(); ?>"/>
 
-              <input type="text" name="departamento" id="departamento" placeholder="Departamento"/><br><br>
+              <label>Departamento :</label><input type="text" name="departamento" id="departamento" placeholder="Departamento" value="<?php echo $paciente->getDepartamento(); ?>"/><br><br>
 
             </div>
 
           <h3>Datos de Contacto</h3>
             <div align="center">
 
-              <input type="number" name="telefono" id="telefono" placeholder="Telefono"/><br><br>
+              <label>Telefono :</label><input type="text" name="telefono" id="telefono" placeholder="Telefono" value="<?php echo $paciente->getTelefono(); ?>"/><br><br>
 
-              <input type="number" name="telefono2" id="telefono2" placeholder="Telefono Alternativo"/><br><br>
+              <label>Telefono Alternativo :</label><input type="text" name="telefono2" id="telefono2" placeholder="Telefono Alternativo" value="<?php echo $paciente->getTelefono2(); ?>"/><br><br>
 
-              <input type="text" name="email" id="email" placeholder="Email"/><br><br>
+              <label>Email :</label><input type="text" name="email" id="email" placeholder="Email" value="<?php echo $paciente->getEmail(); ?>"/><br><br>
 
               <input type="hidden" name="usuario" id="usuario" value='<?=$data->getId()?>'>
 

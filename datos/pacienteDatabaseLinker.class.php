@@ -81,50 +81,121 @@ class PacienteDatabaseLinker
         return true;
     }
 
-    private function getPacientes($page, $rows, $filters)
+    function modificarPaciente($arrayPaciente)
     {
-        $where = "";
-        if(count($filters)>0)
+        $query="UPDATE
+                    paciente
+                SET 
+                    nombre='".$arrayPaciente['nombre']."',
+                    apellido='".$arrayPaciente['apellido']."',
+                    sexo='".$arrayPaciente['sexo']."',
+                    fecha_nacimiento=".$arrayPaciente['fecha_nac'].",
+                    idpais=".Utils::phpIntToSQL($arrayPaciente['pais']).",
+                    idprovincia=".Utils::phpIntToSQL($arrayPaciente['provincia']).",
+                    idpartido=".Utils::phpIntToSQL($arrayPaciente['partido']).",
+                    idlocalidad=".Utils::phpIntToSQL($arrayPaciente['localidad']).",
+                    codigo_postal='".$arrayPaciente['cp']."',
+                    calle_nombre='".$arrayPaciente['calle_nombre']."',
+                    calle_numero='".$arrayPaciente['calle_numero']."',
+                    piso='".$arrayPaciente['piso']."',
+                    departamento='".$arrayPaciente['departamento']."',
+                    telefono='".$arrayPaciente['telefono']."',
+                    telefono2='".$arrayPaciente['telefono2']."',
+                    es_donante='".$arrayPaciente['donante']."',
+                    email='".$arrayPaciente['email']."',
+                    fecha_modificacion=now(),
+                    idusuario='".$arrayPaciente['usuario']."'
+                WHERE
+                    tipodoc='".$arrayPaciente['tipodoc']."' AND
+                    nrodoc='".$arrayPaciente['nrodoc']."';";
+                    
+        try
         {
-            for($i=0; $i < count($filters['rules']); $i++ )
-            {
-                $where.=$filters['groupOp']." ";
-                $where.="prod.".$filters['rules'][$i]['field']." like '".$filters['rules'][$i]['data']."%'";
-            }
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);  
+        }
+        catch (Exception $e)
+        {
+            return false;
         }
 
-        $offset = ($page - 1) * $rows;
+        return true;
+    }
 
-        $query="SELECT
-                    id,
-                    nombre,
-                    apellido,
+    function getDatosPacientePorNombre($filters)
+    {
+
+        $query="SELECT 
                     tipodoc,
                     nrodoc,
-                    edad,
-                    idosoc
+                    nombre,
+                    apellido,
+                    sexo,
+                    fecha_nacimiento,
+                    edad_ingreso,
+                    idpais,
+                    idprovincia,
+                    idpartido,
+                    idlocalidad,
+                    codigo_postal,
+                    calle_nombre,
+                    calle_numero,
+                    piso,
+                    departamento,
+                    telefono,
+                    telefono2,
+                    es_donante,
+                    email,
+                    fecha_modificacion,
+                    fecha_creacion,
+                    idusuario
                 FROM
                     paciente
                 WHERE
-                    ".$where."
-                LIMIT $rows OFFSET $offset;";
+                    nombre LIKE '%".$filters."%' OR
+                    apellido LIKE '%".$filters."%' ;";
 
-        $this->dbTurnos->ejecutarQuery($query);
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error consultando el paciente", 1);
+        }
 
         $ret = array();
 
         for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
         {
-                $result = $this->dbTurnos->fetchRow($query);
-                $paciente = new Paciente();
-                $paciente->setId($result['id']);
-                $paciente->setTipodoc($result['tipodoc']);
-                $paciente->setNrodoc($result['nrodoc']);
-                $paciente->setNombre($result['nombre']);
-                $paciente->setApellido($result['apellido']);
-                $paciente->setEdad($result['edad']);
-                $paciente->setOsoc($result['idosoc']);
-                $ret[] = $paciente;
+            $result = $this->dbTurnos->fetchRow($query);
+            $paciente = new Paciente();
+            $paciente->setTipodoc($result['tipodoc']);
+            $paciente->setNrodoc($result['nrodoc']);
+            $paciente->setNombre($result['nombre']);
+            $paciente->setApellido($result['apellido']);
+            $paciente->setSexo($result['sexo']);
+            $paciente->setFechaNacimiento($result['fecha_nacimiento']);
+            $paciente->setEdadActual(Utils::calcularEdad($result['fecha_nacimiento']));
+            $paciente->setEdadIngreso($result['edad_ingreso']);
+            $paciente->setPais($result['idpais']);
+            $paciente->setProvincia($result['idprovincia']);
+            $paciente->setPartido($result['idpartido']);
+            $paciente->setLocalidad($result['idlocalidad']);
+            $paciente->setCP($result['codigo_postal']);
+            $paciente->setCalleNombre($result['calle_nombre']);
+            $paciente->setCalleNumero($result['calle_numero']);
+            $paciente->setPiso($result['piso']);
+            $paciente->setDepartamento($result['departamento']);
+            $paciente->setTelefono($result['telefono']);
+            $paciente->setTelefono2($result['telefono2']);
+            $paciente->setEsDonante($result['es_donante']);
+            $paciente->setEmail($result['email']);
+            $paciente->setFechaModificacion($result['fecha_modificacion']);
+            $paciente->setFechaCreacion($result['fecha_creacion']);
+            $ret[] = $paciente;
         }
 
         return $ret;
@@ -197,6 +268,8 @@ class PacienteDatabaseLinker
         $paciente->setTelefono2($result['telefono2']);
         $paciente->setEsDonante($result['es_donante']);
         $paciente->setEmail($result['email']);
+        $paciente->setFechaModificacion($result['fecha_modificacion']);
+        $paciente->setFechaCreacion($result['fecha_creacion']);
 
         $this->dbTurnos->desconectar();
 

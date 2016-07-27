@@ -56,7 +56,7 @@ $data = unserialize($usuario);
             <p align="center">Especialidades</p>
             <table id="jqVerEsp"></table>
             <div id="jqEspFoot"></div>
-            <input type="submit" value="Nueva Especialidad" id="nuevaEspecialidad">
+            <input type="submit" class="button-secondary" value="Nueva Especialidad" id="nuevaEspecialidad">
         </div>
         <div id="dialogEsp" style="display: none;"></div>
     </div>

@@ -3,7 +3,7 @@ $(document).ready(function(){
     $('#enviar').click(function(event){
         event.preventDefault();
 
-        if($('#subespecialidades option:selected').val()=="")
+        if($('#especialidad').val()=="")
         {
             alert("Debe seleccionar una subespecialidad");    
         }

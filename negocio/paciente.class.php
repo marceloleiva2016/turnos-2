@@ -139,6 +139,16 @@ class Paciente
         $this->email = $email;
     }
 
+    function setFechaModificacion($fecha)
+    {
+        $this->fecha_modificacion = $fecha;
+    }
+
+    function setFechaCreacion($fecha)
+    {
+        $this->fecha_creacion = $fecha;
+    }
+
 //geters
 
     function getTipoDoc()
@@ -193,14 +203,29 @@ class Paciente
         return $this->edad_ingreso;
     }
 
-    function getTelefono()
+    function getPais()
     {
-        return $this->telefono;
+        return $this->idpais;
     }
 
-    function getTelefono2()
+    function getProvincia()
     {
-        return $this->telefono2;
+        return $this->idprovincia;
+    }
+
+    function getPartido()
+    {
+        return $this->idpartido;
+    }
+
+    function getLocalidad()
+    {
+        return $this->idlocalidad;
+    }
+
+    function getCP()
+    {
+        return $this->cp;
     }
 
     function getCalleNombre()
@@ -223,6 +248,16 @@ class Paciente
         return $this->departamento;
     }
 
+    function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    function getTelefono2()
+    {
+        return $this->telefono2;
+    }
+
     function getDonante()
     {
         return $this->esDonante;
@@ -231,6 +266,16 @@ class Paciente
     function getEmail()
     {
         return $this->email;
+    }
+
+    function getFechaModificacion($fecha)
+    {
+        return $this->fecha_modificacion;
+    }
+
+    function getFechaCreacion($fecha)
+    {
+        return $this->fecha_creacion;
     }
 }
 ?>

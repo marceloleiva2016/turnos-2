@@ -130,6 +130,9 @@ $(document).ready(function() {
 
     $( "#guardar" ).click(function(event){
         event.preventDefault();
+        var tipodoc = $('#tipodoc').val();
+        var nrodoc = $('#nrodoc').val();
+
         $.ajax({
             data: $( "#formPaciente" ).serialize(),
             type: "POST",
@@ -140,7 +143,7 @@ $(document).ready(function() {
                 alert(data.message);
                 if(data.ret)
                 {
-                    $('#formPaciente').get(0).reset(); 
+                    window.location = "edit.php?tipodoc="+tipodoc+"&nrodoc="+nrodoc;
                 }
             }
         });

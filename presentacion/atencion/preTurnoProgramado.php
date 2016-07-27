@@ -52,7 +52,7 @@ $especialidades = new EspecialidadDatabaseLinker();
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Atencion Medica</a>
+                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Atencion Medica Programados</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->
@@ -68,7 +68,7 @@ $especialidades = new EspecialidadDatabaseLinker();
                     <div class="logo">
                         <span style="font-size: 5em;" class="icon icon-edit"></span>
                     </div>
-                        <h4>Especialidad</h4>
+                        <h2>Especialidad</h2>
                         <select id="especialidad" name="especialidad"  onchange="ingresandoEsp();" >
                             <option value="">Seleccione</option>
                             <?php
@@ -78,16 +78,16 @@ $especialidades = new EspecialidadDatabaseLinker();
                             }
                             ?>
                         </select><br>
-                        <h4>Subspecialidad</h4>
+                        <h2>Subspecialidad</h2>
                         <select id="subespecialidad" name="subespecialidad" onchange="ingresandoSubEsp();" >
 
                         </select>
-                         <h4>Profesional</h4>
+                         <h2>Profesional</h2>
                         <select id="profesional" name="profesional" onchange="ingresandoProf();" >
 
                         </select><br>
-                        <br><br>
-                    <input type="submit" name="enviar" id="enviar">
+                        <br>
+                    <input type="submit" class='button-secondary' value="Consultar" name="enviar" id="enviar">
                 </form>
             </div>
         </div>

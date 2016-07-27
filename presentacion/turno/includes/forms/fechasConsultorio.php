@@ -37,7 +37,7 @@ if(!$error)
 
     for ($i=0; $i < count($fechas); $i++) {
         ?>
-        <a onclick="verHorarios('<?php echo $fechas[$i]['fecha']."',".$fechas[$i]['iddia']; ?> );"><span class='icon icon-next'> </span><?php echo $fechas[$i]['dia']." ".Utils::sqlDateTimeToHtmlDateTime($fechas[$i]['fecha']); ?></a><br>
+        <a onclick="verHorarios('<?php echo $fechas[$i]['fecha']."',".$fechas[$i]['iddia']; ?> );"><span class='icon icon-next'> </span><?php echo $fechas[$i]['dia']." ".Utils::sqlDateToHtmlDate($fechas[$i]['fecha']); ?></a><br>
         <?php
     }
 

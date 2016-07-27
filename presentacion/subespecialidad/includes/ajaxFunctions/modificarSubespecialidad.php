@@ -8,16 +8,11 @@ $data = $_POST;
 
 if($data['oper'] == 'del')
 {
-    var_dump($data);
     $ret = $db->eliminarSubespecialidad($data);
 }
 else
 {
     $ret = $db->modificarSubespecialidad($data);    
-}
-
-
-    
+}    
 echo json_encode($ret);
-
 ?>

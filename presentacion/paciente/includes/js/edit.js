@@ -97,73 +97,6 @@ function ingresandoPartido()
     }
 }
 
-function cargarCombosUbicacion()
-{
-    //Cargo Paises
-    $.ajax({
-        type:'post',
-        dataType:'json',
-        url:'includes/ajaxFunctions/jsonProvincias.php',
-        data:{idPais:newPais},
-        success: function(json)
-        {
-            vaciarProvincias();
-            if(json.ret)
-            {
-                cargarOptions($('#provincia'),json.datos);
-                ingresandoProvincia();
-            }
-        }
-    });
-    //Cargo Provincias
-    $.ajax({
-        type:'post',
-        dataType:'json',
-        url:'includes/ajaxFunctions/jsonProvincias.php',
-        data:{idPais:newPais},
-        success: function(json)
-        {
-            vaciarProvincias();
-            if(json.ret)
-            {
-                cargarOptions($('#provincia'),json.datos);
-                ingresandoProvincia();
-            }
-        }
-    });
-    //Cargo Partidos
-    $.ajax({
-        type:'post',
-        dataType:'json',
-        url:'includes/ajaxFunctions/jsonPartidos.php',
-        data:{idPais:newPais, idProvincia:newProvincia},
-        success: function(json)
-        {
-            vaciarPartidos();
-            if(json.ret)
-            {
-                cargarOptions($('#partido'),json.datos);
-                ingresandoPartido()
-            }
-        }
-    });
-    //Cargo Localidades
-    $.ajax({
-        type:'post',
-        dataType:'json',
-        url:'includes/ajaxFunctions/jsonLocalidades.php',
-        data:{idPais:newPais, idProvincia:newProvincia, idPartido:newPartido},
-        success: function(json)
-        {
-            vaciarLocalidades();
-            if(json.ret)
-            {
-                cargarOptions($('#localidad'),json.datos);
-            }
-        }
-    });
-}
-
 $(document).ready(function() {
 
     $( "#guardar" ).click(function(event){
@@ -172,7 +105,7 @@ $(document).ready(function() {
             data: $( "#formPaciente" ).serialize(),
             type: "POST",
             dataType: "json",
-            url: "includes/ajaxFunctions/ajaxAgregarPaciente.php",
+            url: "includes/ajaxFunctions/ajaxModificarPaciente.php",
             success: function(data)
             {
                 alert(data.message);

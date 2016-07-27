@@ -38,8 +38,6 @@ class ProfesionalDatabaseLinker
                         1
                     );";
 
-
-
         try
         {
             $this->dbTurnos->conectar();
