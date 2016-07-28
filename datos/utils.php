@@ -1243,7 +1243,7 @@ class Utils {
 		return substr($time,0,-3);
 	}
 
-	function calcularEdad($fecha_nac)
+	static function calcularEdad($fecha_nac)
     {
         //fecha actual
 
