@@ -26,7 +26,7 @@ $gen = new GeneralesDatabaseLinker();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Confirmar Turno Programado</title>
+    <title>Eliminar Turno Programado</title>
     <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
@@ -34,7 +34,7 @@ $gen = new GeneralesDatabaseLinker();
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
     <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
-    <script type="text/javascript" src="includes/js/confirmarTurnoProgramado.js" ></script>
+    <script type="text/javascript" src="includes/js/eliminarTurnoProgramado.js" ></script>
 </head>
 <body>
     <!-- barra -->
@@ -44,7 +44,7 @@ $gen = new GeneralesDatabaseLinker();
             <span style="font-size: 2em;" class="icon icon-about"></span>
         </div>
         <div id="navegar">
-            &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Confirmar Turno Programado</a>
+            &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Eliminar Turno Programado</a>
         </div>
         <!-- /navegar-->
         <!-- usuario -->
@@ -84,9 +84,13 @@ $gen = new GeneralesDatabaseLinker();
             <div align="center" id="divConfTurno" style="display:none;" >
             
 	        </div><br>
-	        <div align="center" id="botonConfirmar" style="display:none;">
-	        	<button class="button-secondary" id="confirmarTurnoProgramado">Confirmar</button>
+	        <div align="center" id="botonEliminar" style="display:none;">
+	        	<button class="button-secondary" id="eliminarTurnoProgramado">Eliminar</button>
 	        </div>
+            <div id="dialogoEliminar" style="display:none;">
+                Esta seguro que desea eliminar el turno asignado?
+            </div>
+
         </div>
     </div>
     <input type="hidden" id="idusuario" name="idusuario" value=<?php echo $data->getId();?> >

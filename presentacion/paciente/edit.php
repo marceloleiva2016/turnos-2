@@ -36,7 +36,7 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en" class="no-js">
 <head>
   <title>Paciente</title>
   <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
@@ -136,8 +136,8 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
               <label>Tipo y Numero Documento: </label><h2><?php echo $gen->getDescripcionTipoDocumento($paciente->getTipoDoc())['detalle_corto']."  ".$paciente->getNrodoc();?></h2><br>
               <input type="hidden" name="tipodoc" value="<?php echo $paciente->getTipoDoc(); ?>" />
               <input type="hidden" name="nrodoc" value="<?php echo $paciente->getNrodoc(); ?>" />
-              <label>Nombre y Apellido : </label><input type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?php echo $paciente->getNombre(); ?>" />
-              <input type="text" name="apellido" id="apellido" placeholder="Apellido" value="<?php echo $paciente->getApellido(); ?>"/><br><br>
+              <label>Nombre y Apellido : </label><input type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?php echo Utils::sqlStringToPHP($paciente->getNombre()); ?>" />
+              <input type="text" name="apellido" id="apellido" placeholder="Apellido" value='<?php echo Utils::sqlStringToPHP($paciente->getApellido()); ?>'/><br><br>
               <div id="radioset">
                 <input type="radio" id="generom" name="sexo" value="M" <?php if($paciente->getSexo()=='M'){ echo "checked='checked'"; } ?> ><label for="generom">Masculino</label>
                 <input type="radio" id="generof" name="sexo" value="F" <?php if($paciente->getSexo()=='F'){ echo "checked='checked'"; } ?> ><label for="generof">Femenino</label>
@@ -168,15 +168,15 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
               <select id="localidad" name="localidad">
               </select><br><br>
 
-              <label>Codigo Postal :</label><input type="number" name="cp" id="cp" placeholder="Codigo Postal" value="<?php echo $paciente->getCP(); ?>"/>
+              <label>Codigo Postal :</label><input type="number" name="cp" id="cp" placeholder="Codigo Postal" value="<?php echo Utils::sqlStringToPHP($paciente->getCP()); ?>"/>
 
-              <label>Nombre Calle :</label><input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle" value="<?php echo $paciente->getCalleNombre(); ?>"/>
+              <label>Nombre Calle :</label><input type="text" name="calle_nombre" id="calle_nombre" placeholder="Calle" value="<?php echo Utils::sqlStringToPHP($paciente->getCalleNombre()); ?>"/>
 
-              <label>Nro Calle :</label><input type="number" name="calle_numero" id="calle_numero" placeholder="Numero" value="<?php echo $paciente->getCalleNumero(); ?>"/><br><br>
+              <label>Nro Calle :</label><input type="number" name="calle_numero" id="calle_numero" placeholder="Numero" value="<?php echo Utils::sqlStringToPHP($paciente->getCalleNumero()); ?>"/><br><br>
 
-              <label>Piso :</label><input type="text" name="piso" id="piso" placeholder="Piso" value="<?php echo $paciente->getPiso(); ?>"/>
+              <label>Piso :</label><input type="text" name="piso" id="piso" placeholder="Piso" value="<?php echo Utils::sqlStringToPHP($paciente->getPiso()); ?>"/>
 
-              <label>Departamento :</label><input type="text" name="departamento" id="departamento" placeholder="Departamento" value="<?php echo $paciente->getDepartamento(); ?>"/><br><br>
+              <label>Departamento :</label><input type="text" name="departamento" id="departamento" placeholder="Departamento" value="<?php echo Utils::sqlStringToPHP($paciente->getDepartamento()); ?>"/><br><br>
 
             </div>
 

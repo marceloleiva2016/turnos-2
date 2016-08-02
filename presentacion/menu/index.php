@@ -70,6 +70,9 @@ $data = unserialize($usuario);
 									if ($data->tienePermiso('PROGRAMADO_ATENCION')){
 										echo "<li><a href='../atencion/preTurnoProgramado.php'><span>Antencion Medica</span></a></li>";	
 									}
+									if ($data->tienePermiso('PROGRAMADO_ELIMINAR')){
+										echo "<li><a href='../turno/eliminarTurnoProgramado.php'><span>Eliminar Turno</span></a></li>";	
+									}
 									?>
 								</ul>
 							</li>
@@ -124,6 +127,10 @@ $data = unserialize($usuario);
 						</ul>
 					</div>
 				</nav>
+			</div>
+
+			<div class="imagenLogo">
+
 			</div>
 		</div>
 		<script src="js/cbpHorizontalSlideOutMenu.min.js"></script>

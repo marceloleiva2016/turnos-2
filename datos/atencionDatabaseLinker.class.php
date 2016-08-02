@@ -324,4 +324,63 @@ class AtencionDatabaseLinker
 
         return $entro;
     }
+
+    function getAtencionesEnPaciente($tipodoc, $nrodoc, $especialidadFiltro)
+    {
+        $filtro = "";
+        if($especialidadFiltro!="" OR $especialidadFiltro!=null){
+            $filtro .= " AND e.id=".$especialidadFiltro;
+        }
+
+        $query="SELECT
+                    a.id as idatencion,
+                    a.idturno,
+                    e.id as idespecialidad,
+                    e.detalle as especialidad,
+                    s.id as idsubespecialidad,
+                    s.detalle as subespecialidad,
+                    CONCAT(p.nombre,' ',p.apellido) as profesional,
+                    ta.detalle as tipo_atencion,
+                    a.idusuario,
+                    DATE(a.fecha_creacion) as fecha,
+                    TIME(a.fecha_creacion) as hora,
+                    a.fecha_creacion,
+                    f.ubicacion,
+                    f.icono
+                FROM
+                    atencion a LEFT JOIN
+                    tipo_atencion ta ON(a.idtipo_atencion=ta.id) LEFT JOIN
+                    atencion_formulario af ON(af.idatencion=a.id AND af.habilitado=true) LEFT JOIN
+                    formulario f ON(af.idformulario=f.id) LEFT JOIN
+                    profesional p ON(a.idprofesional=p.id) LEFT JOIN
+                    subespecialidad s ON(a.idsubespecialidad=s.id) LEFT JOIN
+                    especialidad e ON(s.idespecialidad=e.id)
+                WHERE
+                    a.tipodoc=$tipodoc AND
+                    a.nrodoc=$nrodoc AND
+                    a.habilitado=true ".$filtro."
+                ORDER BY
+                    a.fecha_creacion DESC;";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("No se pudo consultar las atenciones del paciente", 201230);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
 }

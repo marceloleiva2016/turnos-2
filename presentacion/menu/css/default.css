@@ -186,3 +186,13 @@ a:hover {
 		text-indent: 30px;
 	}
 }
+
+.imagenLogo {
+    width: 200px;
+    height: 200px;
+    display:block;
+    margin:0 auto 0 auto;
+    background-image: url(../../includes/images/logob.png);
+    background-size: contain;
+    margin-top: 50px;
+}

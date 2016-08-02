@@ -127,7 +127,7 @@ $gen = new GeneralesDatabaseLinker();
                     <p><b>Especialidad: </b><a id="especialidadAcept"></a></p>
                     <p><b>Subespecialidad: </b><a id="subespecialidadAcept"></a></p>
                     <div align="center">
-                        <button id="cargarTurnoDemanda">Asignar</button>
+                        <button class="button-secondary" id="cargarTurnoDemanda">Asignar</button>
                     </div>
                 </div>
             </div>

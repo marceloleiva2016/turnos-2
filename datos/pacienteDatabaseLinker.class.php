@@ -124,6 +124,17 @@ class PacienteDatabaseLinker
 
     function getDatosPacientePorNombre($filters)
     {
+        $filtersEnArray=Utils::stringToArray($filters);
+
+        $where = "";
+
+        for ($i=0; $i < count($filtersEnArray); $i++) {
+
+            $where.="CONCAT(nombre,' ',apellido) LIKE '%".$filtersEnArray[$i]."%'";
+            if(count($filtersEnArray)-1!=$i){
+                $where.=" AND ";
+            }
+        }
 
         $query="SELECT 
                     tipodoc,
@@ -152,8 +163,7 @@ class PacienteDatabaseLinker
                 FROM
                     paciente
                 WHERE
-                    nombre LIKE '%".$filters."%' OR
-                    apellido LIKE '%".$filters."%' ;";
+                    ".$where.";";
 
         try
         {

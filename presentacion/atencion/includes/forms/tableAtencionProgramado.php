@@ -36,7 +36,7 @@ if(count($turnos)==0) {
   </tr>
   <?php
   for ($i=0; $i < count($turnos); $i++) { 
-    echo "<tr><td>".$turnos[$i]['fecha']."</td><td id='tipodoc'>".$turnos[$i]['tipodoc']."</td><td id='nrodoc'>".$turnos[$i]['nrodoc']."</td><td>".$turnos[$i]['nombre']."</td><td><input style='height:22px; width:100px;' type='button' value='ATENDER' onclick=javascript:mostrarFormulario('".$turnos[$i]['id']."');></td></tr>";
+    echo "<tr><td>".$turnos[$i]['fecha']."</td><td id='tipodoc'>".$turnos[$i]['tipodoc']."</td><td id='nrodoc'>".$turnos[$i]['nrodoc']."</td><td>".$turnos[$i]['nombre']."</td><td><input type='button' class='button-secondary' value='ATENDER' onclick=javascript:mostrarFormulario('".$turnos[$i]['id']."');></td></tr>";
   }
   ?>
 </table>

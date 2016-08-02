@@ -126,3 +126,20 @@ a:hover {
 .icon-arrow-left:before {
 	content: "\f060";
 }
+
+.filtroHC {
+	position: absolute;
+    top: 45px;
+    right: 16px;
+    font-size: 18px;
+}
+
+@media screen and (max-width: 500px) {
+
+    .filtroHC {
+        position: relative;
+        right: 0px;
+        top: 0px;
+    }
+    
+}

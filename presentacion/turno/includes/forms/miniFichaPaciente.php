@@ -51,11 +51,11 @@ else
 if(!$error)
 {
 ?>
-    <div id="contenido" style="float:right; width:450px;height:210px;  border-color: black; border-width: 0pt; border-style: solid; background-color:#e9e9e9;">
+    <div class="contenedorPaciente">
 
-        <div id= "datosPaciente" style="margin: 0px 0px 0px 10px;float:left; top: 10px; left: 10px;">
+        <div class="datosPaciente" >
             <br />
-            <b><?php echo htmlentities($nombrePaciente)?></b><br>
+            <b><?php echo Utils::phpStringToHTML($nombrePaciente)?></b><br>
             <br /> 
             <b>Fecha Nacimiento: </b><?php echo $fechaNac?><br>
             <b>Edad: </b><?php echo $edad?><br>
@@ -69,13 +69,13 @@ if(!$error)
     if($sexo == "M")
     { 
     ?>
-        <div id="picture" style="margin: 20px 20px 10px 10px; width: 100px; height: 100px;position:relative; top:10px; left:320px; border-color: black; border-width: 1pt; border-style: solid; background-image: url(includes/images/hombre.png);  background-color:#FFFFFF;"></div>
+        <div class="imagenSexoPacienteHombre"></div>
     <?php
     }
     else
     {
     ?>
-        <div id="picture" style="margin: 20px 20px 10px 10px; width: 100px; height: 100px;position:relative; top:10px; left:320px;border-color: black; border-width: 1pt; border-style: solid; background-image: url(includes/images/mujer.png); background-color:#FFFFFF;"></div>
+        <div class="imagenSexoPacienteMujer"></div>
     <?php
     }
     echo "</div>";
@@ -84,10 +84,10 @@ else
 {
 ?>
 
-<div id="contenido" style="float:right; width:450px;height:210px;  border-color: black; border-width: 0pt; border-style: solid; background-color:#e9e9e9;">
-    <div id="picture" style="margin: 20px 20px 10px 10px; width: 100px; height: 100px;position:relative; top:10px; left:320px; background-image: url(includes/images/question_white.png);">
+<div class="contenedorPaciente">
+    <div class="imagenInterrogacion">
     </div>
-    <div id="message" style="border: 0pt; border-color: black; border-style: solid; width: 400px;position:relative; left: 10px">
+    <div class="imagenMessage">
         <b><p align="center"> <?php echo $errorMesage?></p></b>
     </div>
 </div>

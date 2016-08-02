@@ -145,7 +145,7 @@ $gen = new GeneralesDatabaseLinker();
                     <p><b>Fecha: </b><a id="fechaAcept"></a></p>
                     <p><b>Hora: </b><a id="horaAcept"></a></p>
                     <div align="center">
-                        <button id="cargarTurnoProgramado">Asignar</button>
+                        <button class="button-secondary" id="cargarTurnoProgramado">Asignar</button>
                     </div>
                 </div>
             </div>

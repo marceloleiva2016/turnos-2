@@ -147,7 +147,7 @@ $id = $demanda->getId();
                                                 </tr>
                                                 <tr>
                                                     <td colspan=4>
-                                                         <?php
+                                                        <?php
                                                         for ($q=0; $q < count($observaciones); $q++)
                                                         {
                                                         ?>
@@ -228,7 +228,6 @@ $id = $demanda->getId();
                         <h2>Menú ingreso</h2>
                         <ul>
                             <li><a class="icon icon-pentool" href="#" id="agrEvolucionClinica">Evolucion Clinica</a></li>
-                            <li><a class="icon icon-ruller" href="#" id="agrPendientes">Pendientes y Seguimiento</a></li>
                             <li><a class="icon icon-exit" href="#" id="agrEgreso">Egreso</a></li>
                             <li><a class="icon icon-printer" href="#" id="imprimir">Imprimir</a></li>
                         </ul>

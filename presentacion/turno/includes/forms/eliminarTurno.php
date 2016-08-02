@@ -77,20 +77,22 @@ if(!$error)
     if($sexo == "M")
     { 
     ?>
-    	<!-- imagen de Hombre -->
+        <!-- imagen de Hombre -->
         <div class="imagenSexoPacienteHombre" ></div>
     <?php
     }
     else
     {
     ?>
-    	<!-- imagen de Mujer -->
+        <!-- imagen de Mujer -->
         <div class="imagenSexoPacienteMujer"></div>
     <?php
     }
     ?>
+       
     </div>
-    <div id="listaDeTurnos">
+
+     <div id="listaDeTurnos">
         <?php 
             for ($i=0; $i < count($turnos); $i++) { 
                 echo "<input type='radio' id='turnoRadio' name='turnoRadio' value='".$turnos[$i]['id']."' >".$turnos[$i]['especialidad']." | ".$turnos[$i]['subespecialidad']." Prof:".$turnos[$i]['profesional']." | ".$turnos[$i]['fecha']." ".$turnos[$i]['hora']."<br>";
@@ -103,19 +105,19 @@ else
 {
 ?>
 
-	<div class="contenedorPaciente">
+    <div class="contenedorPaciente">
 
-	    <div class="imagenInterrogacion">
+        <div class="imagenInterrogacion">
 
-	    </div>
+        </div>
 
-	    <div class="imagenMessage">
+        <div class="imagenMessage">
 
-	        <b><p align="center"> <?php echo $errorMesage?></p></b>
+            <b><p align="center"> <?php echo $errorMesage?></p></b>
 
-	    </div>
+        </div>
         
-	</div>
+    </div>
 
 <?php
 }

@@ -1277,5 +1277,29 @@ class Utils {
         return $edad;
     }
 
+    static function permute($array)
+	{
+	  $results = array();
+
+	  if (count($array) == 1)
+	  {
+	    $results[] = $array;
+	  }
+	  else
+	  {
+	    for ($i = 0; $i < count($array); $i++)
+	    {
+	      $first = array_shift($array);
+	      $subresults = Utils::permute($array);
+	      array_push($array, $first);
+	      foreach ($subresults as $subresult)
+	      {
+	        $results[] = array_merge(array($first), $subresult);
+	      }
+	    }
+	  }
+	  return $results;
+	}
+
 }
 ?>

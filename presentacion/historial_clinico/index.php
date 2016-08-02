@@ -2,6 +2,12 @@
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
+include_once datos.'pacienteDatabaseLinker.class.php';
+include_once datos.'atencionDatabaseLinker.class.php';
+include_once datos.'especialidadDatabaseLinker.class.php';
+include_once datos.'utils.php';
+/*DEMANDA*/
+
 session_start();
 
 if(!isset($_SESSION['usuario']))
@@ -14,6 +20,28 @@ $usuario = $_SESSION['usuario'];
 
 $data = unserialize($usuario);
 
+if(!isset($_REQUEST['tipodoc']) or !isset($_REQUEST['nrodoc'])) {
+  echo "<div align='center'>
+          <h3>Datos de Paciente Inexistentes</h3>
+        </div>";
+  die();
+} else {
+  $tipodoc = $_REQUEST['tipodoc'];
+  $nrodoc = $_REQUEST['nrodoc'];
+}
+
+$pacDB = new PacienteDatabaseLinker();
+$paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
+$nombre = Utils::phpStringToHTML($paciente->getNombre()." ".$paciente->getApellido());
+
+$atencionDB = new AtencionDatabaseLinker();
+$atenciones = $atencionDB->getAtencionesEnPaciente($tipodoc, $nrodoc, null);
+
+//Especialidades
+$espDb = new EspecialidadDatabaseLinker();
+$ListaEspecialidades = $espDb->getEspecialidades();
+$especialidadesRows = $ListaEspecialidades->data;
+
 /*fin de agregado usuario*/
 ?>
 <!DOCTYPE html>
@@ -22,14 +50,34 @@ $data = unserialize($usuario);
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-		<title>Historial Clinico</title>
+		<title>HC <?php echo $nombre; ?></title>
 		<meta name="keywords" content="timeline, vertical, layout, style, component, web development, template, responsive" />
 		<meta name="author" content="Juan Ferreyra" />
 		<link rel="stylesheet" type="text/css" href="css/default.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
+		<script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
+  		<script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
+		<script type="text/javascript" src="js/index.js"></script>
 		<script src="js/modernizr.custom.js"></script>
+		<script type="text/javascript">
+			
+			var tipodoc = <?php echo $tipodoc; ?>;
+			var nrodoc = <?php echo $nrodoc; ?>;
+
+			function llenarFormularios(){
+				<?php
+				for ($i=0; $i < count($atenciones); $i++) {
+					echo "$('#atencionNro".$atenciones[$i]['idatencion']."').load('../formulario".$atenciones[$i]['ubicacion']."formResumen.php?id=".$atenciones[$i]['idatencion']."');";
+				}
+				?>
+			}
+
+			$(document).ready(function(){
+				llenarFormularios();
+			});
+		</script>
 	</head>
 	<body>
 		<!-- barra -->
@@ -51,42 +99,45 @@ $data = unserialize($usuario);
 		<!-- /barra -->
 		<div class="container">
 			<div align="center">
-				<h2>Historia Clinica Juan Ferreyra</h2>
+				<h2><?php echo $nombre; ?></h2>
+				NHC : <?php echo $paciente->getNrodoc(); ?><br/>
+                Sexo : <?php echo $paciente->getSexoLargo(); ?><br/>
+                Edad : <?php echo $paciente->getEdadActual(); ?><br/>
 			</div>
-			<div class="main">
+			<div class="filtroHC">
+				<fieldset>
+	        		<legend>Filtro</legend>
+			        <select name="especialidad" id="especialidad" onchange="seleccionadoFiltro(this);" >
+			          <option value="">Ninguno</option>
+			          <?php
+			            for ($i=0; $i < count($especialidadesRows); $i++) {
+			              echo "<option value=".$especialidadesRows[$i]->id.">".$especialidadesRows[$i]->detalle."</option>";
+			            }
+			          ?>
+			        </select>
+		     	</fieldset>
+	     	</div>
+			<div class="main" id="listaDeAtenciones">
 				<ul class="cbp_tmtimeline">
+					<?php
+					for ($i=0; $i < count($atenciones); $i++) {
+					?>
 					<li>
-						<time class="cbp_tmtime" datetime="2013-04-10 18:30"><span>04/10/2013</span><span>18:30</span></time>
-						<div class="icon icon-text"> </div>
+						<time class="cbp_tmtime" datetime='<?php echo $atenciones[$i]['fecha_creacion']; ?>'>
+							<span><?php echo Utils::sqlDateToHtmlDate($atenciones[$i]['fecha']); ?></span>
+							<span><?php echo $atenciones[$i]['hora']; ?></span>
+						</time>
+						<div class='<?php echo "icon ".$atenciones[$i]['icono']; ?>'>
+						</div>
 						<div class="cbp_tmlabel">
-							<h2>CLINICA MEDICA | Andres Liper</h2>
-							<p>Winter purslane courgette pumpkin quandong komatsuna fennel green bean cucumber watercress. Pea sprouts wattle seed rutabaga okra yarrow cress avocado grape radish bush tomato ricebean black-eyed pea maize eggplant. Cabbage lentil cucumber chickpea sorrel gram garbanzo plantain lotus root bok choy squash cress potato summer purslane salsify fennel horseradish dulse. Winter purslane garbanzo artichoke broccoli lentil corn okra silver beet celery quandong. Plantain salad beetroot bunya nuts black-eyed pea collard greens radish water spinach gourd chicory prairie turnip avocado sierra leone bologi.</p>
+							<h1><?php echo $atenciones[$i]['tipo_atencion']; ?></h1>
+							<h2><?php echo $atenciones[$i]['especialidad'].' | '.$atenciones[$i]['subespecialidad'].' | '.$atenciones[$i]['profesional']; ?></h2>
+							<p id='<?php echo "atencionNro".$atenciones[$i]['idatencion']; ?>' ></p>
 						</div>
 					</li>
-					<li>
-						<time class="cbp_tmtime" datetime="2013-04-11T12:04"><span>04/11/2013</span><span>12:04</span></time>
-						<div class="icon icon-tshirt"> </div>
-						<div class="cbp_tmlabel">
-							<h2>ENFERMERIA | Patricia Rodeles</h2>
-							<p>Caulie dandelion maize lentil collard greens radish arugula sweet pepper water spinach kombu courgette lettuce. Celery coriander bitterleaf epazote radicchio shallot winter purslane collard greens spring onion squash lentil. Artichoke salad bamboo shoot black-eyed pea brussels sprout garlic kohlrabi.</p>
-						</div>
-					</li>
-					<li>
-						<time class="cbp_tmtime" datetime="2013-04-15 13:15"><span>04/05/2013</span><span>13:15</span></time>
-						<div class="icon icon-heart"> </div>
-						<div class="cbp_tmlabel">
-							<h2>CARDIOLOGIA | Pulmari Camilo</h2>
-							<p>Peanut gourd nori welsh onion rock melon mustard jícama. Desert raisin amaranth kombu aubergine kale seakale brussels sprout pea. Black-eyed pea celtuce bamboo shoot salad kohlrabi leek squash prairie turnip catsear rock melon chard taro broccoli turnip greens. Fennel quandong potato watercress ricebean swiss chard garbanzo. Endive daikon brussels sprout lotus root silver beet epazote melon shallot.</p>
-						</div>
-					</li>
-					<li>
-						<time class="cbp_tmtime" datetime="2013-04-16 21:30"><span>04/12/2013</span><span>21:30</span></time>
-						<div class="icon icon-watch"> </div>
-						<div class="cbp_tmlabel">
-							<h2>TURNO CLINICA MEDICA | 04/10/2013</h2>
-							<p>Parsley amaranth tigernut silver beet maize fennel spinach. Ricebean black-eyed pea maize scallion green bean spinach cabbage jícama bell pepper carrot onion corn plantain garbanzo. Sierra leone bologi komatsuna celery peanut swiss chard silver beet squash dandelion maize chicory burdock tatsoi dulse radish wakame beetroot.</p>
-						</div>
-					</li>
+					<?php
+					}
+					?>
 				</ul>
 			</div>
 		</div>

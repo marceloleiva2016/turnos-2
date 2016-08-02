@@ -109,10 +109,6 @@ $(document).ready(function() {
             success: function(data)
             {
                 alert(data.message);
-                if(data.ret)
-                {
-                    $('#formPaciente').get(0).reset(); 
-                }
             }
         });
     });
