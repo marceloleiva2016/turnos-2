@@ -843,51 +843,51 @@ class Utils {
     	switch ($numeroMes) {
     		
     		case 1:	
-    			return "ENE";
+    			return "ENERO";
     		break;
     		
     		case 2:	
-    			return "FEB";
+    			return "FEBRERO";
     		break;
     		
     		case 3:	
-    			return "MAR";
+    			return "MARZO";
     		break;
     		
     		case 4:	
-    			return "ABR";
+    			return "ABRIL";
     		break;
     		
     		case 5:	
-    			return "MAY";
+    			return "MAYO";
     		break;
     		
     		case 6:	
-    			return "JUN";
+    			return "JUNIO";
     		break;
     		
     		case 7:	
-    			return "JUL";
+    			return "JULIO";
     		break;
     		
     		case 8:	
-    			return "AGO";
+    			return "AGOSTO";
     		break;
     		
     		case 9:	
-    			return "SEPT";
+    			return "SEPTIEMBRE";
     		break;
     		
     		case 10:	
-    			return "OCT";
+    			return "OCTUBRE";
     		break;
     		
     		case 11:	
-    			return "NOV";
+    			return "NOVIEMBRE";
     		break;
     		
     		case 12:	
-    			return "DIC";
+    			return "DICIEMBRE";
     		break;
     		
     		

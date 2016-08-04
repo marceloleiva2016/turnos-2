@@ -501,20 +501,6 @@ class DemandaDatabaseLinker
             throw new Exception("Fallo un proceso de insersion de los datos en intervenciones, mas espeficicamente la insercion: ".$query, 201230);
         }
 
-        try
-        {
-            $idAtencion = $this->getIdAtencion($idDemanda);
-
-            $dbAtencion = new AtencionDatabaseLinker();
-
-            $dbAtencion->actualizarEstadoDeSuTurno($idAtencion, 3, $iduser);
-        }
-        catch (Exception $e)
-        {
-            $this->dbTurnos->desconectar();
-            throw new Exception("Fallo en actualizar el turno a atendido", 201230);       
-        }
-
         $this->dbTurnos->desconectar();
 
         return true;

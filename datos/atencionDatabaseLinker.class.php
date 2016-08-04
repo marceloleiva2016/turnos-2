@@ -314,17 +314,6 @@ class AtencionDatabaseLinker
         return $result['idturno'];
     }
 
-    function actualizarEstadoDeSuTurno($idAtencion, $idEstado, $iduser)
-    {
-        $dbTurno = new TurnoDatabaseLinker();
-
-        $idturno = $this->getIdTurnoEnAtencion($idAtencion);
-
-        $entro = $dbTurno->insertarEnLog($idturno,$idEstado, $iduser);
-
-        return $entro;
-    }
-
     function getAtencionesEnPaciente($tipodoc, $nrodoc, $especialidadFiltro)
     {
         $filtro = "";

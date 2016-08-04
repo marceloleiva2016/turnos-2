@@ -192,7 +192,12 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
               <input type="hidden" name="usuario" id="usuario" value='<?=$data->getId()?>'>
 
             </div>
+            <h3>Datos de Obra Social</h3>
+            <div align="center">
 
+              
+
+            </div>
         </div>
         <div align="center">
           <button id="guardar" style="height:50px; width:200px;">Guardar</button>

@@ -87,8 +87,6 @@ $data = unserialize($usuario);
 										echo "<li><a href='../atencion/preTurnoDemanda.php'><span>Antencion Medica</span></a></li>";
 									}
 									?>
-									<li><a href="../estadisticas/hoja2.0/"><span>Hoja 2</span></a></li>
-									<li><a href="../estadisticas/hoja2.1/"><span>Hoja 2.1</span></a></li>
 								</ul>
 							</li>
 							<li>
@@ -122,6 +120,14 @@ $data = unserialize($usuario);
 									}
 									?>
 									<li><a href="../paciente/"><span>Consulta de Paciente</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Estadisticas</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a href="../estadisticas/hoja2.0/indexDemanda.php"><span>Hoja 2 Demanda</span></a></li>
+									<li><a href="../estadisticas/hoja2.0/indexProgramado.php"><span>Hoja 2 Programado</span></a></li>
+									<li><a href="../estadisticas/hoja2.1/"><span>Hoja 2.1</span></a></li>
 								</ul>
 							</li>
 						</ul>

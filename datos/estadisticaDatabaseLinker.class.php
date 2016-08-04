@@ -3,6 +3,7 @@ include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
 include_once datos.'utils.php';
 include_once datos.'subespecialidadDatabaseLinker.class.php';
+include_once datos.'especialidadDatabaseLinker.class.php';
 
 class EstadisticaDatabaseLinker
 {
@@ -30,7 +31,6 @@ class EstadisticaDatabaseLinker
                     year(tl.fecha_creacion) = $ano AND
                     c.idsubespecialidad = $idsubespecialidad;";
 
-                    var_dump($query);
         try
         {
             $this->dbTurnos->conectar();
@@ -168,6 +168,7 @@ class EstadisticaDatabaseLinker
     function especialidadesConSexosyRangos($mes,$ano)
     {
         $dbSubesp= new SubespecialidadDatabaseLinker();
+        $dbEsp = new EspecialidadDatabaseLinker();
 
         $subespecialidades = $dbSubesp->getSubespecialidades();
 
@@ -179,6 +180,7 @@ class EstadisticaDatabaseLinker
 
             $list = $this->getServiciosConEdades($mes, $ano, $subespecialidades[$i]->getId());
 
+            $especi['especialidad'] = $dbEsp->getEspecialidad($subespecialidades[$i]->getEspecialidad())->getDetalle();
             $especi['nombre'] = $subespecialidades[$i]->getDetalle();
             $especi['lista'] = $list;
             $contador = 0;
@@ -200,7 +202,7 @@ class EstadisticaDatabaseLinker
     {
 
         $query="SELECT 
-                    ifnull(pf.nombre, 'DEMANDA') as profesional,
+                    CONCAT(pf.nombre,'',pf.apellido) as profesional,
                     s.detalle as subespecialidad,
                     p.nombre,
                     p.apellido,
@@ -227,7 +229,66 @@ class EstadisticaDatabaseLinker
                     paciente p ON (t.nrodoc = p.nrodoc
                         AND t.tipodoc = p.tipodoc)
                 WHERE
-                    DATE(t.fecha_creacion) = ".Utils::phpTimestampToSQLDate($fecha)." 
+                    DATE(t.fecha_creacion) = ".Utils::phpTimestampToSQLDate($fecha)." AND
+                    c.idtipo_consultorio=1
+                order by t.fecha_creacion asc;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("No se pudo traer los detalles para la hoja 2.1", 201230);
+        }
+
+        $array = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $array[] = $result;
+
+        }
+
+        return $array;
+    }
+
+    function turnosAntendidosYporAntenderProgramado($fecha)
+    {
+
+        $query="SELECT 
+                    CONCAT(pf.nombre,'',pf.apellido) as profesional,
+                    s.detalle as subespecialidad,
+                    p.nombre,
+                    p.apellido,
+                    (select 
+                            es.detalle
+                        from
+                            turno_estado_log te
+                                LEFT JOIN
+                            estado_turno es ON (es.id = te.idestado_turno)
+                        WHERE
+                            te.idturno = t.id
+                        order by te.fecha_creacion desc
+                        limit 1) as estado,
+                    t.fecha_creacion
+                FROM
+                    turno t
+                        LEFT JOIN
+                    consultorio c ON (t.idconsultorio = c.id)
+                        LEFT JOIN
+                    subespecialidad s ON (c.idsubespecialidad = s.id)
+                        LEFT JOIN
+                    profesional pf ON (c.idprofesional = pf.id)
+                        LEFT JOIN
+                    paciente p ON (t.nrodoc = p.nrodoc
+                        AND t.tipodoc = p.tipodoc)
+                WHERE
+                    DATE(t.fecha_creacion) = ".Utils::phpTimestampToSQLDate($fecha)." AND
+                    c.idtipo_consultorio=2
                 order by t.fecha_creacion asc;";
 
         try

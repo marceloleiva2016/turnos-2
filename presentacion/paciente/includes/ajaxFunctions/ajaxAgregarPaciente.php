@@ -95,15 +95,25 @@ if(isset($llegada['departamento']) AND $llegada['departamento']!="") {
 
 if($ingreso)
 {
-    try
+    $existe = $gen->existePaciente($llegada['tipodoc'],$llegada['nrodoc']);
+
+    if(!$existe)
     {
-        $ingreso = $gen->crearPaciente($llegada);
-        $return->message = "Paciente ingresado correctamente";
+        try
+        {
+            $ingreso = $gen->crearPaciente($llegada);
+            $return->message = "Paciente ingresado correctamente";
+        }
+        catch (Exception $e)
+        {
+            $return->ret = false;
+            $return->message= "Ocurrio un error interno al ingresar el paciente";
+        }    
     }
-    catch (Exception $e)
+    else
     {
         $return->ret = false;
-        $return->message= "Ocurrio un error interno al ingresar el paciente";
+        $return->message= "El paciente ya existe!";
     }
 }
 else

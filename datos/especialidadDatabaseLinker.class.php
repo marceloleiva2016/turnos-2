@@ -315,4 +315,34 @@ class EspecialidadDatabaseLinker
         return $response;
     }
 
+    function getEspecialidad($idespecialidad)
+    {
+        $query="SELECT 
+                    id,
+                    detalle
+                FROM
+                    especialidad
+                WHERE
+                    id=$idespecialidad;";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error consultando la especialidad", 1);
+        }
+
+        $result = $this->dbTurnos->fetchRow($query);
+        
+        $Especialidad = new Especialidad();
+        $Especialidad->setId($result['id']);
+        $Especialidad->setDetalle($result['detalle']);
+
+        $this->dbTurnos->desconectar();
+
+        return $Especialidad;
+    }
 }

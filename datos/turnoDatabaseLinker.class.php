@@ -387,7 +387,7 @@ class TurnoDatabaseLinker
         return true;
     }
 
-    function actualizarEstadoTurno($idTurno, $idEstado)
+    private function actualizarEstadoTurno($idTurno, $idEstado)
     {
         $query="UPDATE
                     turno

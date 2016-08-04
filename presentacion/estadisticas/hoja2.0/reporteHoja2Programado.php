@@ -2,6 +2,7 @@
 include_once '../../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
 include_once datos.'generalesDatabaseLinker.class.php';
+include_once datos.'estadisticaDatabaseLinker.class.php';
 include_once datos.'utils.php';
 session_start();
 
@@ -17,13 +18,17 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 
-$gn = new GeneralesDatabaseLinker();
+$fecha_solicitud = $_REQUEST['fecha'];
 
-$anios = $gn->aniosConTurnosAtendidos();
+$dateNew = Utils::postDateToPHPTimestamp($fecha_solicitud);
+
+$db = new EstadisticaDatabaseLinker();
+
+$ret = $db->turnosAntendidosYporAntenderProgramado($dateNew);
 
 ?>
 <!DOCTYPE html>
-<html lang="es" class="no-js demo-7">
+<html lang="en" class="no-js demo-7">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
@@ -36,14 +41,17 @@ $anios = $gn->aniosConTurnosAtendidos();
         <link media="screen" type='text/css' rel='stylesheet' href='../../includes/css/demo.css' >
         <link media="screen" type="text/css" rel="stylesheet" href="../../includes/css/barra.css">
         <link media="screen" type="text/css" rel="stylesheet" href="../../includes/css/iconos.css">
-        <link media="screen" type="text/css" rel="stylesheet" href="../../includes/css/login.css">
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="../../includes/plug-in/jqGrid_5.0.2/css/ui.jqgrid.css" />
+        <link media="screen" type="text/css" rel="stylesheet" href="includes/css/style.css">
         
         <script type="text/javascript" src="../../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
         <script type="text/javascript" src="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
         <script type="text/javascript" src="../../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
-        <script type="text/javascript" src="includes/js/index.js" ></script>
+        <script type="text/javascript" src="../../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
+
+       
     </head>
     <body>
         <!-- barra -->
@@ -53,7 +61,9 @@ $anios = $gn->aniosConTurnosAtendidos();
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Hoja 2.1 Prefiltro</a>
+                &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema SITU</a>
+                &nbsp;&gt;&nbsp;<a href="indexProgramado.php">Seleccion Mes</a>
+                &nbsp;&gt;&nbsp;<a href="#">Hoja 2 Programados</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->
@@ -64,33 +74,32 @@ $anios = $gn->aniosConTurnosAtendidos();
         </div>
         <!-- /barra -->
         <div id="container" class="container">
-            <div class="page"  align="center">
-                <form id="fechaForm" name="fechaForm" method="post" action="reporteHoja21.php"  align="center">
-                    <br>
-                    <div class="logo">
-                        <span style="font-size: 5em;" class="icon icon-edit"></span>
-                    </div>
-                    <h1>Año</h1>
-                    <div align="center">
-                        <select id="anio" name="anio" onchange="seleccionadoAnio(this);">
-                            <option value="">Selecione</option>
-                            <?php
-                            for ($i=0; $i < count($anios); $i++) {
+            <div id="demo"  align="center">
+                <br>
+                <?php
+                echo "Fecha:".$fecha_solicitud;
+                ?>
+                <br>
+                <table align="center" border="1">
+                    <tr>
+                        <th>Profesional</th>
+                        <th>Subespecialidad</th>
+                        <th>Fecha</th>
+                        <th>Paciente</th>
+                        <th>Estado Turno</th>
+                    </tr>
 
-                                echo "<option value=".$anios[$i]['ano'].">".$anios[$i]['ano']."</option>";
+                    <?php
+                    for ($i=0; $i < count($ret); $i++) { 
 
-                            }
-                            ?>
-                        </select>
-                        <br>
-                        <h1>Mes</h1>
-                        <select id="mes" name="mes">
-                        </select>
-                        <br>
-                    </div>
-                    <br>
-                    <input class="button-secondary" type="submit" name="enviar" id="enviar" value="Consultar">
-                </form>
+                        echo  "<tr><td>".$ret[$i]['profesional']."</td>";
+                        echo  "<td>".$ret[$i]['subespecialidad']."</td>";
+                        echo  "<td>".$ret[$i]['fecha_creacion']."</td>";
+                        echo  "<td>".$ret[$i]['nombre']." ".$ret[$i]['apellido']."</td>";
+                        echo  "<td>".$ret[$i]['estado']."</td></tr>";
+                    }
+                    ?>
+                </table>
             </div>
         </div>
     </body>

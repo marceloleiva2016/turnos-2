@@ -47,8 +47,6 @@ if ($data->result == true)
     $idTurno = $dbAtencion->obtenerIdTurno($idAtencion);
     //ingreso en el log el cambio de estado de turno
     $dbTurno->insertarEnLog($idTurno, 3, $usuarioUnset->getId());
-    //y actualizo el estado del turno
-    $dbTurno->actualizarEstadoTurno($idTurno, 3);
 
     if(!$ingreso)
     {

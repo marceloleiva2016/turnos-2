@@ -211,6 +211,32 @@ class PacienteDatabaseLinker
         return $ret;
     }
 
+    function existePaciente($tipodoc, $nrodoc)
+    {
+        $query="SELECT 
+                   *
+                FROM
+                    paciente
+                WHERE
+                    tipodoc=$tipodoc AND
+                    nrodoc=$nrodoc;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error consultando el paciente", 1);
+        }
+
+        $result = $this->dbTurnos->fetchRow($query);
+
+        return $result!=false;
+    }
+
     function getDatosPacientePorNumero($tipodoc, $nrodoc)
     {
         $query="SELECT 

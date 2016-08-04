@@ -32,4 +32,9 @@ class Subespecialidad extends Especialidad
         $this->idusuario = $value;
     }
 
+    function getEspecialidad()
+    {
+        return $this->especialidad;
+    }
+
 }
