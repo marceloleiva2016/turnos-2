@@ -24,13 +24,13 @@ $data->show = false;
 
 $datos = $_REQUEST;
 
-if(!isset($datos['nombre']) OR $datos['nombre']=="") {
+if(!isset($datos['NombreProf']) OR $datos['NombreProf']=="") {
     $data->mensaje = "Ingresar Nombre";
     $data->result = false;
     $data->show = true;
 }
 
-if(!isset($datos['apellido']) OR $datos['apellido']=="") {
+if(!isset($datos['ApeProf']) OR $datos['ApeProf']=="") {
     $data->mensaje = "Ingresar Apellido";
     $data->result = false;
     $data->show = true;
