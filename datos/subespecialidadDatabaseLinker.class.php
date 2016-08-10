@@ -448,18 +448,18 @@ class SubespecialidadDatabaseLinker
     function getSubspecialidadesConConsultoriosProgramadosActivos($idEspecialidad)
     {
     	$query="SELECT
-    	s.id,
-    	s.detalle
-    	FROM
-    	subespecialidad s LEFT JOIN
-    	consultorio c ON (c.idsubespecialidad = s.id)
-    	WHERE
-    	c.habilitado=1 AND
-    	c.idtipo_consultorio=2 AND
-    	s.habilitado=1 AND
-    	s.idespecialidad=$idEspecialidad
-    	GROUP BY
-    	s.id;";
+                	s.id,
+                	s.detalle
+                FROM
+                	subespecialidad s LEFT JOIN
+                	consultorio c ON (c.idsubespecialidad = s.id)
+    	        WHERE
+                	c.habilitado=1 AND
+                	c.idtipo_consultorio=2 AND
+                	s.habilitado=1 AND
+                	s.idespecialidad=$idEspecialidad
+    	        GROUP BY
+    	            s.id;";
     
     	try
     	{

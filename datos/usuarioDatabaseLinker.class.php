@@ -323,7 +323,7 @@ class UsuarioDatabaseLinker
         return $response;
 	}
 
-    private function getUsuarios($entidad, $page, $rows)
+    public function getUsuarios($entidad, $page, $rows)
 	{
 		$offset = ($page - 1) * $rows;
 
@@ -774,6 +774,38 @@ class UsuarioDatabaseLinker
         $this->dbusuario->desconectar();
         
         return $arr;
+    }
+
+    function getUsuariosRegistrados($entidad)
+    {
+        $query="SELECT 
+                    idusuario, 
+                    detalle, 
+                    nombre
+                FROM 
+                    usuario
+                WHERE
+                    entidad = '".$entidad."' AND
+                    habilitado = true;";
+        try
+        {
+            $this->dbusuario->conectar();
+            $this->dbusuario->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error al conectar con la base de datos", 17052013);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbusuario->querySize; $i++)
+        {
+            $usuario = $this->dbusuario->fetchRow($query);
+            $ret[] = $usuario;
+        }
+
+        return $ret; 
     }
 }
 ?>

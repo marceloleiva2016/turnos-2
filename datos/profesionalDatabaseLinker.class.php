@@ -104,7 +104,8 @@ class ProfesionalDatabaseLinker
                     usuario u ON(u.idusuario = p.idusuario)
 
                 WHERE
-                    p.habilitado = true ".$where."
+                    p.habilitado = true ".$where." 
+                    ORDER BY p.nombre ASC
                 LIMIT $rows OFFSET $offset;";
 
         $this->dbTurnos->ejecutarQuery($query);
@@ -196,12 +197,20 @@ class ProfesionalDatabaseLinker
 
     function modificarProfesional($data)
     {
-
         $response = new stdClass();
 
-        $query= "UPDATE profesional SET nombre = '".$data['nombre']."' ,apellido = '".$data['apellido']."'
-        WHERE id = ".$data['idprofesional'].";";
-
+        $query="UPDATE
+                    profesional
+                SET
+                    nombre='".$data['nombre']."',
+                    apellido='".$data['apellido']."',
+                    email='".$data['email']."',
+                    matricula_nacional=".Utils::phpIntToSQL($data['matricula_n']).",
+                    matricula_provincial=".Utils::phpIntToSQL($data['matricula_p']).",
+                    telefono=".Utils::phpIntToSQL($data['telefono']).",
+                    idusuario=".Utils::phpIntToSQL($data['idusuario'])."
+                WHERE
+                    id=".Utils::phpIntToSQL($data['id']).";";
         try
         {
             $this->dbTurnos->conectar();
@@ -218,7 +227,35 @@ class ProfesionalDatabaseLinker
         }
 
         return $response;
+    }
 
+    function eliminarProfesional($data)
+    {
+        $response = new stdClass();
+
+        $query="UPDATE
+                    profesional 
+                SET
+                    habilitado = false 
+                WHERE 
+                    id = ".$data['id'].";";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
+            $this->dbTurnos->desconectar();
+            $response->message = "Profesional Eliminado";
+            $response->ret = true;
+
+        }
+        catch (Exception $e)
+        {
+            $response->message = "Ocurrio un error eliminando el profesional.";
+            $response->ret = false;
+        }
+
+        return $response;
     }
 
     function getProfesional($idprofesional)
