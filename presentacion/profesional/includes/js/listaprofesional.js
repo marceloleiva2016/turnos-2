@@ -21,16 +21,17 @@ function mostrarDialogo(paginaVista, paginaFuncion)
                                     $('#formProfesional').get(0).reset();
                                     $("#jgVerProf").trigger("reloadGrid"); 
                                     if(data.show) {
-                                        alert(data.message);
+                                        alert(data.mensaje);
+                                        $(this).dialog("close");
                                     }
                                     //relodeo la tabla
                                 } else {
-                                    alert(data.message);
+                                    alert(data.mensaje);
                                 }
                                 
                             }
                         });
-                        $(this).dialog("close");
+                        
                     }
                 },
                 "Cerrar":function() {
@@ -47,16 +48,31 @@ $(document).ready(function(){
         url:'includes/ajaxFunctions/verProfesional.php', 
         mtype: "POST",
         datatype: "json",
-        colNames:['Nro','Nombre','Apellido','Mat Nacional','Mat Provincial','Email','Telefono','Usuario'],
+        colNames:['Nro','Nombre','Apellido','Mat Nacional','Mat Provincial','Email','Telefono','Usuario','Accion'],
         colModel:[ 
-            {name:'idprofesional', index:'p.idprofesional',width:'30%',align:"left",fixed:true,editable:true},
+            {name:'idprofesional', index:'p.idprofesional',width:'30%',align:"left",fixed:true,editable:false},
             {name:'nombre', index:'p.nombre',width:'100%',align:"left",fixed:true,editable:true},
             {name:'apellido', index:'p.apellido',width:'100%',align:"left",fixed:true, editable:true},
             {name:'matricula_n', index:'p.matricula_nacional',width:'100%',align:"left",fixed:true, editable:true},
             {name:'matricula_p', index:'p.matricula_provincial',width:'100%',align:"left",fixed:true, editable:true},
             {name:'email', index:'p.email',width:'100%',align:"left",fixed:true, editable:true},
             {name:'telefono', index:'p.telefono',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'idusuario', index:'p.idusuario',width:'100%',align:"left",fixed:true, editable:true}
+            {name:'idusuario', index:'p.idusuario',width:'100%',align:"left",fixed:true, editable:true, edittype:"select",
+                editoptions:{
+                    value: usuariosLista
+                }
+            },
+            {name: 'myac', width: '50%', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false,
+                formatoptions:
+                {
+                    keys: true,
+                    delbutton: true,
+                    editbutton: true,
+                    onError: function(_, xhr) {
+                        alert(xhr.responseText);
+                    }
+                }
+            }
         ],
         rowNum:true,
         viewrecords: true,
@@ -67,6 +83,7 @@ $(document).ready(function(){
         pager: '#jqProffoot',
         sortname: 'p.idprofesional',
         sortorder: "desc",
+        editurl :'includes/ajaxFunctions/modificarProfesional.php',
         width: '100%',
         height: '100%'
     });

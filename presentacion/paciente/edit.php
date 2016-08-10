@@ -195,7 +195,7 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
             <h3>Datos de Obra Social</h3>
             <div align="center">
 
-              
+              En desarrollo...
 
             </div>
         </div>

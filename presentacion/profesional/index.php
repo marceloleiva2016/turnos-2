@@ -2,6 +2,8 @@
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
+include_once datos.'usuarioDatabaseLinker.class.php';
+
 session_start();
 
 if(!isset($_SESSION['usuario']))
@@ -14,6 +16,11 @@ $usuario = $_SESSION['usuario'];
 
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
+
+$db = new UsuarioDatabaseLinker();
+
+$usuarios = $db->getUsuariosRegistrados("TURNOS");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,6 +37,22 @@ $data = unserialize($usuario);
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
+    <script type="text/javascript">
+        <?php
+            $text = "value='";
+
+            for ($i=0; $i < count($usuarios); $i++) {
+                $text.=$usuarios[$i]['idusuario'].":".$usuarios[$i]['detalle'];
+                if($i!=count($usuarios)-1){
+                    $text.=";";
+                }
+            }
+
+            $text.="'";
+        ?>
+
+        var usuariosLista = <?php echo $text; ?>;
+    </script>
     <script type="text/javascript" src="includes/js/listaprofesional.js"></script>
 
 </head>

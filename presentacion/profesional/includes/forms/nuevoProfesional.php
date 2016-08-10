@@ -19,38 +19,21 @@ $data = unserialize($usuario);
 
         function validar()
         {
-            if($('#NombreProf').val()=='')
+            if($('#MatNac').val()=='' && $('#MatProv').val()=='')
             {
-                alert("Debe ingresar el nombre del profesional.");
+                alert("Debe ingresar alguna matricula para el profesional.");
                 return false;
             }
             else
             {
-
-                if($('#ApeProf').val()=='')
+                if($('#slctusuario').val()=='')
                 {
-                    alert("Debe ingresar el apellido del profesional.");
+                    alert("Debe seleccionar un usuario disponible del profesional.");
                     return false;
                 }
                 else
                 {
-                    if($('#MatNac').val()=='' && $('#MatProv').val()=='')
-                    {
-                        alert("Debe ingresar alguna matricula para el profesional.");
-                        return false;
-                    }
-                    else
-                    {
-                        if($('#slctusuario').val()=='')
-                        {
-                            alert("Debe seleccionar un usuario disponible del profesional.");
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
+                    return true;
                 }
             }
         }
@@ -110,7 +93,7 @@ $data = unserialize($usuario);
 
             <input type="text" name="usuariobusqueda" id="usuariobusqueda" placeholder="Usuario"/>
 
-            <input type="submit" name="buscarUsuario" id="buscarUsuario" value="Buscar Usuario" class="submit-button"/><br/><br/>
+            <input type="submit" name="buscarUsuario" id="buscarUsuario" value="Buscar Usuario" class="button-secondary" /><br/><br/>
 
             <select name="slctusuario" id="slctusuario">
 

@@ -22,17 +22,64 @@ $data->result = true;
 
 $data->show = false;
 
-$datos = $_POST;
+$datos = $_REQUEST;
 
-$respuesta = $db->crearProfesional($datos);
-
-if(!$respuesta->ret)
-{
+if(!isset($datos['nombre']) OR $datos['nombre']=="") {
+    $data->mensaje = "Ingresar Nombre";
     $data->result = false;
-
     $data->show = true;
+}
 
-    $data->mensaje = "Ocurrio un error al ingresar el profesional";    
+if(!isset($datos['apellido']) OR $datos['apellido']=="") {
+    $data->mensaje = "Ingresar Apellido";
+    $data->result = false;
+    $data->show = true;
+}
+
+if(isset($datos['MailProf']) AND $datos['MailProf']!="") {
+    if(!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/", $datos['MailProf'])) {
+        $data->mensaje = "Email invalido.";
+        $data->result = false;
+        $data->show = true;
+    }
+}
+
+if(isset($datos['TelProf']) AND $datos['TelProf']!="") {
+    $tel = $datos['TelProf'];
+    if(!is_numeric(trim($tel))) {
+        $data->mensaje = "Nro Telefono debe ser numerico.";
+        $data->result = false;
+        $data->show = true;
+    }
+}
+
+if(isset($datos['MatNac']) AND $datos['MatNac']!="") {
+    $tel = $datos['MatNac'];
+    if(!is_numeric(trim($tel))) {
+        $data->mensaje = "La Matricula Nacional debe ser numerica";
+        $data->result = false;
+        $data->show = true;
+    }
+}
+
+if(isset($datos['MatProv']) AND $datos['MatProv']!="") {
+    $tel = $datos['MatProv'];
+    if(!is_numeric(trim($tel))) {
+        $data->mensaje = "La Matricula Provincial debe ser numerica";
+        $data->result = false;
+        $data->show = true;
+    }
+}
+
+if($data->result) {
+
+    $respuesta = $db->crearProfesional($datos);
+
+    if(!$respuesta->ret) {
+        $data->mensaje = "Ocurrio un error al ingresar el profesional";    
+        $data->result = false;
+        $data->show = true;
+    }
 }
 
 echo json_encode($data);

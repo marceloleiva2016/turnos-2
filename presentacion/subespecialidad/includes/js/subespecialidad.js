@@ -52,7 +52,7 @@ $(document).ready(function() {
             {name:'id', index:'sub.id',width:'40%',align:"left",fixed:true,editable:false},
             {name:'detalle', index:'sub.detalle',width:'150%',align:"center",fixed:true,editable:true},
             {name:'especialidad', index:'esp.detalle',width:'100%',align:"left",fixed:true, editable:false},
-            {name: 'myac', width: '40%', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false,
+            {name: 'myac', width: '50%', fixed: true, sortable: false, resize: false, formatter: 'actions', search: false,
                 formatoptions: 
                 {
                     keys: true,

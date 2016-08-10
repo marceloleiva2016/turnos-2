@@ -6,8 +6,14 @@ $db = new ProfesionalDatabaseLinker();
 
 $data = $_POST;
 
-$ret = $db->modificarProfesional($data);
-    
-echo json_encode($ret);
+if($data['oper'] == 'del')
+{
+    $ret = $db->eliminarProfesional($data);
+}
+else
+{
+    $ret = $db->modificarProfesional($data);    
+}
 
+echo json_encode($ret);
 ?>
