@@ -57,7 +57,7 @@ $(document).ready(function(){
             {name:'matricula_p', index:'p.matricula_provincial',width:'100%',align:"left",fixed:true, editable:true},
             {name:'email', index:'p.email',width:'100%',align:"left",fixed:true, editable:true},
             {name:'telefono', index:'p.telefono',width:'100%',align:"left",fixed:true, editable:true},
-            {name:'idusuario', index:'p.idusuario',width:'100%',align:"left",fixed:true, editable:true, edittype:"select",
+            {name:'idusuario', index:'p.idusuario',width:'100%',align:"left",fixed:true,search: false, editable:true, edittype:"select",
                 editoptions:{
                     value: usuariosLista
                 }
