@@ -45,7 +45,8 @@ $data = unserialize($usuario);
 	        <!-- /navegar-->
 	        <!-- usuario -->
             <div id="usuario">
-                <a href="../usuario/"><span class="icon icon-boy"> </span>Usuario | <?=$data->getNombre()?></a>
+                <a href="../usuario/"><span class="icon icon-boy"> </span>Usuario | <?=$data->getNombre()?></a> |
+                <a href="../index.php?logout=1"><span class="icon icon-exit"> </span>Terminar sesión</a>
             </div>
             <!-- /usuario-->
 		</div>

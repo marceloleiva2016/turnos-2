@@ -78,12 +78,16 @@ html, body
 	height: 25px;
 }
 
-#usuario a
-{
+#usuario {
 	float:right;
-	text-align:right;
 	margin-top:10px;
 	margin-right:10px;
+}
+
+#usuario a
+{
+	text-align:right;
+	
 	font-weight: bold;
 	color: #FFF;
 }
