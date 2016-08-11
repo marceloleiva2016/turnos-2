@@ -20,9 +20,9 @@ function mostrarDialogo(paginaVista, paginaFuncion)
                                 if(data.result) {
                                     $('#formProfesional').get(0).reset();
                                     $("#jgVerProf").trigger("reloadGrid"); 
+                                    $(this).dialog("close");
                                     if(data.show) {
                                         alert(data.mensaje);
-                                        $(this).dialog("close");
                                     }
                                     //relodeo la tabla
                                 } else {
