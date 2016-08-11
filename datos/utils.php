@@ -642,7 +642,7 @@ class Utils {
 	static function stringToArray($texto)
 	{
 		str_replace('\n',' ',$texto);//primero reemplazo enters por espacios en blanco
-		$parts = split(" ",Utils::borrarDoblesEspaciosBlancos($texto)); //borro los dobles espacios en blanco y busco la palabra num
+		$parts = explode(" ",Utils::borrarDoblesEspaciosBlancos($texto)); //borro los dobles espacios en blanco y busco la palabra num
 		return $parts;
 	}
 	
@@ -650,7 +650,7 @@ class Utils {
 	static function palabra($texto,$num)
 	{
 		str_replace('\n',' ',$texto);//primero reemplazo enters por espacios en blanco
-		$parts = split(" ",Utils::borrarDoblesEspaciosBlancos($texto)); //borro los dobles espacios en blanco y busco la palabra num
+		$parts = explode(" ",Utils::borrarDoblesEspaciosBlancos($texto)); //borro los dobles espacios en blanco y busco la palabra num
 		
 		return $parts[$num -1];
 	}
