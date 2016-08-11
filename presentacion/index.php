@@ -8,12 +8,15 @@
 	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/login.css">
 	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/barra.css">
 	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/iconos.css">
+	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/demo.css">
 </head>
 <body>
 	<div class="post">
 		<div class="page">
 			<div class="logo">
-				<span style="font-size: 5em;" class="icon icon-about"></span><h1>SITU</h1>
+				<div class="imagenLogoW">
+				</div>
+				<h1>SITU</h1>
 			</div>
 			<div align="center">
 				<form method="post" action="validarInicioSession.php">
