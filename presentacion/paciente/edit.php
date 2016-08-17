@@ -4,6 +4,7 @@ include_once negocio.'usuario.class.php';
 include_once negocio.'paciente.class.php';
 include_once datos.'generalesDatabaseLinker.class.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
+include_once datos.'obraSocialDatabaseLinker.class.php';
 
 session_start();
 
@@ -31,8 +32,11 @@ if(!isset($_REQUEST['tipodoc']) or !isset($_REQUEST['nrodoc'])) {
 
 $gen = new GeneralesDatabaseLinker();
 $pacDB = new PacienteDatabaseLinker();
+$obsocDB = new ObraSocialDatabaseLinker();
 
 $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
+
+$obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
 
 ?>
 <!DOCTYPE html>
@@ -192,11 +196,16 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
               <input type="hidden" name="usuario" id="usuario" value='<?=$data->getId()?>'>
 
             </div>
-            <h3>Datos de Obra Social</h3>
+          <h3>Datos de Obra Social</h3>
             <div align="center">
-
-              En desarrollo...
-
+              <label>Obra Social :</label><?php echo $obras_social['obra_social']; ?><br>
+              <label>Nro de Afiliado :</label><?php echo $obras_social['nro_afiliado']; ?><br>
+              <label>Empresa :</label><?php echo $obras_social['empresa_nombre']; ?><br>
+              <label>Direccion :</label><?php echo $obras_social['empresa_direccion']; ?><br>
+              <label>Fecha de emision :</label><?php echo Utils::sqlDateToHtmlDate($obras_social['fecha_emision']); ?><br>
+              <label>Fecha de vencimiento :</label><?php echo Utils::sqlDateToHtmlDate($obras_social['fecha_vencimiento']); ?><br>
+              <label>Ultima Modificacion</label><br>
+              <?php echo Utils::sqlDateToHtmlDate($obras_social['fecha_creacion']); ?>
             </div>
         </div>
         <div align="center">

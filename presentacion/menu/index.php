@@ -40,7 +40,7 @@ $data = unserialize($usuario);
 	 			<span style="font-size: 2em;" class="icon icon-about"></span>
 	        </div>
 	        <div id="navegar">
-	        	&nbsp;&nbsp;&nbsp;<a href="#">Sistema SITU</a>&nbsp;&gt;
+	        	&nbsp;&nbsp;&nbsp;<a href="#">Sistema SITU</a>
 	        </div>
 	        <!-- /navegar-->
 	        <!-- usuario -->

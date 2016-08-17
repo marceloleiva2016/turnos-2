@@ -117,6 +117,14 @@ $(document).ready(function() {
         inline: true
     });
 
+    $( "#osoc_fecha_emision" ).datepicker({
+        inline: true
+    });
+
+    $( "#osoc_fecha_vencimiento" ).datepicker({
+        inline: true
+    });
+
     $( "#radioset" ).buttonset();
 
     $( "#guardar" ).button();

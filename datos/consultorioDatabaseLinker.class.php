@@ -221,6 +221,7 @@ class ConsultorioDatabaseLinker
             $this->dbTurnos->desconectar();
             return false;
         }
+        $this->dbTurnos->desconectar();
 
         return true;
     }
@@ -328,6 +329,8 @@ class ConsultorioDatabaseLinker
             $this->dbTurnos->desconectar();
             return false;
         }
+
+        $this->dbTurnos->desconectar();
 
         return true;
     }
@@ -704,6 +707,8 @@ class ConsultorioDatabaseLinker
             $this->dbTurnos->desconectar();
             return false;
         }
+
+        $this->dbTurnos->desconectar();
 
         return true;
     }

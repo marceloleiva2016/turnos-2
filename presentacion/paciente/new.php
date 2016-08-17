@@ -2,6 +2,7 @@
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
 include_once datos.'generalesDatabaseLinker.class.php';
+include_once datos.'obraSocialDatabaseLinker.class.php';
 session_start();
 
 /*Agregado para que tenga el usuario*/
@@ -18,6 +19,7 @@ $data = unserialize($usuario);
 
 $gen = new GeneralesDatabaseLinker();
 
+$obsocDB = new ObraSocialDatabaseLinker();
 ?>
 <!DOCTYPE html>
 <html>
@@ -124,13 +126,43 @@ $gen = new GeneralesDatabaseLinker();
               <input type="hidden" name="usuario" id="usuario" value='<?=$data->getId()?>'>
 
             </div>
-
+          </form>
+          <h3>Datos de Obra Social</h3>
+            <div align="center">
+              <form id="formObraSocial">
+                <fieldset>
+                  <legend><b>Filtrar Obra Social:</b></legend>
+                  <div>
+                    Buscar:
+                    <input name="det_busq" id="det_busq" placeholder="Detalle">
+                    <button class="button-secondary" name="osocFiltrar" id="osocFiltrar" >Filtrar</button><br>
+                    <select id="osoc" name="osoc">
+                      <?php
+                        $obrasSociales = $obsocDB->getObrasSocialesActivas();
+                          for ($i=0; $i < count($obrasSociales); $i++) { 
+                            echo "<option value=".$obrasSociales[$i]['id'].">".substr($obrasSociales[$i]['detalle'],0,80)."</option>";
+                          }
+                        ?>
+                    </select>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend><b>Selecionar Obra Social:</b></legend>
+                      <label>Nro de Afiliado :</label><input type="text" name="osoc_nro_afiliado" id="osoc_nro_afiliado" /><br>
+                      <label>Empresa :</label><input type="text" name="osoc_empresa" id="osoc_empresa" /><br>
+                      <label>Direccion :</label><input type="text" name="osoc_direccion" id="osoc_direccion" /><br>
+                      <label>Fecha de emision :</label><input type="text" name="osoc_fecha_emision" id="osoc_fecha_emision" /><br>
+                      <label>Fecha de vencimiento :</label><input type="text" name="osoc_fecha_vencimiento" id="osoc_fecha_vencimiento" /><br>
+                      <input type="hidden" name="idusuario" id="idusuario" value='<?=$data->getId()?>'>
+                </fieldset>
+              </form>
+            </div>
         </div>
         <div align="center">
           <button id="guardar" style="height:50px; width:200px;">Crear Paciente</button>
         </div>
 
-      </form>
+      
 
     </div>
 

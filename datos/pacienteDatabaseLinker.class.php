@@ -75,8 +75,10 @@ class PacienteDatabaseLinker
         }
         catch (Exception $e)
         {
+            $this->dbTurnos->desconectar();
             return false;
         }
+        $this->dbTurnos->desconectar();
 
         return true;
     }
@@ -116,8 +118,10 @@ class PacienteDatabaseLinker
         }
         catch (Exception $e)
         {
+            $this->dbTurnos->desconectar();
             return false;
         }
+        $this->dbTurnos->desconectar();
 
         return true;
     }
@@ -208,6 +212,8 @@ class PacienteDatabaseLinker
             $ret[] = $paciente;
         }
 
+        $this->dbTurnos->desconectar();
+
         return $ret;
     }
 
@@ -233,6 +239,8 @@ class PacienteDatabaseLinker
         }
 
         $result = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
 
         return $result!=false;
     }

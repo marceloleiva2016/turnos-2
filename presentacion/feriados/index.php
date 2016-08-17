@@ -56,7 +56,7 @@ $data = unserialize($usuario);
             <p align="center">Feriados y Vacaciones</p>
             <table id="jqVerFer"></table>
             <div id="jqFerFoot"></div>
-            <input type="submit" value="Nuevo Feriado o vacacion" id="nuevoFeriado">
+            <input type="submit" value="Nuevo Feriado o vacacion" id="nuevoFeriado" class="button-secondary">
         </div>
         <div id="dialogFer" style="display: none;"></div>
     </div>

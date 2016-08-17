@@ -1,3 +1,5 @@
+var reenvioOsoc = false;
+
 function cargarOptions(combo, datos)
 {
     for(i=0; i<datos.length; i++)
@@ -126,6 +128,11 @@ function getEdad(dateString)
     return age;
 }
 
+function vaciarComboObrasSociales()
+{
+    $('#osoc option').remove();
+}
+
 $(document).ready(function() {
 
     $( "#guardar" ).click(function(event){
@@ -133,23 +140,84 @@ $(document).ready(function() {
         var tipodoc = $('#tipodoc').val();
         var nrodoc = $('#nrodoc').val();
 
-        $.ajax({
-            data: $( "#formPaciente" ).serialize(),
-            type: "POST",
-            dataType: "json",
-            url: "includes/ajaxFunctions/ajaxAgregarPaciente.php",
-            success: function(data)
-            {
-                alert(data.message);
-                if(data.ret)
+        if(!reenvioOsoc)
+        {
+            $.ajax({
+                data: $( "#formPaciente" ).serialize(),
+                type: "POST",
+                dataType: "json",
+                url: "includes/ajaxFunctions/ajaxAgregarPaciente.php",
+                success: function(data)
                 {
-                    window.location = "edit.php?tipodoc="+tipodoc+"&nrodoc="+nrodoc;
+                    alert(data.message);
+                    if(data.ret)
+                    {
+                        $.ajax({
+                            data: $( "#formObraSocial" ).serialize()+"&tipodoc="+tipodoc+"&nrodoc="+nrodoc,
+                            type: "POST",
+                            dataType: "json",
+                            url: "includes/ajaxFunctions/ajaxAgregarObraSocial.php",
+                            success: function(data)
+                            {
+                                if(!data.ret)
+                                {
+                                    alert(data.message);
+                                    reenvioOsoc = true;
+                                } else {
+                                    window.location = "edit.php?tipodoc="+tipodoc+"&nrodoc="+nrodoc;
+                                }
+                            }
+                        });
+                    }
                 }
+            });
+        } else {
+            $.ajax({
+                data: $( "#formObraSocial" ).serialize()+"&tipodoc="+tipodoc+"&nrodoc="+nrodoc,
+                type: "POST",
+                dataType: "json",
+                url: "includes/ajaxFunctions/ajaxAgregarObraSocial.php",
+                success: function(data)
+                {
+                    if(!data.ret)
+                    {
+                        alert(data.message);
+                        reenvioOsoc = true;
+                    } else {
+                        window.location = "edit.php?tipodoc="+tipodoc+"&nrodoc="+nrodoc;
+                    }
+                }
+            });
+        } 
+    });
+
+    $('#osocFiltrar').click(function(event){
+        event.preventDefault();
+        var det = $('#det_busq').val();
+        vaciarComboObrasSociales();
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            url:'includes/ajaxFunctions/jsonObrasSociales.php',
+            data:{Det:det},
+            success: function(json)
+            {
+                obrasSociales = json;
+                cargarOptions($('#osoc'),obrasSociales);
             }
         });
     });
 
+
     $( "#fecha_nac" ).datepicker({
+        inline: true
+    });
+
+    $( "#osoc_fecha_emision" ).datepicker({
+        inline: true
+    });
+
+    $( "#osoc_fecha_vencimiento" ).datepicker({
         inline: true
     });
 

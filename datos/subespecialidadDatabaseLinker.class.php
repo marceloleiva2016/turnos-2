@@ -35,12 +35,12 @@ class SubespecialidadDatabaseLinker
     		throw new Exception("Error Processing Request", 1);
     	}
     	
-    		$result = $this->dbTurnos->fetchRow($query);
-    		$subespecialidad = new Subespecialidad();
-    		$subespecialidad->setId($result['id']);
-    		$subespecialidad->setDetalle($result['detalle']);
-    		$subespecialidad->setEspecialidad($result['idespecialidad']);
-    		$subespecialidades[] = $subespecialidad;
+		$result = $this->dbTurnos->fetchRow($query);
+		$subespecialidad = new Subespecialidad();
+		$subespecialidad->setId($result['id']);
+		$subespecialidad->setDetalle($result['detalle']);
+		$subespecialidad->setEspecialidad($result['idespecialidad']);
+		$subespecialidades[] = $subespecialidad;
     	
     	$this->dbTurnos->desconectar();
     	
@@ -250,9 +250,11 @@ class SubespecialidadDatabaseLinker
         }
         catch (Exception $e)
         {
+            $this->dbTurnos->desconectar();
             $response->message = "Ocurrio un error al crear la subespecialidad";
             $response->ret = false;
         }
+        $this->dbTurnos->desconectar();
 
         return $response;
     }
@@ -272,8 +274,11 @@ class SubespecialidadDatabaseLinker
         }
         catch (Exception $e)
         {
+            $this->dbTurnos->desconectar();
             return false;
         }
+
+        $this->dbTurnos->desconectar();
 
         return true;
     }
@@ -387,16 +392,18 @@ class SubespecialidadDatabaseLinker
         {
             $this->dbTurnos->conectar();
             $this->dbTurnos->ejecutarAccion($query);
-            $this->dbTurnos->desconectar();
             $response->message = "Subespecialidad modificada";
             $response->ret = true;
 
         }
         catch (Exception $e)
         {
-            $response->message = "Hubo un error modificando la subespecialidad.";
+            $this->dbTurnos->desconectar();
+            $response->message = "Ocurrio un error modificando la subespecialidad.";
             $response->ret = false;
         }
+
+        $this->dbTurnos->desconectar();
 
         return $response;
     }
@@ -411,16 +418,17 @@ class SubespecialidadDatabaseLinker
         {
             $this->dbTurnos->conectar();
             $this->dbTurnos->ejecutarAccion($query);
-            $this->dbTurnos->desconectar();
             $response->message = "Subespecialidad eliminada";
             $response->ret = true;
-
         }
         catch (Exception $e)
         {
+            $this->dbTurnos->desconectar();
             $response->message = "Hubo un error eliminando la subespecialidad.";
             $response->ret = false;
         }
+
+        $this->dbTurnos->desconectar();
 
         return $response;
     }
