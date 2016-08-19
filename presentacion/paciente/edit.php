@@ -4,7 +4,6 @@ include_once negocio.'usuario.class.php';
 include_once negocio.'paciente.class.php';
 include_once datos.'generalesDatabaseLinker.class.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
-include_once datos.'obraSocialDatabaseLinker.class.php';
 
 session_start();
 
@@ -32,11 +31,8 @@ if(!isset($_REQUEST['tipodoc']) or !isset($_REQUEST['nrodoc'])) {
 
 $gen = new GeneralesDatabaseLinker();
 $pacDB = new PacienteDatabaseLinker();
-$obsocDB = new ObraSocialDatabaseLinker();
 
 $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
-
-$obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
 
 ?>
 <!DOCTYPE html>
@@ -51,6 +47,11 @@ $obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
   <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
   <script type="text/javascript" src="includes/js/edit.js" ></script>
+  <!-- agregado dialogo -->
+  <link rel="stylesheet" type="text/css" href="../includes/plug-in/dialogo/dialog.css" />
+
+  <script type="text/javascript" src="../includes/plug-in/dialogo/dialogModernizrCustom.js" ></script>
+
   <script type="text/javascript">
     var pais = <?php  echo $paciente->getPais(); ?>;
     var provincia = <?php  echo $paciente->getProvincia(); ?>;
@@ -138,8 +139,8 @@ $obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
           <h3>Datos Personales</h3>
             <div align="center" style="display: block; height: auto !important;">
               <label>Tipo y Numero Documento: </label><h2><?php echo $gen->getDescripcionTipoDocumento($paciente->getTipoDoc())['detalle_corto']."  ".$paciente->getNrodoc();?></h2><br>
-              <input type="hidden" name="tipodoc" value="<?php echo $paciente->getTipoDoc(); ?>" />
-              <input type="hidden" name="nrodoc" value="<?php echo $paciente->getNrodoc(); ?>" />
+              <input type="hidden" id="tipodoc" name="tipodoc" value="<?php echo $paciente->getTipoDoc(); ?>" />
+              <input type="hidden" id="nrodoc" name="nrodoc" value="<?php echo $paciente->getNrodoc(); ?>" />
               <label>Nombre y Apellido : </label><input type="text" name="nombre" id="nombre" placeholder="Nombre" value="<?php echo Utils::sqlStringToPHP($paciente->getNombre()); ?>" />
               <input type="text" name="apellido" id="apellido" placeholder="Apellido" value='<?php echo Utils::sqlStringToPHP($paciente->getApellido()); ?>'/><br><br>
               <div id="radioset">
@@ -197,16 +198,12 @@ $obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
 
             </div>
           <h3>Datos de Obra Social</h3>
-            <div align="center">
-              <label>Obra Social :</label><?php echo $obras_social['obra_social']; ?><br>
-              <label>Nro de Afiliado :</label><?php echo $obras_social['nro_afiliado']; ?><br>
-              <label>Empresa :</label><?php echo $obras_social['empresa_nombre']; ?><br>
-              <label>Direccion :</label><?php echo $obras_social['empresa_direccion']; ?><br>
-              <label>Fecha de emision :</label><?php echo Utils::sqlDateToHtmlDate($obras_social['fecha_emision']); ?><br>
-              <label>Fecha de vencimiento :</label><?php echo Utils::sqlDateToHtmlDate($obras_social['fecha_vencimiento']); ?><br>
-              <label>Ultima Modificacion</label><br>
-              <?php echo Utils::sqlDateToHtmlDate($obras_social['fecha_creacion']); ?>
+            <div align="center" id="apartadoObraSocial">
+
+             
+              
             </div>
+
         </div>
         <div align="center">
           <button id="guardar" style="height:50px; width:200px;">Guardar</button>
@@ -215,6 +212,20 @@ $obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
       </form>
 
     </div>
+
+    <!--dialogo test -->
+    <div id="somedialog" class="dialog">
+      <div class="dialog__overlay">
+      </div>
+      <div class="dialog__content">
+        <button id="somedialog-close" class="action" data-dialog-close>X</button>
+        <div id="dialog_subcontent">
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../includes/plug-in/dialogo/dialogFx.js" ></script>
+    <script type="text/javascript" src="../includes/plug-in/dialogo/dialogClassie.js" ></script>
+    
 
 </body>
 

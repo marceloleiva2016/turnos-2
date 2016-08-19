@@ -97,9 +97,19 @@ function ingresandoPartido()
     }
 }
 
+function vaciarComboObrasSociales()
+{
+    $('#osoc option').remove();
+}
+
 $(document).ready(function() {
 
-    $( "#guardar" ).click(function(event){
+    var tipoDoc = $("#tipodoc").val();
+    var nroDoc = $("#nrodoc").val();
+
+    $("#apartadoObraSocial").load("includes/forms/obraSocialActual.php",{tipodoc:tipoDoc, nrodoc:nroDoc});
+
+    $('#guardar').click(function(event){
         event.preventDefault();
         $.ajax({
             data: $( "#formPaciente" ).serialize(),
@@ -114,14 +124,6 @@ $(document).ready(function() {
     });
 
     $( "#fecha_nac" ).datepicker({
-        inline: true
-    });
-
-    $( "#osoc_fecha_emision" ).datepicker({
-        inline: true
-    });
-
-    $( "#osoc_fecha_vencimiento" ).datepicker({
         inline: true
     });
 

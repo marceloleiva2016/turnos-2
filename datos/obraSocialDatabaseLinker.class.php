@@ -47,33 +47,14 @@ class ObraSocialDatabaseLinker
         return $ret;
     }
 
-    function eliminarFichaoOsoc($data)
+    function eliminarFichaoOsoc($id)
     {
-        $query="INSERT INTO
-                    `paciente_obra_social` (
-                        `tipodoc`,
-                        `nrodoc`, 
-                        `idobra_social`, 
-                        `nro_afiliado`, 
-                        `empresa_nombre`, 
-                        `empresa_direccion`, 
-                        `fecha_emision`, 
-                        `fecha_vencimiento`,
-                        `fecha_creacion`,
-                        `idusuario`, 
-                        `habilitado`) 
-                VALUES (
-                        '".$data['tipodoc']."',
-                        '".$data['nrodoc']."',
-                        '".$data['osoc']."',
-                        '".$data['osoc_nro_afiliado']."',
-                        '".$data['osoc_empresa']."',
-                        '".$data['osoc_direccion']."',
-                        '".$data['osoc_fecha_emision']."',
-                        '".$data['osoc_fecha_vencimiento']."',
-                        now(),
-                        '".$data['idusuario']."',
-                        true );";
+        $query="UPDATE
+                    paciente_obra_social
+                SET
+                    habilitado=false
+                WHERE
+                    id=$id;";
         try
         {
             $this->dbTurnos->conectar();
@@ -135,6 +116,7 @@ class ObraSocialDatabaseLinker
     function getObraSocialPaciente($tipodoc, $nrodoc)
     {
         $query="SELECT
+                    pos.id as id,
                     os.detalle as obra_social,
                     pos.nro_afiliado,
                     pos.empresa_nombre,
