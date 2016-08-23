@@ -256,6 +256,66 @@ class EstadisticaDatabaseLinker
         return $array;
     }
 
+    function turnosConfirmadosDemanda($fecha, $idsubespecialidad)
+    {
+
+        $query="SELECT 
+                    CONCAT(pf.nombre,'',pf.apellido) as profesional,
+                    s.detalle as subespecialidad,
+                    p.nombre,
+                    p.apellido,
+                    (select 
+                            es.detalle
+                        from
+                            turno_estado_log te
+                                LEFT JOIN
+                            estado_turno es ON (es.id = te.idestado_turno)
+                        WHERE
+                            te.idturno = t.id
+                        order by te.fecha_creacion desc
+                        limit 1) as estado,
+                    t.fecha_creacion
+                FROM
+                    turno t
+                        LEFT JOIN
+                    consultorio c ON (t.idconsultorio = c.id)
+                        LEFT JOIN
+                    subespecialidad s ON (c.idsubespecialidad = s.id)
+                        LEFT JOIN
+                    profesional pf ON (c.idprofesional = pf.id)
+                        LEFT JOIN
+                    paciente p ON (t.nrodoc = p.nrodoc
+                        AND t.tipodoc = p.tipodoc)
+                WHERE
+                    DATE(t.fecha_creacion) = ".Utils::phpTimestampToSQLDate($fecha)." AND
+                    c.idtipo_consultorio=1 AND 
+                    t.idestado_turno=2 AND
+                    c.idsubespecialidad = ".$idsubespecialidad."
+                order by t.fecha_creacion asc;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("No se pudo traer los detalles para la hoja 2.1", 201230);
+        }
+
+        $array = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $array[] = $result;
+
+        }
+
+        return $array;
+    }
+
     function turnosAntendidosYporAntenderProgramado($fecha)
     {
 
@@ -289,6 +349,67 @@ class EstadisticaDatabaseLinker
                 WHERE
                     DATE(t.fecha_creacion) = ".Utils::phpTimestampToSQLDate($fecha)." AND
                     c.idtipo_consultorio=2
+                order by t.fecha_creacion asc;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("No se pudo traer los detalles para la hoja 2.1", 201230);
+        }
+
+        $array = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+            $array[] = $result;
+
+        }
+
+        return $array;
+    }
+
+    function turnosConfirmadosProgramado($fecha, $idsubespecialidad, $idprofesional)
+    {
+
+        $query="SELECT 
+                    CONCAT(pf.nombre,'',pf.apellido) as profesional,
+                    s.detalle as subespecialidad,
+                    p.nombre,
+                    p.apellido,
+                    (select 
+                            es.detalle
+                        from
+                            turno_estado_log te
+                                LEFT JOIN
+                            estado_turno es ON (es.id = te.idestado_turno)
+                        WHERE
+                            te.idturno = t.id
+                        order by te.fecha_creacion desc
+                        limit 1) as estado,
+                    t.fecha_creacion
+                FROM
+                    turno t
+                        LEFT JOIN
+                    consultorio c ON (t.idconsultorio = c.id)
+                        LEFT JOIN
+                    subespecialidad s ON (c.idsubespecialidad = s.id)
+                        LEFT JOIN
+                    profesional pf ON (c.idprofesional = pf.id)
+                        LEFT JOIN
+                    paciente p ON (t.nrodoc = p.nrodoc
+                        AND t.tipodoc = p.tipodoc)
+                WHERE
+                    DATE(t.fecha_creacion) = ".Utils::phpTimestampToSQLDate($fecha)." AND
+                    c.idtipo_consultorio=2 AND 
+                    t.idestado_turno=2 AND
+                    c.idsubespecialidad = ".$idsubespecialidad." AND
+                    c.idprofesional = ".$idprofesional." 
                 order by t.fecha_creacion asc;";
 
         try

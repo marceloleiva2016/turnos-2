@@ -308,3 +308,48 @@ fieldset {
     background-size: contain;
     margin-top: 0px;
 }
+
+.horariosConsultorios {
+    display:inline-block;
+    width: 20em;
+    overflow: hidden;
+}
+
+.horarioContenido {
+    height: auto !important;
+}
+
+.horarioContenedor {
+    width:100%;
+    height:100%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.fechasContenedor{
+    width:100%;
+    height:100%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.fechasConsultorios {
+    display: inline-block;
+    margin: 0.5em;
+    padding: 0.7em 1.1em;
+    border: 3px solid #17294B;
+    color: #17294B;
+    font-weight: 700;
+    width: 100px;
+}
+
+.fechasConsultorios a {
+    color: #888;
+    text-decoration: none;
+}
+
+.fechasConsultorios a:HOVER {
+    color: #888;
+    font-size: 16px;
+    cursor:pointer;
+}

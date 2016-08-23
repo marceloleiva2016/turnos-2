@@ -128,6 +128,8 @@ $especialidadesRows = $ListaEspecialidades->data;
           <legend>Dias Anticipacion</legend>
           <select name="dias_anticipacion" id="dias_anticipacion">
             <option value="2">2 Dias</option>
+            <option value="7">7 Dias</option>
+            <option value="15">15 Dias</option>
             <option value="30">30 Dias</option>
             <option value="60">60 Dias</option>
             <option value="90">90 Dias</option>
@@ -143,7 +145,7 @@ $especialidadesRows = $ListaEspecialidades->data;
         </fieldset>
 
         <fieldset>
-          <legend>Feriados</legend>
+          <legend>Disponible Feriados</legend>
           SI:<input type="radio" name="feriados" value="true" checked>&nbsp;&nbsp;NO:<input type="radio" name="feriados" value="false">
         </fieldset>
 

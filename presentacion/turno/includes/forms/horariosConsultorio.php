@@ -35,19 +35,17 @@ if(!$error)
 {
     ?>
     <input type='hidden' id='fechaSeleccionada' value='<?php echo $fecha; ?>'>
-    <br>
+    <div class="horarioContenedor" >    
     <?php
 
-    $horaActual = date('H:i:s');
-
     for ($i=0; $i < count($horarios); $i++) {
-
-        $text = "";
+        $text = "<div class='horariosConsultorios' >";
         if($horarios[$i]['paciente']!=null) {
-            $text .= "<span class='icon icon-confirm'> </span>".$horarios[$i]['hora']." ".$horarios[$i]['paciente']."<br>";
+            $text .= "<span class='icon icon-confirm'></span><span>".$horarios[$i]['hora']." <span class='icon icon-next'></span> ".$horarios[$i]['paciente']."</span>";
         } else {
-            $text .= "<span class='icon icon-next'> </span>".$horarios[$i]['hora']."<input type='radio' id='horarioRadio' name='horarioRadio' value='".$horarios[$i]['hora']."' /><br>";
+            $text .= "<span class='icon icon-plus'></span>".$horarios[$i]['hora']."<input class='horarioContenido' type='radio' id='horarioRadio' name='horarioRadio' value='".$horarios[$i]['hora']."' />";
         }
-        echo $text;
+        echo $text."</div>";
     }
+    echo "</div>";
 }

@@ -8,38 +8,32 @@ include_once datos.'utils.php';
 $dbConsultorio = new ConsultorioDataBaseLinker();
 $error = false;
 
-if($_POST['subespecialidad']=="")
-{
+if($_POST['subespecialidad']=="") {
     $error = true;
     $errorMesage = "Seleccione un consultorio para ver los dias <br/>";
 }
-else
-{
+else {
     $subespecialidad = $_POST['subespecialidad'];
     $profesional = $_POST['profesional'];
 }
 
-if(!$error)
-{
-
+if(!$error) {
     $fechas = $dbConsultorio->getFechasConsultorio($subespecialidad, $profesional);
-
 }
-else
-{
+else {
     $error = true;
     $errorMesage = "No se encontraron fechas disponibles para este consultorio";
 }
 
-if(!$error)
-{
-    echo "<div>";
+if(!$error) {
+    echo "<div class='fechasContenedor'>";
 
     for ($i=0; $i < count($fechas); $i++) {
         ?>
-        <a onclick="verHorarios('<?php echo $fechas[$i]['fecha']."',".$fechas[$i]['iddia']; ?> );"><span class='icon icon-next'> </span><?php echo $fechas[$i]['dia']." ".Utils::sqlDateToHtmlDate($fechas[$i]['fecha']); ?></a><br>
+        <div class='fechasConsultorios' >
+            <a onclick="verHorarios('<?php echo $fechas[$i]['fecha']."',".$fechas[$i]['iddia']; ?> );"><span class='icon icon-notepad'> </span><?php echo $fechas[$i]['dia']." ".Utils::sqlDateToHtmlDate($fechas[$i]['fecha']); ?></a>
+        </div>
         <?php
     }
-
     echo "</div>";
 }

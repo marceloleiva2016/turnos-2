@@ -72,9 +72,10 @@ $data = unserialize($usuario);
 										echo "<li><a href='../atencion/preTurnoProgramado.php'><span>Antencion Medica</span></a></li>";	
 									}
 									if ($data->tienePermiso('PROGRAMADO_ELIMINAR')){
-										echo "<li><a href='../turno/eliminarTurnoProgramado.php'><span>Eliminar Turno</span></a></li>";	
+										echo "<li><a href='../turno/eliminarTurnoProgramado.php'><span>Eliminar Turno</span></a></li>";
 									}
 									?>
+									<li><a href='../atencion_diaria/indexProgramado.php'><span>Imprimir Turnos Confirmados</span></a></li>
 								</ul>
 							</li>
 							<li>
@@ -88,6 +89,7 @@ $data = unserialize($usuario);
 										echo "<li><a href='../atencion/preTurnoDemanda.php'><span>Antencion Medica</span></a></li>";
 									}
 									?>
+									<li><a href='../atencion_diaria/indexDemanda.php'><span>Imprimir Turnos Confirmados</span></a></li>
 								</ul>
 							</li>
 							<li>

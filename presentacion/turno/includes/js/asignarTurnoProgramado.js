@@ -282,7 +282,7 @@ $(document).ready(function(){
 
     $("#dialogHora").dialog({
         autoOpen: false,
-        width: 400,
+        width: '70%',
         buttons:
             [{
                 text: "Seleccionar",

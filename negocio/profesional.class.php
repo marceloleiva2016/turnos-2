@@ -71,6 +71,49 @@ class Profesional
         $this->habilitado = $hab;
     }
 
+    function getId()
+    {
+        return $this->id;
+    }
 
+    function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    function getMatriculaN()
+    {
+        return $this->matricula_n;
+    }
+
+    function getMatriculaP()
+    {
+        return $this->matricula_p;
+    }
+
+    function getEmail()
+    {
+        return $this->email;
+    }
+
+    function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    function getIdusuario()
+    {
+        return $this->idusuario;
+    }
+
+    function getHabilitado()
+    {
+        return $this->habilitado;
+    }
 }
 ?>
