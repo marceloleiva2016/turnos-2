@@ -21,11 +21,31 @@ function mostrarDialogo(paginaVista, paginaFuncion)
                                     $('#formEspecialidad').get(0).reset();
                                     $("#jqVerEsp").trigger("reloadGrid"); 
                                     if(data.show) {
-                                        alert(data.message);
+                                        //NOTIFICACION
+                                        // create the notification
+                                        var notification = new NotificationFx({
+                                            message : '<span class="icon icon-message"></span><p>'+data.message+'</p>',
+                                            layout : 'attached',
+                                            effect : 'bouncyflip',
+                                            type : 'notice'
+                                        });
+                                        // show the notification
+                                        notification.show();
+                                        //NOTIFICACION
                                     }
                                     //relodeo la tabla
                                 } else {
-                                    alert(data.message);
+                                    //NOTIFICACION
+                                    // create the notification
+                                    var notification = new NotificationFx({
+                                        message : '<span class="icon icon-message"></span><p>'+data.message+'</p>',
+                                        layout : 'attached',
+                                        effect : 'bouncyflip',
+                                        type : 'notice'
+                                    });
+                                    // show the notification
+                                    notification.show();
+                                    //NOTIFICACION
                                 }
                                 
                             }

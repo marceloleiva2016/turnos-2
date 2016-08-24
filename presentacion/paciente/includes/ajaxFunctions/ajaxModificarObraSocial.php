@@ -17,8 +17,6 @@ $ingreso = true;
 
 if($llegada['osoc']!=0)
 {
-
-
     if(!isset($llegada['osoc_fecha_emision']) OR $llegada['osoc_fecha_emision']=="")
     {
         $llegada['osoc_fecha_emision'] = "NULL";
@@ -61,9 +59,11 @@ if($llegada['osoc']!=0)
         $llegada['osoc_direccion'] = "";
     } 
 }
-else if(!isset($llegada['osoc']) OR $llegada['osoc']=="")
+else if(!isset($llegada['osoc']) OR $llegada['osoc']=="" OR $llegada['osoc']==0)
 {
     $return->ret = false;
+    $ingreso = false;
+    $text .= " Obra Social no seleccionada";
     $return->message= "Obra Social no seleccionada";
 }
 

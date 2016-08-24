@@ -20,7 +20,9 @@ $data = new stdClass();
 
 $data->result = true;
 
-$data->show = false;
+$data->show = true;
+
+$data->message = "Especialidad ingresada correctamente!"; 
 
 $datos = $_POST['nombre'];
 
@@ -30,9 +32,7 @@ if(!$respuesta->ret)
 {
     $data->result = false;
 
-    $data->show = true;
-
-    $data->mensaje = "Ocurrio un error al ingresar la especialidad";    
+    $data->message = "Ocurrio un error al ingresar la especialidad";    
 }
 
 echo json_encode($data);

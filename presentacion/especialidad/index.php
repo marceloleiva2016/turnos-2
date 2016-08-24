@@ -25,7 +25,11 @@ $data = unserialize($usuario);
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../includes/plug-in/jqGrid_5.0.2/css/ui.jqgrid.css" />
-
+    <!--NOTIFICACION -->
+    <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-default.css" />
+    <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-style-attached.css" />
+    <script src="../includes/plug-in/notificacion/js/modernizr.custom.js"></script>
+    <!--/NOTIFICACION -->
     <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
@@ -62,5 +66,9 @@ $data = unserialize($usuario);
     </div>
 
     <div name="loader" style="display:none;">Cargando...</div>
+    <!--NOTIFICACION -->
+    <script src="../includes/plug-in/notificacion/js/classie.js"></script>
+    <script src="../includes/plug-in/notificacion/js/notificationFx.js"></script>
+    <!--/NOTIFICACION -->
 </body>
 </html>

@@ -20,7 +20,17 @@ $data = unserialize($usuario);
         function validar()
         {
             if($('#nombre').val()=='') {
-                alert("Debe ingresar el nombre de la especialidad.");
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon2 icon-message"></span><p>Debe ingresar el nombre de la especialidad!</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
                 return false;
             } else {
                 return true;

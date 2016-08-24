@@ -34,11 +34,35 @@ $(document).ready(function() {
                         url: "includes/ajaxFunctions/bajaConsultorio.php",
                         success: function(data) {
                             if(data.result) {
-                                alert(data.message);
+                                //NOTIFICACION
+                                setTimeout( function() {
+                                    // create the notification
+                                    var notification = new NotificationFx({
+                                        message : '<span class="icon icon-message"></span><p>'+data.message+'</p>',
+                                        layout : 'attached',
+                                        effect : 'bouncyflip',
+                                        type : 'notice'
+                                    });
+                                    // show the notification
+                                    notification.show();
+                                }, 1200 );
+                                //NOTIFICACION
                                 document.getElementById('baja').style.display = 'none';
                                 document.getElementById('horariosForm').style.display = 'none';
                             } else {
-                                alert(data.message);
+                                //NOTIFICACION
+                                setTimeout( function() {
+                                    // create the notification
+                                    var notification = new NotificationFx({
+                                        message : '<span class="icon icon-message"></span><p>'+data.message+'</p>',
+                                        layout : 'attached',
+                                        effect : 'bouncyflip',
+                                        type : 'notice'
+                                    });
+                                    // show the notification
+                                    notification.show();
+                                }, 1200 );
+                                //NOTIFICACION
                             }
                         }
                     });
@@ -60,12 +84,23 @@ $(document).ready(function() {
             dataType: "json",
             url: "includes/ajaxFunctions/guardarHorario.php",
             success: function(data) {
-                alert(data.message);
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon icon-message"></span><p>'+data.message+'</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
                 if(data.result) {
                     $("#horarios").load("includes/forms/formTablaHorarios.php",{idconsultorio:id});
                 }
             }
         });
     });
+
 
 });

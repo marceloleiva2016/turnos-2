@@ -41,7 +41,17 @@ $(document).ready(function() {
       url: "includes/ajaxFunctions/ajaxModificarObraSocial.php",
         success: function(data)
         {
-          alert(data.message);
+          //NOTIFICACION
+          // create the notification
+          var notification = new NotificationFx({
+              message : '<span class="icon2 icon-message"></span><p>'+data.message+'</p>',
+              layout : 'attached',
+              effect : 'bouncyflip',
+              type : 'notice'
+          });
+          // show the notification
+          notification.show();
+          //NOTIFICACION
           if(data.ret)
           {
             $('#somedialog-close').click();

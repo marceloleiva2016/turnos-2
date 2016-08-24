@@ -149,7 +149,17 @@ $(document).ready(function() {
                 url: "includes/ajaxFunctions/ajaxAgregarPaciente.php",
                 success: function(data)
                 {
-                    alert(data.message);
+                    //NOTIFICACION
+                    // create the notification
+                    var notification = new NotificationFx({
+                        message : '<span class="icon2 icon-message"></span><p>'+data.message+'</p>',
+                        layout : 'attached',
+                        effect : 'bouncyflip',
+                        type : 'notice'
+                    });
+                    // show the notification
+                    notification.show();
+                    //NOTIFICACION
                     if(data.ret)
                     {
                         $.ajax({
@@ -161,7 +171,17 @@ $(document).ready(function() {
                             {
                                 if(!data.ret)
                                 {
-                                    alert(data.message);
+                                    //NOTIFICACION
+                                    // create the notification
+                                    var notification = new NotificationFx({
+                                        message : '<span class="icon2 icon-message"></span><p>'+data.message+'</p>',
+                                        layout : 'attached',
+                                        effect : 'bouncyflip',
+                                        type : 'notice'
+                                    });
+                                    // show the notification
+                                    notification.show();
+                                    //NOTIFICACION
                                     reenvioOsoc = true;
                                 } else {
                                     window.location = "edit.php?tipodoc="+tipodoc+"&nrodoc="+nrodoc;
@@ -181,7 +201,17 @@ $(document).ready(function() {
                 {
                     if(!data.ret)
                     {
-                        alert(data.message);
+                        //NOTIFICACION
+                        // create the notification
+                        var notification = new NotificationFx({
+                            message : '<span class="icon2 icon-message"></span><p>'+data.message+'</p>',
+                            layout : 'attached',
+                            effect : 'bouncyflip',
+                            type : 'notice'
+                        });
+                        // show the notification
+                        notification.show();
+                        //NOTIFICACION
                         reenvioOsoc = true;
                     } else {
                         window.location = "edit.php?tipodoc="+tipodoc+"&nrodoc="+nrodoc;

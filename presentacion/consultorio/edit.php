@@ -38,6 +38,11 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
   <link media="screen" type="text/css" rel="stylesheet" href="includes/css/consultorio.css">
+  <!--NOTIFICACION -->
+  <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-default.css" />
+  <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-style-attached.css" />
+  <script src="../includes/plug-in/notificacion/js/modernizr.custom.js"></script>
+  <!--/NOTIFICACION -->
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
   <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
@@ -142,5 +147,9 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
 
     <div id="dialogBaja" style="display: none;">Esta seguro que desea efectuar la baja del consultorio actual?</div>
     <div id="dialogBajaHorario" style="display: none;"></div>
+    <!--NOTIFICACION -->
+    <script src="../includes/plug-in/notificacion/js/classie.js"></script>
+    <script src="../includes/plug-in/notificacion/js/notificationFx.js"></script>
+    <!--/NOTIFICACION -->
 </body>
 </html>

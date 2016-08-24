@@ -11,7 +11,17 @@ $(document).ready(function(){
         {
             if(nombre=="")
             {
-                alert("Debe ingresar algun dato para realizar la busqueda");    
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon2 icon-message"></span><p>Debe ingresar algun dato para realizar la busqueda!</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
             }
             else 
             {

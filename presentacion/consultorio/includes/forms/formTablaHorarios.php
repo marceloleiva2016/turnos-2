@@ -28,7 +28,18 @@ $horarios = $consulDb->getHorarios($idConsultorio);
                         dataType: "json",
                         url: "includes/ajaxFunctions/borrarHorario.php",
                         success: function(data) {
-                            alert(data.message);
+                            //NOTIFICACION
+                            // create the notification
+                            var notification = new NotificationFx({
+                                message : '<span class="icon icon-message"></span><p>'+data.message+'</p>',
+                                layout : 'attached',
+                                effect : 'bouncyflip',
+                                type : 'notice'
+                            });
+                            // show the notification
+                            notification.show();
+                            //NOTIFICACION
+
                             if(data.result) {
                                 $("#horarios").load("includes/forms/formTablaHorarios.php",{idconsultorio:<?php echo $idConsultorio; ?>});
                             }
