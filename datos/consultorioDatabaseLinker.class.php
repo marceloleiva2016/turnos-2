@@ -590,21 +590,53 @@ class ConsultorioDatabaseLinker
 
         $diasSemanaConsultorio = $this->getDiasEnConsultorio($consultorio['id']);
 
-        $fechas = array();
+        $fechasPorSemana = array();
 
         $fecha = date('Y-m-j');
 
+        $ret = array();
+
+        $ret[1] = array();//Lunes
+        $ret[2] = array();//Martes
+        $ret[3] = array();//Miercoles
+        $ret[4] = array();//Jueves
+        $ret[5] = array();//Viernes
+        $ret[6] = array();//Sabado
+        $ret[7] = array();//Domingo
+
+        $nroSemana = date('W', strtotime($fecha));
+
         for ($i=0; $i < $cantiDias; $i++)
         {
-            $nroSemana = date('N', strtotime($fecha));
+            if($nroSemana!=date('W', strtotime($fecha)))
+            {
+                //Agrego el array previamente llenado como una semana
+                $fechasPorSemana[] = $ret;
 
-            if(array_key_exists($nroSemana, $diasSemanaConsultorio))
+                //Asigno un nuevo nro de semana
+                $nroSemana = date('W', strtotime($fecha));
+
+                //Vacio array lleno para crear uno nuevo
+                $ret = array();
+                $ret[1] = array();//Lunes
+                $ret[2] = array();//Martes
+                $ret[3] = array();//Miercoles
+                $ret[4] = array();//Jueves
+                $ret[5] = array();//Viernes
+                $ret[6] = array();//Sabado
+                $ret[7] = array();//Domingo
+            }
+
+            $nroDia = date('N', strtotime($fecha));
+
+            if(array_key_exists($nroDia, $diasSemanaConsultorio))
             {
                 $tupla = array();
-                $tupla['iddia'] = $nroSemana;
-                $tupla['dia'] = $diasSemanaConsultorio[$nroSemana];
+                $tupla['iddia'] = $nroDia;
+                $tupla['dia'] = $diasSemanaConsultorio[$nroDia];
                 $tupla['fecha'] = $fecha;
-                $fechas[] = $tupla;
+
+                $ret[$tupla['iddia']][] = $tupla;
             }
 
             $fecha = strtotime('+1 day', strtotime($fecha));
@@ -612,7 +644,7 @@ class ConsultorioDatabaseLinker
             $fecha = date('Y-m-j',$fecha);
         }
 
-        return $fechas;
+        return $fechasPorSemana;
     }
 
     function getTurnosAsignadosEnFecha($idConsultorio, $fecha)
