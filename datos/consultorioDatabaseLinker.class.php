@@ -2,14 +2,17 @@
 include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
 include_once datos.'utils.php';
+include_once 'feriadoDatabaseLinker.class.php';
 
 class ConsultorioDatabaseLinker
 {
     var $dbTurnos;
+    var $dbFeriados;
 
     function ConsultorioDatabaseLinker()
     {
         $this->dbTurnos = new dataBaseConnector(HOSTLocal,0,DB,USRDBAdmin,PASSDBAdmin);
+        $this->dbFeriados = new FeriadoDatabaseLinker();
     }
 
     function getIdConsultorioDemanda($idsubespecialidad)
@@ -363,7 +366,7 @@ class ConsultorioDatabaseLinker
 
         try
         {
-            $this->dbTurnos->conectar();
+            $this->dbTurnos->conectar();//3
             $this->dbTurnos->ejecutarQuery($query);
         }
         catch (Exception $e)
@@ -375,7 +378,7 @@ class ConsultorioDatabaseLinker
 
         $ret = $this->dbTurnos->fetchRow($query);
 
-        $this->dbTurnos->desconectar();
+        $this->dbTurnos->desconectar();//3
 
         return $ret;
     }
@@ -609,7 +612,7 @@ class ConsultorioDatabaseLinker
         for ($i=0; $i < $cantiDias; $i++)
         {
             if($nroSemana!=date('W', strtotime($fecha)))
-            {
+            {   
                 //Agrego el array previamente llenado como una semana
                 $fechasPorSemana[] = $ret;
 
@@ -629,14 +632,18 @@ class ConsultorioDatabaseLinker
 
             $nroDia = date('N', strtotime($fecha));
 
+            //
             if(array_key_exists($nroDia, $diasSemanaConsultorio))
             {
-                $tupla = array();
-                $tupla['iddia'] = $nroDia;
-                $tupla['dia'] = $diasSemanaConsultorio[$nroDia];
-                $tupla['fecha'] = $fecha;
+                if(!$this->dbFeriados->existeFeriado($fecha, $idprofesional))
+                {
+                    $tupla = array();
+                    $tupla['iddia'] = $nroDia;
+                    $tupla['dia'] = $diasSemanaConsultorio[$nroDia];
+                    $tupla['fecha'] = $fecha;
 
-                $ret[$tupla['iddia']][] = $tupla;
+                    $ret[$tupla['iddia']][] = $tupla;
+                }
             }
 
             $fecha = strtotime('+1 day', strtotime($fecha));
@@ -743,5 +750,50 @@ class ConsultorioDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return true;
+    }
+
+    function getConsultoriosConFiltro($detalle) 
+    {
+        $query="SELECT 
+                    c.id,
+                    tc.detalle as tipo_consultorio,
+                    e.detalle as especialidad,
+                    s.detalle as subespecialidad,
+                    concat(p.nombre,' ',p.apellido) as profesional
+                FROM
+                    consultorio c LEFT JOIN
+                    tipo_consultorio tc ON(c.idtipo_consultorio=tc.id) LEFT JOIN
+                    subespecialidad s ON(c.idsubespecialidad=s.id) LEFT JOIN
+                    especialidad e ON(s.idespecialidad=e.id) LEFT JOIN
+                    profesional p ON(c.idprofesional=p.id)
+                WHERE
+                    (tc.detalle like '%".$detalle."%' OR
+                    s.detalle like '%".$detalle."%' OR
+                    e.detalle like '%".$detalle."%' OR
+                    concat(p.nombre,' ',p.apellido) like '%".$detalle."%') AND
+                    c.habilitado = true;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar el tipo de consultorio", 201230);
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
     }
 }   
