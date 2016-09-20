@@ -79,6 +79,10 @@ color: #000000;
 
 .esperando {
     animation: pulsar 5s infinite;
+    display: inline-flex;
+    float: left;
+    margin-left: 25%;
+    width: 100%;
 }
 
 .cajaListadoVisible {

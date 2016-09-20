@@ -780,9 +780,17 @@ class TurneroDatabaseLinker
 
         $listado = $this->getLlamadosTurnosEnConsultorios($turnero->getConsultorios());
 
-        for ($i=0; $i < count($listado); $i++) { 
-               
+        $listadoCaducos = $this->getLlamadosCaducosTurnosEnConsultorios($turnero->getConsultorios());
+
+        $atendidos = 0;
+
+        for ($i=0; $i < count($listadoCaducos); $i++) { 
+            if($listadoCaducos[$i]['estado_turno']=='3'){
+                $atendidos++;
+            }
         }
+
+        $std->cantidadAtendidos = $atendidos;
 
         if(count($listado)==0 AND $turno_previo!=0){//Caso pasaron 5 minutos de espera y pasa a turnos caducos
             $std->response = true;

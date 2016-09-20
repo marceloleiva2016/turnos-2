@@ -44,6 +44,9 @@ for ($i=0; $i < count($listado); $i++) {
 }
 
 if(count($listado)==0) {
-    echo "<div class='letraMuyGrande esperando' align='center' ><img id='loading' src='includes/img/ripple.gif' alt='Cargando...'/>Esperando llamados...</div>";
+    echo "<div class='letraMuyGrande esperando' align='center' >
+            <img id='loading' src='includes/img/ripple.gif' alt='Cargando...'/>
+            <div style='margin-top: 0.2em;'>Esperando llamados...</div>
+        </div><hr>";
 }
 ?>

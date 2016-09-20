@@ -1,5 +1,6 @@
 var idultimollamado = 0;
 var cantidadLista = 0;
+var cantidadAtendidos = 0;
 
 function loadPacientes(){
     $("#listadoPacientes").load("includes/forms/pacientesLlamados.php",{id: idturnero});
@@ -19,6 +20,12 @@ function recargar(){
         success: function(json)
         {
             data = json;
+
+            if(data.cantidadAtendidos!=cantidadAtendidos){
+                loadPacientesCaducos();
+                cantidadAtendidos = data.cantidadAtendidos;
+            }
+
             if(data.response)
             {
                 idultimollamado = data.llamado;
