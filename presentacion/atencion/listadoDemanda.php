@@ -34,24 +34,27 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="../includes/plug-in/jqGrid_5.0.2/css/ui.jqgrid.css" />
   <link media="screen" type="text/css" rel="stylesheet" href="includes/css/style.css">
-
   <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
   <script type="text/javascript" src="includes/js/listaAtencionDemanda.js" ></script>
-
+  <!--progressButton -->
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/progressButton/css/btnProgressComponent.css" />
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/progressButton/css/btnProgressDemo.css" />
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/progressButton/css/btnProgressNormalize.css" />
+  <script type="text/javascript" src="../includes/plug-in/progressButton/js/btnProgressModernizr.custom.js" ></script>
+  <!--/progressButton -->
   <script type="text/javascript">
     var sub = <?php echo $idsubespecialidad; ?>;
   </script>
-  
 </head>
 <body>
 <!-- barra -->
   <div id="barra" >
     <!-- navegar -->
     <div id="barraImage" >
-        <span style="font-size: 2em;" class="icon icon-about"></span>
+      <span style="font-size: 2em;" class="icon icon-about"></span>
     </div>
     <div id="navegar">
         &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="preTurnoDemanda.php">Atencion Medica Demanda</a>
@@ -70,13 +73,13 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
  		<label>Subespecialidad :</label><?php echo $subesp->getDetalle(); ?>
   	</div>
     <div id="demo" class="listadoPacientes"  align="center">
-      
     </div>
   </div>
 
   <form method="post" id="frmSeleccionarPaciente" target="_blank" >
     <input type="hidden" name="id" value="" id="id" />
   </form>
-  
+  <script src="../includes/plug-in/progressButton/js/btnProgressClassie.js"></script>
+  <script src="../includes/plug-in/progressButton/js/btnProgressProgressButton.js"></script>
 </body>
 </html>

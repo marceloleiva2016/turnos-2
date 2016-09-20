@@ -2,7 +2,7 @@
 
 define("HOSTLocal", 'localhost');
 define("DB", 'turnos');
-define("USRDBAdmin", 'sisturnos');
-define("PASSDBAdmin", 'turn3r0');
+define("USRDBAdmin", 'root');
+define("PASSDBAdmin", 'f0rm4t1c4');
 
 ?>

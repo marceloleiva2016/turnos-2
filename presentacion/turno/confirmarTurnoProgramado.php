@@ -32,6 +32,11 @@ $gen = new GeneralesDatabaseLinker();
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
+    <!--NOTIFICACION -->
+    <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-default.css" />
+    <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-style-attached.css" />
+    <script src="../includes/plug-in/notificacion/js/modernizr.custom.js"></script>
+    <!--/NOTIFICACION -->
     <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
     <script type="text/javascript" src="includes/js/confirmarTurnoProgramado.js" ></script>
@@ -90,5 +95,9 @@ $gen = new GeneralesDatabaseLinker();
         </div>
     </div>
     <input type="hidden" id="idusuario" name="idusuario" value=<?php echo $data->getId();?> >
+    <!--NOTIFICACION -->
+    <script src="../includes/plug-in/notificacion/js/classie.js"></script>
+    <script src="../includes/plug-in/notificacion/js/notificationFx.js"></script>
+    <!--/NOTIFICACION -->
 </body>
 </html>

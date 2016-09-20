@@ -93,7 +93,17 @@ $(document).ready(function(){
         var nrodoc = $("#nrodoc").val();
         if(tipodoc=="")
         {
-            alert("Debe ingresar un número de documento");
+            //NOTIFICACION
+            // create the notification
+            var notification = new NotificationFx({
+                message : '<span class="icon2 icon-message"></span><p>Debe ingresar un número de documento!</p>',
+                layout : 'attached',
+                effect : 'bouncyflip',
+                type : 'notice'
+            });
+            // show the notification
+            notification.show();
+            //NOTIFICACION
         }
         else
         {
@@ -149,19 +159,49 @@ $(document).ready(function(){
                         }
                         else
                         {
-                            alert("Ocurrio un error al ingresar el turno para el paciente!");
+                            //NOTIFICACION
+                            // create the notification
+                            var notification = new NotificationFx({
+                                message : '<span class="icon2 icon-message"></span><p>Ocurrio un error al ingresar el turno para el paciente!</p>',
+                                layout : 'attached',
+                                effect : 'bouncyflip',
+                                type : 'notice'
+                            });
+                            // show the notification
+                            notification.show();
+                            //NOTIFICACION
                         };
                     }
                 });
             }
             else
             {
-                alert("Debe seleccionar una especialidad y subespecilidad para asigar un turno");
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon2 icon-message"></span><p>Debe seleccionar una especialidad y subespecilidad para asigar un turno!</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
             };
         }
         else
         {
-            alert("Debe ingresar el paciente");
+            //NOTIFICACION
+            // create the notification
+            var notification = new NotificationFx({
+                message : '<span class="icon2 icon-message"></span><p>Debe ingresar el paciente!</p>',
+                layout : 'attached',
+                effect : 'bouncyflip',
+                type : 'notice'
+            });
+            // show the notification
+            notification.show();
+            //NOTIFICACION
         };
     });
 

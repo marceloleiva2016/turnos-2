@@ -44,18 +44,48 @@ $(document).ready(function(){
                         $("#divConfTurno").css("display", "none");
                         $("#fichaPaciente").css("display", "none");
                         $("#botonConfirmar").css("display", "none");
-                        alert("Turno confirmado correctamente");
+                        //NOTIFICACION
+                        // create the notification
+                        var notification = new NotificationFx({
+                            message : '<span class="icon2 icon-message"></span><p>Turno confirmado correctamente!</p>',
+                            layout : 'attached',
+                            effect : 'bouncyflip',
+                            type : 'notice'
+                        });
+                        // show the notification
+                        notification.show();
+                        //NOTIFICACION
                     }
                     else
                     {
-                        alert("Ocurrio un error al confirmar el turno para el paciente!");
+                        //NOTIFICACION
+                        // create the notification
+                        var notification = new NotificationFx({
+                            message : '<span class="icon2 icon-message"></span><p>Ocurrio un error al confirmar el turno para el paciente!</p>',
+                            layout : 'attached',
+                            effect : 'bouncyflip',
+                            type : 'notice'
+                        });
+                        // show the notification
+                        notification.show();
+                        //NOTIFICACION
                     }
                 }
             });    
         }
         else
         {
-            alert("Debe seleccionar un turno para confirmar");
+            //NOTIFICACION
+            // create the notification
+            var notification = new NotificationFx({
+                message : '<span class="icon2 icon-message"></span><p>Debe seleccionar un turno para confirmar!</p>',
+                layout : 'attached',
+                effect : 'bouncyflip',
+                type : 'notice'
+            });
+            // show the notification
+            notification.show();
+            //NOTIFICACION
         }
     });
 

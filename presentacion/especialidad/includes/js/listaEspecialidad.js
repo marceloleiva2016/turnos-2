@@ -70,7 +70,7 @@ $(document).ready(function(){
         colNames:['Nro','Nombre'],
         colModel:[ 
             {name:'idespecialidad', index:'idespecialidad',width:'50%',align:"left",fixed:true,editable:true},
-            {name:'nombre', index:'detalle',width:'200%',align:"left",fixed:true,editable:true}
+            {name:'nombre', index:'detalle',width:'300%',align:"left",fixed:true,editable:true}
         ],
         rowNum:true,
         viewrecords: true,
