@@ -4,7 +4,7 @@ include_once datos.'turneroDatabaseLinker.class.php';
 
 $dbTurnero = new TurneroDatabaseLinker();
 
-$turnero = $dbTurnero->getTurnero(1);
+$turnero = $dbTurnero->getTurnero($_REQUEST['id']);
 
 $listado = $dbTurnero->getLlamadosCaducosTurnosEnConsultorios($turnero->getConsultorios());
 ?>

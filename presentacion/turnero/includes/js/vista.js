@@ -8,7 +8,6 @@ function loadPacientes(){
 
 function loadPacientesCaducos(){ 
     $("#listadoPacientesCaducos").load("includes/forms/pacientesLlamadosCaducos.php",{id: idturnero});
-    /*sonido.play();*/
 }
 
 function recargar(){

@@ -8,14 +8,14 @@ function cargarOptionsComponentes(combo, datos)
 
 function verTurnero(id)
 {
-  $("#dialog_subcontent2").load("includes/forms/nuevoTurnero.php",{action:"edit",idturnero:id});
+  $("#dialog_subcontent2").load("includes/forms/editarTurnero.php",{idturnero:id});
   $("#verTurnero").click();
 }
 
 $(document).ready(function() {
 
   $('#btnNuevoTurnero').click(function(){
-    $("#dialog_subcontent").load("includes/forms/nuevoTurnero.php?action=new");
+    $("#dialog_subcontent").load("includes/forms/nuevoTurnero.php");
   });
 
   $("#jqTurneros").jqGrid({
@@ -26,9 +26,9 @@ $(document).ready(function() {
     colModel:[
       {name:'id', index:'id',width:'50%',align:"center",fixed:true, editable:false, search: false },
       {name:'consultorios', index:'consultorios',width:'300%',align:"left",fixed:true, editable:false, search: false },
-      {name:'act',index:'act', width:'50%', sortable:false,align:"center",search:false, fixed:true,editable:false},
+      {name:'act',index:'act', width:'90%', sortable:false,align:"center",search:false, fixed:true,editable:false},
       {name:'myac', width:45, fixed:true, sortable:false, resize:false, formatter:'actions',search:false, formatoptions:{keys:true,"delbutton":true,"editbutton":false}}
-      ], 
+      ],
         rowNum: true,
         viewrecords: true,
         altRows: true,
@@ -46,7 +46,8 @@ $(document).ready(function() {
             for(var i=0;i < ids.length;i++)
             {
                 var cl = ids[i];
-                be = "<input class='button-secondary' type='button' onclick=\"javascript:verTurnero('"+cl+"');\" value='Editar'/>";
+                be = "<input class='button-secondary' type='button' onclick=\"javascript:verTurnero('"+cl+"');\" value='Editar'/>&nbsp";
+                be += "<input class='button-secondary' type='button' value='Ver' onclick=\"window.open(\'"+window.location+"vista.php?id="+cl+"\')\" />";
                 jQuery("#jqTurneros").jqGrid('setRowData',ids[i],{act:be});
             }
         }

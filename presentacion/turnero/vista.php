@@ -1,6 +1,6 @@
 <?php
 
-$idturnero = 1;//$_REQUEST['id'];
+$idturnero = $_REQUEST['id'];
 
 if(!isset($idturnero) OR $idturnero=="" OR $idturnero==null){
     echo "No se encontro configuracion deturnero.";

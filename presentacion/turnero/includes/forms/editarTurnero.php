@@ -22,7 +22,7 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 
-$id = $dbTurnero->crearTurnero($data->getId());
+$id = $_REQUEST['idturnero'];
 
 $consultorios = $dbConsultorio->getConsultoriosConFiltro("");
 ?>
@@ -32,7 +32,7 @@ var idturnero = <?=$id?>;
 
 $(document).ready(function(){
 
-    $("#jqVerConsultoriosEnTurnero").jqGrid({
+    $("#jqVerConsultoriosEnTurneroEdit").jqGrid({
         url:'includes/ajaxFunctions/jsonConsultoriosEnTurnero.php?idturnero='+idturnero, 
         mtype: "POST",
         datatype: "json",
@@ -68,7 +68,7 @@ $(document).ready(function(){
         height: 100
     });
 
-    $('#jqVerConsultoriosEnTurnero').jqGrid('navGrid', '#jqTurFooter', {
+    $('#jqVerConsultoriosEnTurneroEdit').jqGrid('navGrid', '#jqTurFooter', {
         edit:false,
         add:false,
         del:false,
@@ -98,7 +98,7 @@ $(document).ready(function(){
                 //NOTIFICACION
                 if(data.result)
                 {
-                    $('#jqVerConsultoriosEnTurnero').trigger("reloadGrid");
+                    $('#jqVerConsultoriosEnTurneroEdit').trigger("reloadGrid");
                 }
             }
         });
@@ -161,6 +161,6 @@ $(document).ready(function(){
     <button name="agregarConsultorio" id="agregarConsultorio" class="button-secondary" ><span class="icon icon-edit"> </span> </button><br/>
 </form>
 <div align="center">
-    <table id="jqVerConsultoriosEnTurnero"></table>
+    <table id="jqVerConsultoriosEnTurneroEdit"></table>
     <div id="jqTurFooter"></div>
 </div>
