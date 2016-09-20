@@ -76,17 +76,15 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
   </div>
   <!-- /barra -->
   <div id="container">
+  <br><br>
   <div  align="center">
  		<label>Subespecialidad :</label><?php echo $subesp->getDetalle(); ?><br>
  		<label>Profesional :</label><?php echo $profesional->nombre." ".$profesional->apellido; ?>
   </div>
-  	 
-  
     <div id="demo" class="listadoPacientesProgramados"  align="center">
       
     </div>
   </div>
-
   <form method="post" id="frmSeleccionarPaciente" target="_blank" >
     <input type="hidden" name="id" value="" id="id" />
   </form>

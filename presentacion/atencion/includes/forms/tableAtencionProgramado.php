@@ -28,7 +28,7 @@ if(count($turnos)==0) {
 }
 
 ?>
-<br><br>
+<br>
 <table align="center" border="1" id="listado">
   <tr>
     <th>Hora</th>

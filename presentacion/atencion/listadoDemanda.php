@@ -69,6 +69,7 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
   </div>
   <!-- /barra -->
   <div id="container">
+    <br><br>
   	<div  align="center">
  		<label>Subespecialidad :</label><?php echo $subesp->getDetalle(); ?>
   	</div>
