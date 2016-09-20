@@ -22,11 +22,31 @@ function mostrarDialogo(paginaVista, paginaFuncion)
                                     $("#jgVerProf").trigger("reloadGrid"); 
                                     $(this).dialog("close");
                                     if(data.show) {
-                                        alert(data.mensaje);
+                                        //NOTIFICACION
+                                        // create the notification
+                                        var notification = new NotificationFx({
+                                            message : '<span class="icon2 icon-message"></span><p>'+data.mensaje+'</p>',
+                                            layout : 'attached',
+                                            effect : 'bouncyflip',
+                                            type : 'notice'
+                                        });
+                                        // show the notification
+                                        notification.show();
+                                        //NOTIFICACION
                                     }
                                     //relodeo la tabla
                                 } else {
-                                    alert(data.mensaje);
+                                    //NOTIFICACION
+                                    // create the notification
+                                    var notification = new NotificationFx({
+                                        message : '<span class="icon2 icon-message"></span><p>'+data.mensaje+'</p>',
+                                        layout : 'attached',
+                                        effect : 'bouncyflip',
+                                        type : 'notice'
+                                    });
+                                    // show the notification
+                                    notification.show();
+                                    //NOTIFICACION
                                 }
                                 
                             }

@@ -21,14 +21,34 @@ $data = unserialize($usuario);
         {
             if($('#MatNac').val()=='' && $('#MatProv').val()=='')
             {
-                alert("Debe ingresar alguna matricula para el profesional.");
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon2 icon-message"></span><p>Debe ingresar alguna matricula para el profesional!</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
                 return false;
             }
             else
             {
                 if($('#slctusuario').val()=='')
                 {
-                    alert("Debe seleccionar un usuario disponible del profesional.");
+                    //NOTIFICACION
+                    // create the notification
+                    var notification = new NotificationFx({
+                        message : '<span class="icon2 icon-message"></span><p>Debe seleccionar un usuario disponible del profesional!</p>',
+                        layout : 'attached',
+                        effect : 'bouncyflip',
+                        type : 'notice'
+                    });
+                    // show the notification
+                    notification.show();
+                    //NOTIFICACION
                     return false;
                 }
                 else
