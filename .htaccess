@@ -1,0 +1,4 @@
+Header always add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+Header always add Access-Control-Request-Method: "GET,POST,OPTIONS,DELETE,PUT"
+Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
+Header always set Access-Control-Allow-Origin: "*"

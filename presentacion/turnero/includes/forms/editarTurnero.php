@@ -47,7 +47,7 @@ $(document).ready(function(){
                 formatoptions:
                 {
                     keys: true,
-                    delbutton: true,
+                    delbutton:true,
                     editbutton: false,
                     onError: function(_, xhr) {
                         alert(xhr.responseText);

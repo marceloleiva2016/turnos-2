@@ -87,6 +87,7 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
   </div>
   <form method="post" id="frmSeleccionarPaciente" target="_blank" >
     <input type="hidden" name="id" value="" id="id" />
+    <input type="hidden" name="tipo" value="2" id="tipo" />
   </form>
   <script src="../includes/plug-in/progressButton/js/btnProgressClassie.js"></script>
   <script src="../includes/plug-in/progressButton/js/btnProgressProgressButton.js"></script>

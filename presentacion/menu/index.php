@@ -111,6 +111,9 @@ $data = unserialize($usuario);
 									if ($data->tienePermiso('ADMINISTRAR_FERIADO')){
 										echo "<li><a href='../feriados/'><span>Feriados / Vacaciones</span></a></li>";	
 									}
+									if ($data->tienePermiso('VER_TURNEROS')){
+										echo "<li><a href='../turnero/'><span>Pantalla Llamados</span></a></li>";	
+									}
 									?>
 								</ul>
 							</li>
@@ -131,6 +134,22 @@ $data = unserialize($usuario);
 									<li><a href="../estadisticas/hoja2.0/indexDemanda.php"><span>Hoja 2 Demanda</span></a></li>
 									<li><a href="../estadisticas/hoja2.0/indexProgramado.php"><span>Hoja 2 Programado</span></a></li>
 									<li><a href="../estadisticas/hoja2.1/"><span>Hoja 2.1</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Internacion</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<?php
+									if ($data->tienePermiso('ABM_CAMA')){
+										echo "<li><a href='../cama/'><span>Camas</span></a></li>";
+									}
+									if ($data->tienePermiso('ABM_SECTOR')){
+										echo "<li><a href='../sector/'><span>Sector Fisico</span></a></li>";
+									}
+									if ($data->tienePermiso('INTERNACION')){
+										echo "<li><a href='../internacion/'><span>Internados</span></a></li>";
+									}
+									?>
 								</ul>
 							</li>
 						</ul>

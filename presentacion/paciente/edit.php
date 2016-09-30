@@ -159,6 +159,8 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
                 <option value="1">SI</option>
                 <option value="2">NO SABE</option>
               </select>
+              <div align="center" id="obraSocialDeclarada">
+              </div>
             </div>
           <h3>Datos de Ubicacion</h3>
             <div align="center">
@@ -208,7 +210,6 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
              
               
             </div>
-
         </div>
         <div align="center">
           <button id="guardar" style="height:50px; width:200px;">Guardar</button>

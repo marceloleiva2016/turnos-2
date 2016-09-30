@@ -20,27 +20,27 @@ class formularioReferiDatabaseLinker
         }
     }
 
-    function delegarFormulario($idAtencion, $iduser)
+    function delegarFormulario($idTurno, $idTipoAtencion, $iduser)
     {
         //selecciono el tipo de formulario de la atencion
         $dbAtencion = new AtencionDatabaseLinker();
 
-        $existe = $dbAtencion->existeAtencion($idAtencion);
+        $existe = $dbAtencion->existeAtencion($idTurno, $idTipoAtencion);
 
         if($existe)
         {
             //ya esta creada sino creo el id
-            $idAtencion = $dbAtencion->obtenerId($idAtencion);
+            $idAtencion = $dbAtencion->obtenerId($idTurno, $idTipoAtencion);
         }
         else
         {
             //creo la atencion
-            $idAtencion = $dbAtencion->crear($idAtencion, $iduser);
+            $idAtencion = $dbAtencion->crear($idTurno, $idTipoAtencion, $iduser);
         }
 
         $idSubespecialidad = $dbAtencion->getSubespecialidad($idAtencion);
 
-        $idTipoAtencion = $dbAtencion->getTipoAtencion($idAtencion);
+        //$idTipoAtencion = $dbAtencion->getTipoAtencion($idAtencion);
 
         //obtengo el formulario
         $idFormulario = $dbAtencion->obtenerFormularioPrincipalDeAtencion($idAtencion);

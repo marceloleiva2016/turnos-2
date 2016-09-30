@@ -47,7 +47,13 @@ $(document).ready(function(){
                 formatoptions:
                 {
                     keys: true,
-                    delbutton: true,
+                    delbutton: <?php
+                                if ($data->tienePermiso('ELIMINAR_TURNERO')){
+                                    echo "true";
+                                } else {
+                                    echo "false";
+                                }
+                                ?>,
                     editbutton: false,
                     onError: function(_, xhr) {
                         alert(xhr.responseText);

@@ -2,6 +2,7 @@
 include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
 include_once datos.'utils.php';
+include_once datos.'internacionDatabaseLinker.class.php';
 include_once datos.'turnoDatabaseLinker.class.php';
 include_once datos.'formularioDatabaseLinker.class.php';
 
@@ -14,13 +15,30 @@ class AtencionDatabaseLinker
         $this->dbTurnos = new dataBaseConnector(HOSTLocal,0,DB,USRDBAdmin,PASSDBAdmin);
     }
 
-    function crear($idTurno, $iduser)
+    function obtenerDatosParaAtencion($id, $idTipoAtencion)
     {
         //Obtengo todo lo del turno
         $dbturno = new TurnoDatabaseLinker();
-        $variables_necesarias = $dbturno->obtenerVariablesTurno($idTurno);
+        $dbinternacion = new InternacionDatabaseLinker();
+
+        switch ($idTipoAtencion) {
+            case 1://Es un turno por demanda
+                return $dbturno->obtenerVariablesTurno($id);
+                break;
+            case 2://Es un turno por consultorio programado
+                return $dbturno->obtenerVariablesTurno($id);
+                break;
+            case 3://Es una internacion
+                return $dbinternacion->obtenerVariablesInternacion($id);
+                break;
+        }
+    }
+
+    function crear($id, $idTipoAtencion, $iduser)
+    {
+        $variables_necesarias = $this->obtenerDatosParaAtencion($id, $idTipoAtencion);
         
-        $query="INSERT INTO 
+        $query="INSERT INTO
                     atencion(
                         `tipodoc`,
                         `nrodoc`,
@@ -36,8 +54,8 @@ class AtencionDatabaseLinker
                         ".Utils::phpIntToSQL($variables_necesarias['nrodoc']).",
                         ".Utils::phpIntToSQL($variables_necesarias['idprofesional']).",
                         ".Utils::phpIntToSQL($variables_necesarias['idsubespecialidad']).",
-                        ".Utils::phpIntToSQL($idTurno).",
-                        ".Utils::phpIntToSQL($variables_necesarias['idtipo_atencion']).",
+                        ".Utils::phpIntToSQL($id).",
+                        ".Utils::phpIntToSQL($idTipoAtencion).",
                         now(),
                         ".Utils::phpIntToSQL($iduser).",
                         1
@@ -61,14 +79,15 @@ class AtencionDatabaseLinker
         return $idAtencion;
     }
 
-    function existeAtencion($idTurno)
+    function existeAtencion($idTurno, $idTipoAtencion)
     {
         $query="SELECT
                     id
                 FROM
                     atencion
                 WHERE 
-                    idturno = $idTurno;";
+                    idturno = $idTurno AND
+                    idtipo_atencion = $idTipoAtencion;";
 
         try
         {
@@ -119,14 +138,15 @@ class AtencionDatabaseLinker
         return $result;
     }
 
-    function obtenerId($idTurno)
+    function obtenerId($idTurno, $idTipoAtencion)
     {
         $query="SELECT
                     id
                 FROM
                     atencion
                 WHERE
-                    idturno=$idTurno;";
+                    idturno = $idTurno AND
+                    idtipo_atencion = $idTipoAtencion;";
 
         try
         {
@@ -372,4 +392,6 @@ class AtencionDatabaseLinker
 
         return $ret;
     }
+
+    
 }
