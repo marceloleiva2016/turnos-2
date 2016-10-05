@@ -1301,5 +1301,37 @@ class Utils {
 	  return $results;
 	}
 
+	static function nombreCortoTipodoc($idtipo)
+	{
+		switch ($idtipo) {
+			case '1':
+				return 'DNI';
+				break;
+			
+			case '2':
+				return 'CI';
+				break;
+			
+			case '3':
+				return 'LE';
+				break;
+			
+			case '4':
+				return 'LC';
+				break;
+			
+			case '5':
+				return 'IP';
+				break;
+			
+			case '6':
+				return 'PAS';
+				break;
+			
+			case '7':
+				return 'NN';
+				break;
+		}
+	}
 }
 ?>

@@ -203,4 +203,32 @@ class DiagnosticoDatabaseLinker
         return $diagnosticos;
     }
 
+    function getDiagnosticoPorId($id)
+    {
+        $query="SELECT
+                    id,
+                    codigo_completo,
+                    descripcion
+                FROM
+                    diagnosticos_diagnostico
+                WHERE
+                    id=$id;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("No se pudo traer los grupos del diagnostico", 201230);            
+        }
+    
+        $result = $this->dbTurnos->fetchRow($query);
+        
+        $this->dbTurnos->desconectar();
+
+        return $result;
+    }
 }

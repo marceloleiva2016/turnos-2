@@ -5,6 +5,7 @@ class Cama
     var $nro_cama;
     var $sector;
     var $fecha_creacion;
+    var $id_internacion;
 
     public function Cama()
     {
@@ -49,5 +50,15 @@ class Cama
     function setFechaCreacion($fecha_creacion)
     {
         $this->fecha_creacion=$fecha_creacion;
+    }
+
+    function setIdInternacion($idInternacion)
+    {
+        $this->id_internacion=$idInternacion;
+    }
+
+    function getIdInternacion()
+    {
+        return $this->id_internacion;
     }
 }

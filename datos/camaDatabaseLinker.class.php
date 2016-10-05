@@ -55,6 +55,50 @@ class CamaDatabaseLinker
         return $Camas;
     }
 
+    function getCamasEnSector($idsector)
+    {
+        $query="SELECT
+                    c.id,
+                    c.nro_cama,
+                    s.detalle as sector,
+                    ci.idinternacion
+                FROM
+                    cama_internacion ci LEFT JOIN
+                    cama c ON(ci.idcama=c.id) LEFT JOIN
+                    sector s ON(c.idsector = s.id)
+                WHERE
+                    c.habilitado=true AND
+                    s.id=$idsector;";
+        try
+        {
+            $this->dbturnos->conectar();
+            $this->dbturnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbturnos->desconectar();
+            throw new Exception("Error Processing Request", 1);
+        }
+
+        $Camas = array();
+
+        for ($i = 0; $i < $this->dbturnos->querySize; $i++)
+        {
+            $result = $this->dbturnos->fetchRow($query);
+
+            $Cama = new Cama();
+            $Cama->setId($result['id']);
+            $Cama->setNro($result['nro_cama']);
+            $Cama->setSector($result['sector']);
+            $Cama->setIdInternacion($result['idinternacion']);
+            $Camas[] = $Cama;
+        }
+
+        $this->dbturnos->desconectar();
+
+        return $Camas;
+    }
+
     function getCama($id)
     {
         $query="SELECT
@@ -434,7 +478,7 @@ class CamaDatabaseLinker
         catch (Exception $e)
         {
             $this->dbturnos->desconectar();
-            throw new Exception("Error consultando si existe un internado en la cama cama!", 1);
+            throw new Exception("Error consultando si existe un internado en la cama!", 1);
         }
 
         $result = $this->dbturnos->fetchRow($query);
@@ -443,5 +487,5 @@ class CamaDatabaseLinker
 
         return $result['idinternacion']!="0";
     }
-    
+
 }

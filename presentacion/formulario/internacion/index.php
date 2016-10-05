@@ -47,7 +47,7 @@ $fechaEgreso = $epicrisis->getFechaEgreso();
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
-		<title>Formulario Epicrisis</title>
+		<title>Formulario Internacion</title>
 		<meta name="description" content="Morphing Buttons Concept: Inspiration for revealing content by morphing the action element" />
 		<meta name="keywords" content="expanding button, morph, modal, fullscreen, transition, ui" />
 		<meta name="author" content="Juan Ferreyra" />
