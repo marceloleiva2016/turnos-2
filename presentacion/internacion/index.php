@@ -73,6 +73,10 @@ $sectores = $dbSector->getSectores();
 					}
 					?>
 				</div>
+				<div  class="related" >
+					<h3>Acciones</h3>
+					<a onclick=javascript:internarPaciente();> >Internar Paciente</a>
+				</div>
 			</div>
 			<div id="theGrid" class="main">
 				

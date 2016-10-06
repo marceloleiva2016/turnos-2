@@ -128,6 +128,7 @@ for ($c=0; $c < count($internaciones); $c++)
             else
             {
                 echo "<span class='meta__author'>Sin Internado</span>";
+                echo "<div class='botones'><input type='button' class='button-secondary' value='Internar' onclick=javascript:internarPaciente(); /></div></div>";
             }
             ?>
                
