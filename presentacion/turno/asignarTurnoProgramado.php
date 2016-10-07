@@ -61,7 +61,10 @@ $gen = new GeneralesDatabaseLinker();
     </div>
     <!-- /barra -->
     <div id="container">
-        <br><br>
+        <br>
+        <div align="center">
+            <h2>Asignar Turno Programado</h2>
+        </div>
         <div>
             <div id="tabs">
                 <ul>

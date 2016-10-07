@@ -4,8 +4,21 @@ function cargarOptions(combo, datos)
 {
     for(i=0; i<datos.length; i++)
     {
-        combo.append("<option value='"+datos[i].id+"'>"+ datos[i].detalle +"</option>");
+        combo.append("<option value='"+datos[i].id+"'>"+ datos[i].nro_cama +"</option>");
     }
+}
+
+function cargarOptions2(combo, datos)
+{
+  for(i=0; i<datos.length; i++)
+  {
+    combo.append("<option value='"+datos[i].id+"'>"+ datos[i].descripcion +"</option>");
+  }
+}
+
+function vaciarComboDiagnostico()
+{
+  $('#dg_diagnostico option').remove();
 }
 
 function vaciarCamas()
@@ -26,14 +39,14 @@ function ingresandoSector()
         $.ajax({
             type:'post',
             dataType:'json',
-            url:'includes/ajaxFunctions/jsonEspecialidad.php',
+            url:'includes/ajaxFunctions/jsonCamasLibres.php',
             data:{sector:newsector},
             success: function(json)
             {
                 vaciarCamas();
                 if(json.ret)
                 {
-                    cargarOptions($('#subespecialidad'),json.datos);
+                    cargarOptions($('#cama'),json.datos);
 
                     $('#sectorAcept').html($("#sector :selected").text());
                     $('#camaAcept').html($("#cama :selected").text());
@@ -47,29 +60,29 @@ function ingresandoSector()
 
 function ingresandoCama()
 {
-    subespecialidad = $('#cama').val();
+    cama = $('#cama').val();
 
-    if(subespecialidad != "")
+    if(cama != "")
     {
         $('#sectorAcept').html($("#sector :selected").text());
         $("#camaDialog").html($("#cama :selected").text());
     }
 }
 
-function setearValoresDialogos(nrodoc, nombre, especialidad, subespecialidad)
+function setearValoresDialogos(nrodoc, nombre, sector, cama)
 {
     $("#nrodocDialog").html(nrodoc);
     $("#nombreDialog").html(nombre);
-    $("#sectorDialog").html(especialidad);
-    $("#camaDialog").html(subespecialidad);
+    $("#sectorDialog").html(sector);
+    $("#camaDialog").html(cama);
 }
 
-function setearValoresChequeo(nrodoc, nombre, especialidad, subespecialidad)
+function setearValoresChequeo(nrodoc, nombre, sector, cama)
 {
     $("#nombrePaciente").html(nombre);
     $("#nrodocPaciente").html(nrodoc);
-    $("#sectorAcept").html(especialidad);
-    $("#camaAcept").html(subespecialidad);
+    $("#sectorAcept").html(sector);
+    $("#camaAcept").html(cama);
 }
 
 function resetearVariables()
@@ -81,11 +94,29 @@ function resetearVariables()
 
 $(document).ready(function(){
 
+    $('#diagFiltrar').click(function(event){
+        event.preventDefault();
+        cod = $('#codBusq').val();
+        diag = $('#diagBusq').val();
+            vaciarComboDiagnostico();
+            $.ajax({
+                type:'post',
+                dataType:'json',
+                url:'includes/ajaxFunctions/jsonDiagnosticos.php',
+                data:{nombre:diag,codigo:cod},
+                success: function(json)
+                {
+                    diagnosticos = json;
+                    cargarOptions2($('#dg_diagnostico'),diagnosticos);
+                }
+            });
+    });
+
     $("#tabs").tabs();
 
     $("#buscarxnum").button();
 
-    $("#cargarTurnoDemanda").button();
+    $("#cargarInternacion").button();
 
     $("#buscarxnum").click(function(event){
         event.preventDefault();
@@ -125,8 +156,8 @@ $(document).ready(function(){
                 pacienteValido = json.ret;
                 if(json.ret)
                 {
-                    setearValoresChequeo(json.nrodoc, json.nombre, $("#especialidad :selected").text(), $("#subespecialidad :selected").text());
-                    setearValoresDialogos(json.nrodoc, json.nombre, $("#especialidad :selected").text(), $("#subespecialidad :selected").text());
+                    setearValoresChequeo(json.nrodoc, json.nombre, $("#sector :selected").text(), $("#cama :selected").text());
+                    setearValoresDialogos(json.nrodoc, json.nombre, $("#sector :selected").text(), $("#cama :selected").text());
                 }
             }
         });
@@ -137,49 +168,68 @@ $(document).ready(function(){
 
         var tipodoc = $("#tipodoc").val();
         var nrodoc = $("#nrodoc").val();
-        var subesp = $("#subespecialidad").val();
+        var motivo = $("#motivo").val();
+        var diagnostico = $("#dg_diagnostico").val();
+        var cam = $("#cama").val();
         var usuario = $("#idusuario").val();
 
         if(pacienteValido)
         {
-            if(subesp!=null)
+            if(cam!=null)
             {
-                $.ajax({
-                    type:'post',
-                    dataType:'json',
-                    url:'includes/ajaxFunctions/jsonAgregarTurno.php',
-                    data:{tipoDoc:tipodoc, nroDoc:nrodoc, subespecialidad:subesp, idusuario:usuario},
-                    success: function(json)
-                    {
-                        if (json.ret==true)
+                if(motivo!="" && diagnostico!=null)
+                {
+                    $.ajax({
+                        type:'post',
+                        dataType:'json',
+                        url:'includes/ajaxFunctions/jsonAgregarInternacion.php',
+                        data:{tipoDoc:tipodoc, nroDoc:nrodoc, motivo_ingreso:motivo, diagnostico_ingreso:diagnostico, cama:cam, idusuario:usuario},
+                        success: function(json)
                         {
-                            $("#dialog").dialog("open");
-                            pacienteValido = false;
-                            resetearVariables();
+                            if (json.ret==true)
+                            {º
+                                $("#dialog").dialog("open");
+                                pacienteValido = false;
+                                resetearVariables();
+                            }
+                            else
+                            {
+                                //NOTIFICACION
+                                // create the notification
+                                var notification = new NotificationFx({
+                                    message : '<span class="icon2 icon-message"></span><p>Ocurrio un error al internar el paciente!</p>',
+                                    layout : 'attached',
+                                    effect : 'bouncyflip',
+                                    type : 'notice'
+                                });
+                                // show the notification
+                                notification.show();
+                                //NOTIFICACION
+                            };
                         }
-                        else
-                        {
-                            //NOTIFICACION
-                            // create the notification
-                            var notification = new NotificationFx({
-                                message : '<span class="icon2 icon-message"></span><p>Ocurrio un error al ingresar el turno para el paciente!</p>',
-                                layout : 'attached',
-                                effect : 'bouncyflip',
-                                type : 'notice'
-                            });
-                            // show the notification
-                            notification.show();
-                            //NOTIFICACION
-                        };
-                    }
-                });
+                    });    
+                }
+                else
+                {
+                   //NOTIFICACION
+                    // create the notification
+                    var notification = new NotificationFx({
+                        message : '<span class="icon2 icon-message"></span><p>Falta completar el motivo o el diagnostico de ingreso!</p>',
+                        layout : 'attached',
+                        effect : 'bouncyflip',
+                        type : 'notice'
+                    });
+                    // show the notification
+                    notification.show();
+                    //NOTIFICACION 
+                };
             }
             else
             {
                 //NOTIFICACION
                 // create the notification
                 var notification = new NotificationFx({
-                    message : '<span class="icon2 icon-message"></span><p>Debe seleccionar una especialidad y subespecilidad para asigar un turno!</p>',
+                    message : '<span class="icon2 icon-message"></span><p>Debe seleccionar un sector y una cama para internar al paciente!</p>',
                     layout : 'attached',
                     effect : 'bouncyflip',
                     type : 'notice'

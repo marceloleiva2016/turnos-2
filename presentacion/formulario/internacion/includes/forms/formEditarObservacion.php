@@ -1,14 +1,14 @@
 <?php
-include_once '/home/web/namespacesAdress.php';
-include_once nspcEpicrisis.'epicrisisDatabaseLinker.class.php';
-include_once nspcUsuario . 'usuario.class.php';
-include_once nspcCommons . 'utils.php';
+include_once '../../../../../namespacesAdress.php';
+include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once negocio.'usuario.class.php';
+include_once datos . 'utils.php';
 
 session_start();
 
 if(!isset($_SESSION['usuario']))
 {
-    header ("Location: /epicrisis/index.php?logout=1");
+    echo "Session Expirada. Por favor Actualice la pagina!";
 }
 
 $usuario = $_SESSION['usuario'];
@@ -19,13 +19,13 @@ $error = false;
 
 $message = "";
 
-$dbEpicrisis = new EpicrisisDatabaseLinker();
+$dbDemanda = new DemandaDatabaseLinker();
 
 $message = "";
 
 $idObservacion = Utils::postIntToPHP($_REQUEST['id']);
 
-$observacion = $dbEpicrisis->obtenerObservacion($idObservacion);
+$observacion = $dbDemanda->obtenerObservacion($idObservacion);
 
 ?>
 
@@ -34,8 +34,8 @@ $observacion = $dbEpicrisis->obtenerObservacion($idObservacion);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Editar Observacion</title>
-    <script type="text/javascript" src="/tools/jquery/numeric/jquery.numeric.js"></script>
-    <script type="text/javascript" src="/tools/jquery/jqprint/jquery.jqprint-0.3.js"></script>
+    <script type="text/javascript" src="../../includes/plug-in/jnumeric/jquery.numeric.js"></script>
+    <!--<script type="text/javascript" src="/tools/jquery/jqprint/jquery.jqprint-0.3.js"></script>-->
 </head>
 
 <body bgcolor = "#FFFFFF" style="width: 100%; text-align: center;">

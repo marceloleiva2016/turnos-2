@@ -2,6 +2,9 @@
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
+include_once datos.'sectorDatabaseLinker.class.php';
+include_once datos.'generalesDatabaseLinker.class.php';
+
 session_start();
 
 if(!isset($_SESSION['usuario']))
@@ -14,17 +17,22 @@ $usuario = $_SESSION['usuario'];
 
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
+
+$dbSector = new SectorDatabaseLinker();
+$gen = new GeneralesDatabaseLinker();
+
+$sectores = $dbSector->getSectores();
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Internar Nuevo</title>
+    <title>Internar</title>
     <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="../includes/plug-in/jqGrid_5.0.2/css/ui.jqgrid.css" />
     <!--NOTIFICACION -->
     <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-default.css" />
     <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-style-attached.css" />
@@ -32,8 +40,7 @@ $data = unserialize($usuario);
     <!--/NOTIFICACION -->
     <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
-    <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
-    <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/jquery.jqGrid.min.js" ></script>
+    <script type="text/javascript" src="../includes/plug-in/jqPrint/jquery.jqprint-0.3.js" ></script>
     <script type="text/javascript" src="includes/js/new.js"></script>
 </head>
 <body>
@@ -55,13 +62,17 @@ $data = unserialize($usuario);
     </div>
     <!-- /barra -->
     <div id="container">
-        <br><br>
+        <br>
+        <div align="center">
+            <h2>Internar Paciente</h2>
+        </div>
         <div>
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">Seleccione Paciente</a></li>
-                    <li><a href="#tabs-2">Seleccione Especialidad</a></li>
-                    <li><a href="#tabs-3">Confirmar Datos Turno</a></li>
+                    <li><a href="#tabs-2">Detalles de ingreso</a></li>
+                    <li><a href="#tabs-3">Sector y Cama</a></li>
+                    <li><a href="#tabs-4">Confirmar Datos Internacion</a></li>
                 </ul>
                 <div id="tabs-1">
                     <div id="contenedorTab" style="display: inline-block;">
@@ -99,7 +110,27 @@ $data = unserialize($usuario);
                     <p>Detalle los motivos por el cual el paciente ingresa a la internacion.</p>
                     <br>
                     <div align="center">
-                       
+                       <label>Motivo de ingreso</label><br>
+                       <textarea style="height: 108px; width: 644px;" name="motivo" id="motivo"></textarea><br>
+                       <div id="divSalidaDiagno">
+                        <fieldset>
+                            <legend><b>Buscar Diagnostico:</b></legend>
+                            <div>
+                                Diagnostico:
+                                <input name="codBusq" id="codBusq" placeholder="Codigo">
+                                <input name="diagBusq" id="diagBusq" placeholder="Nombre">
+                                <button name="diagFiltrar" id="diagFiltrar" >Filtrar</button>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                                <legend><b>Diagnostico Seleccionado:</b></legend>
+                                <div>
+                                Diagnostico:
+                                <select name="dg_diagnostico" id="dg_diagnostico" >
+                                </select>
+                            </div>
+                        </fieldset>
+                        </div>
                     </div>
                 </div>
                 <div id="tabs-3">
@@ -110,21 +141,21 @@ $data = unserialize($usuario);
                         <select id="sector" name="sector"  onchange="ingresandoSector();" >
                             <option value="">Seleccione</option>
                             <?php
-                            $lista = $especialidades->getEspecialidadesConConsultoriosDeDemandaActivos();
-                            for ($i=0; $i < count($lista); $i++){ 
-                                echo "<option value=".$lista[$i]->getId().">".$lista[$i]->getDetalle()."</option>";
+                            for ($i=0; $i < count($sectores); $i++){ 
+                                echo "<option value=".$sectores[$i]->getId().">".$sectores[$i]->getDetalle()."</option>";
                             }
                             ?>
                         </select><br>
                         <h4>Camas Libres</h4>
-                        <select id="camas" name="camas" >
+                        <select id="cama" name="cama" >
 
                         </select>
                     </form>
-                   
                 </div>
                 <div id="tabs-4">
-                     <br><br>
+                    <h2>Paso 4: Corroborar Datos </h2>
+                    <p>Verifique los datos de internacion.</p>
+                    <br><br>
                     <p><b>Paciente: </b><a id="nombrePaciente"></a></p>
                     <p><b>Numero Documento: </b><a id="nrodocPaciente"></a></p>
                     <p><b>Sector: </b><a id="sectorAcept"></a></p>

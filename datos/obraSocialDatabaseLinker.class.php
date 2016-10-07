@@ -147,6 +147,12 @@ class ObraSocialDatabaseLinker
 
         $this->dbTurnos->desconectar();
 
+        if($ret==false){
+            $obsoc= array();
+
+            return $obsoc['id'] = 0;
+        }
+
         return $ret;
     }
 
@@ -204,7 +210,7 @@ class ObraSocialDatabaseLinker
         catch (Exception $e)
         {
             $this->dbTurnos->desconectar();
-            throw new Exception("No se pudo consultar las atenciones del paciente", 201230);
+            throw new Exception("No se pudo consultar la obra social del paciente", 201230);
         }
 
         $ret= $this->dbTurnos->fetchRow($query);

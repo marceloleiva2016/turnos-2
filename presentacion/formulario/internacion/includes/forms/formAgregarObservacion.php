@@ -1,13 +1,13 @@
 <?php
-include_once '/home/web/namespacesAdress.php';
-include_once nspcEpicrisis.'epicrisisDatabaseLinker.class.php';
-include_once nspcUsuario . 'usuario.class.php';
+include_once '../../../../../namespacesAdress.php';
+include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once negocio.'usuario.class.php';
 
 session_start();
 
 if(!isset($_SESSION['usuario']))
 {
-    header ("Location: /epicrisis/index.php?logout=1");
+    echo "Session Expirada. Por favor Actualice la pagina!";
 }
 
 $usuario = $_SESSION['usuario'];
@@ -18,26 +18,25 @@ $error = false;
 
 $message = "";
 
-$dbEpicrisis = new EpicrisisDatabaseLinker();
+$dbDemanda = new DemandaDatabaseLinker();
 
-$TipoObservacion = $dbEpicrisis->nombreTipoObservacion($_REQUEST['tipo_observacion']);
+$TipoObservacion = $dbDemanda->nombreTipoObservacion($_REQUEST['tipo_observacion']);
 
-$observaciones = $dbEpicrisis->obtenerCantidadObservacionesDeTipo($_REQUEST['id'], $_REQUEST['tipo_observacion']);
+$observaciones = $dbDemanda->obtenerCantidadObservacionesDeTipo($_REQUEST['id'], $_REQUEST['tipo_observacion']);
 
-if($observaciones>=2)
+if($observaciones>=5)
 {
     $error = true;
-    $message = "Puede ingresar hasta dos items como maximo";
+    $message = "Puede ingresar hasta 5 items como maximo";
 }
 
 ?>
-<!DOCTYPE html PUBLIC>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Agregar</title>
-    <script type="text/javascript" src="/tools/jquery/numeric/jquery.numeric.js"></script>
-    <script type="text/javascript" src="/tools/jquery/jqprint/jquery.jqprint-0.3.js"></script>
+    <script type="text/javascript" src="../../includes/plug-in/jnumeric/jquery.numeric.js"></script>
 </head>
 
 <body bgcolor = "#FFFFFF" style="width: 100%; text-align: center;">
@@ -74,7 +73,6 @@ else
 <?php
 } 
 ?>
-    
 <script>
 $(document).ready(function() {
     $(".positive-integer").numeric({ decimal: false, negative: false }, function(){ 
@@ -93,6 +91,5 @@ $(document).ready(function() {
     });
 });
 </script>
-
 </body>
 </html>

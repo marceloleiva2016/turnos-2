@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+/*elimina marcas */
+#menuOpciones ul {
+	margin: 10px;
+	padding: 0;
+	list-style: none;
+	width: 170px;
+}
+#menuOpciones ul li {
+position: relative;
+}
+/*con esto se hacen aparecer los submenus a derecha*/
+#menuOpciones li ul {
+	position: absolute;
+	left: 149px;
+	top: 0;
+	display: none;
+}
+
+/*con esto se le da pinta */
+#menuOpciones ul li a {
+	display: block;
+	text-decoration: none;
+	color: #000;
+	background: #E6E6E6;
+	padding: 5px;
+	border: 1px solid #765a5a;
+	border-bottom: 0;
+	}
+/* Se corrige un error en IE*/	
+/* Fix IE. Hide from IE Mac \*/
+* html #menuOpciones ul li { float: left; height: 1%; }
+* html #menuOpciones ul li a { height: 1%; }
+/* End */
+
+/* Se agrega el borde de abajo de todo que falta*/
+#menuOpciones ul {
+	margin: 0px 20px 0px 20px;
+	padding: 0;
+	list-style: none;
+	width: 170px;
+	border-bottom: 1px solid #765a5a;
+}
+
+#menuOpciones .menuTlt {
+	margin: 10px 20px 0px 20px;
+	width: 170px;
+	background: #786C6C;
+	
+}
+
+#menuOpciones .menuTlt p
+{
+	margin:5px 0px 0px 0px;
+	text-align: center;
+}
+#menuOpciones li:hover ul, li.over ul { 
+	display: block; }

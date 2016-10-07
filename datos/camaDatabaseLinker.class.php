@@ -488,4 +488,34 @@ class CamaDatabaseLinker
         return $result['idinternacion']!="0";
     }
 
+    function getCamasLibresEnSector($idsector)
+    {
+        $std = new stdClass();
+
+        $std->ret=false;
+
+        $std->datos= "";
+
+        $camas = $this->getCamasEnSector($idsector);
+
+        $camasLibres = array();
+
+        for ($i=0; $i < count($camas) ; $i++)
+        {
+            if($camas[$i]->getIdInternacion()==0)
+            {
+                $camasLibres[] = $camas[$i];
+            }
+        }
+        
+        if($camas!=false)
+        {
+            $std->ret = true;
+
+            $std->datos = $camasLibres;
+        }
+
+        return $std;
+    }
+
 }

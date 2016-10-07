@@ -69,47 +69,60 @@ class InternacionDatabaseLinker
 
         if(!$this->dbCama->existeInternadoEnCama($idCama))//Me fijo si la cama en la que lo va a internar esta vicia por si a caso.
         {
-            $query="INSERT INTO
-                        internacion(
-                            `tipodoc`,
-                            `nrodoc`,
-                            `idatencion_predecesora`,
-                            `motivo_ingreso`,
-                            `iddiagnostico_ingreso`,
-                            `fecha_creacion`,
-                            `idusuario`,
-                            `habilitado`)
-                    VALUES (
-                            $tipodoc,
-                            $nrodoc,
-                            $idatencionPredecesora,
-                            ".Utils::phpStringToSQL($motivoIngreso).",
-                            $idDiagnosticoIngreso,
-                            now(),
-                            $idusuario,
-                            true
-                            );";
-            try
-            {
-                $this->dbTurnos->conectar();
-                $this->dbTurnos->ejecutarAccion($query);    
-                $response->message = "Paciente Internado";
-                $response->ret = true;
-            }
-            catch (Exception $e)
-            {
+            if(!$this->estaInternadoElPaciente($tipodoc, $nrodoc))
+            {                
+                $obraSocial = $this->dbObraSocial->getObraSocialPaciente($tipodoc, $nrodoc);
+
+                if(!$obraSocial){
+                    $obraSocial = array();                
+                    $obraSocial['id'] = 0;
+                }
+
+                $query="INSERT INTO
+                            internacion(
+                                `tipodoc`,
+                                `nrodoc`,
+                                `idatencion_predecesora`,
+                                `motivo_ingreso`,
+                                `iddiagnostico_ingreso`,
+                                `idobra_social`,
+                                `fecha_creacion`,
+                                `idusuario`,
+                                `habilitado`)
+                        VALUES (
+                                $tipodoc,
+                                $nrodoc,
+                                $idatencionPredecesora,
+                                ".Utils::phpStringToSQL($motivoIngreso).",
+                                $idDiagnosticoIngreso,
+                                ".Utils::phpStringToSQL($obraSocial['id']).",
+                                now(),
+                                $idusuario,
+                                true
+                                );";
+                try
+                {
+                    $this->dbTurnos->conectar();
+                    $this->dbTurnos->ejecutarAccion($query);    
+                    $response->message = "Paciente Internado";
+                    $response->ret = true;
+                }
+                catch (Exception $e)
+                {
+                    $this->dbTurnos->desconectar();
+                    $response->message = "Ocurrio un error al crear la internacion!";
+                    $response->ret = false;
+                }
+
+                $idinternacion = $this->dbTurnos->ultimoIdInsertado();
+
+                $this->dbCama->internarnarEnCama($idCama, $idinternacion, $idusuario);
+
+                $this->insertarEnLog($idinternacion, $idCama, $idusuario);
+                
                 $this->dbTurnos->desconectar();
-                $response->message = "Ocurrio un error al crear la internacion!";
-                $response->ret = false;
             }
-
-            $idinternacion = $this->dbTurnos->ultimoIdInsertado();
-
-            $this->dbCama->internarnarEnCama($idCama, $idinternacion, $idusuario);
-
-            $this->insertarEnLog($idinternacion, $idCama, $idusuario);
             
-            $this->dbTurnos->desconectar();
         }
         else
         {
@@ -280,5 +293,33 @@ class InternacionDatabaseLinker
         }
 
         return $intPorSector;
+    }
+
+    function estaInternadoElPaciente($tipodoc, $nrodoc)
+    {
+        $query="SELECT
+                    *
+                FROM
+                    cama_internacion ci LEFT JOIN
+                    internacion i ON(ci.idinternacion=i.id)
+                WHERE
+                    i.tipodoc=$tipodoc AND
+                    i.nrodoc=$nrodoc;";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error si el paciente se encuentra internado!", 1);
+        }
+
+        $result = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $result!=null;
     }
 }
