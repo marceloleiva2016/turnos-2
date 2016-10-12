@@ -343,10 +343,12 @@ $id = $Internacion->getId();
                         <span class="icon icon-delete"></span>
                         <h2>Menú ingreso</h2>
                         <ul>
+                            <li><a class="icon icon-share" href="#" id="agrLaboratorios">Laboratorios</a></li>
+                            <li><a class="icon icon-flash" href="#" id="agrRayos">Rayos</a></li>
+                            <li><a class="icon icon-desktop" href="#" id="agrAltaComplejidad">Alta Complejidad</a></li>
                             <li><a class="icon icon-pentool" href="#" id="agrObservacion">Observacion/Tratamientos</a></li>
                             <li><a class="icon icon-hand" href="#" id="agrInterconsultas">Interconsultas</a></li>
                             <li><a class="icon icon-notepad" href="#" id="agrPendientes">Pendientes</a></li>
-                            <li><a class="icon icon-share" href="#" id="agrLaboratorios">Laboratorios</a></li>
                             <li><a class="icon icon-exit" href="#" id="agrEgreso">Egreso</a></li>
                             <li><a class="icon icon-printer" href="#" id="imprimir">Imprimir</a></li>
                         </ul>

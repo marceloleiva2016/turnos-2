@@ -12,6 +12,9 @@ include_once neg_formulario.'formInternacion/formInternacionObservacion.class.ph
 include_once neg_formulario.'formInternacion/formInternacionItemObservacion.class.php';
 include_once neg_formulario.'formInternacion/formInternacionEgreso.class.php';
 include_once neg_formulario.'formInternacion/formInternacionLaboratorio.class.php';
+include_once neg_formulario.'formInternacion/formInternacionRayos.class.php';
+include_once neg_formulario.'formInternacion/formInternacionAltaComplegidad.class.php';
+
 
 class FormInternacionDatabaseLinker
 {
@@ -837,6 +840,70 @@ class FormInternacionDatabaseLinker
         }
         
         $this->dbTurnos->desconectar();
+    }
+
+    function insertarRx($idFormInt, Rayo $estudio, $idusuario)
+    {
+        $query ="insert into 
+                    form_internacion_rx 
+                    (
+                    form_internacion_lista_rx_id,
+                    form_internacion_id,
+                    value,
+                    observacion,
+                    idusuario,
+                    fecha_creacion
+                    )
+                    values
+                    (
+                    ".Utils::phpIntToSQL($estudio->id).",
+                    ".Utils::phpIntToSQL($idFormInt).",
+                    ".Utils::phpBoolToSQL($estudio->valor).",
+                    ".Utils::phpStringToSQL($estudio->observacion).",
+                    ".$idusuario.",
+                    now()
+                    );
+            ";
+        
+        try {
+            $this->baseDeDatos->conectar();
+            $this->baseDeDatos->ejecutarAccion($query);
+        } catch (Exception $e) {
+            throw new Exception("Error intentando ejecutar: $query");
+        }
+        
+        $this->baseDeDatos->desconectar();
+    }
+
+    function insertarAltaComplejidad($idFormInt, AltaComplejidad $estudio, $idusuario)
+    {
+        $query ="insert into 
+                    form_internacion_alta_complejidad 
+                    (
+                    form_internacion_lista_alta_complejidad_id,
+                    form_internacion_id,
+                    value,
+                    idusuario,
+                    fecha_creacion
+                    )
+                    values
+                    (
+                    ".Utils::phpIntToSQL($estudio->id).",
+                    ".Utils::phpIntToSQL($idFormInt).",
+                    ".Utils::phpBoolToSQL($estudio->valor).",
+                    ".Utils::phpStringToSQL($idusuario).",
+                    now()
+                    );
+            ";
+        
+        try {
+            $this->baseDeDatos->conectar();
+            $this->baseDeDatos->ejecutarAccion($query);
+        } catch (Exception $e) {
+            throw new Exception("Error intentando ejecutar: $query");
+        }
+        
+        $this->baseDeDatos->desconectar();
     }
 
 }

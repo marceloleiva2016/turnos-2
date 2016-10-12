@@ -1,0 +1,5 @@
+[12-Oct-2016 16:30:53 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'Error Processing Request' in /home/aeoscom/public_html/turnos.aeos.com.ar/sistema-turnos/datos/sectorDatabaseLinker.class.php:37
+Stack trace:
+#0 /home/aeoscom/public_html/turnos.aeos.com.ar/sistema-turnos/presentacion/cama/index.php(10): sectorDatabaseLinker->getSectores()
+#1 {main}
+  thrown in /home/aeoscom/public_html/turnos.aeos.com.ar/sistema-turnos/datos/sectorDatabaseLinker.class.php on line 37
