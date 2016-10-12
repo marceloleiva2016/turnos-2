@@ -1,7 +1,7 @@
 <?php
 include_once '../../../../../namespacesAdress.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
-include_once datos.'turnoDatabaseLinker.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
+include_once datos.'internacionDatabaseLinker.class.php';
 include_once datos.'atencionDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 
@@ -16,8 +16,8 @@ $usuario = $_SESSION['usuario'];
 
 $usuarioUnset = unserialize($usuario);
 
-$dbDemanda = new DemandaDatabaseLinker();
-$dbTurno = new TurnoDatabaseLinker();
+$dbformInt = new FormInternacionDatabaseLinker();
+$dbInternacion = new InternacionDatabaseLinker();
 $dbAtencion = new AtencionDatabaseLinker();
 
 $data = new stdClass();
@@ -42,11 +42,10 @@ if(!isset($_REQUEST['dg_diagnostico']))
 
 if ($data->result == true)
 {
-    $ingreso = $dbDemanda->insertarEgreso($_REQUEST['id'], $_REQUEST['idDestino'], $_REQUEST['dg_diagnostico'], $usuarioUnset->getId());
-    $idAtencion = $dbDemanda->getIdAtencion($_REQUEST['id']);
+    $ingreso = $dbformInt->insertarEgreso($_REQUEST['id'], $_REQUEST['idDestino'], $_REQUEST['dg_diagnostico'], $usuarioUnset->getId());
+    $idAtencion = $dbformInt->getIdAtencion($_REQUEST['id']);
     $idTurno = $dbAtencion->obtenerIdTurno($idAtencion);
-    //ingreso en el log el cambio de estado de turno
-    $dbTurno->insertarEnLog($idTurno, 3, $usuarioUnset->getId());
+    //ingreso en el log el cambio de estado de internacion
 
     if(!$ingreso)
     {

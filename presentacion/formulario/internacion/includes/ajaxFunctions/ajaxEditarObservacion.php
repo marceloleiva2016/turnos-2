@@ -1,6 +1,6 @@
 <?php
 include_once '../../../../../namespacesAdress.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 
 session_start();
@@ -20,9 +20,9 @@ $idObs = $_REQUEST['idObs'];
 
 $descripcion = $_REQUEST['observacion'];
 
-$dbDemanda = new DemandaDatabaseLinker();
+$dbint = new FormInternacionDatabaseLinker();
 
-$data = $dbDemanda->editarObservacion($idObs, $descripcion);
+$data = $dbint->editarObservacion($idObs, $descripcion);
 
 if($data->result)
 {

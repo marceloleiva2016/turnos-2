@@ -11,6 +11,7 @@ include_once neg_formulario.'formInternacion/formInternacion.class.php';
 include_once neg_formulario.'formInternacion/formInternacionObservacion.class.php';
 include_once neg_formulario.'formInternacion/formInternacionItemObservacion.class.php';
 include_once neg_formulario.'formInternacion/formInternacionEgreso.class.php';
+include_once neg_formulario.'formInternacion/formInternacionLaboratorio.class.php';
 
 class FormInternacionDatabaseLinker
 {
@@ -100,11 +101,9 @@ class FormInternacionDatabaseLinker
         $id = $this->getId($idAtencion);
 
         $dbAtencion = new AtencionDatabaseLinker();
-        $dbProfesional = new ProfesionalDatabaseLinker();
         $dbPaciente = new PacienteDatabaseLinker();
         
         $datosAtencion = $dbAtencion->obtenerVariablesAtencion($idAtencion);
-        $profesional = $dbProfesional->getProfesional($datosAtencion['idprofesional']);
         $paciente = $dbPaciente->getDatosPacientePorNumero($datosAtencion['tipodoc'], $datosAtencion['nrodoc']);
 
         if(is_null($id))
@@ -115,12 +114,21 @@ class FormInternacionDatabaseLinker
         $FormInternacion = new FormInternacion();
         $FormInternacion->setId($id);
         $FormInternacion->setIdAtencion($idAtencion);
-        $FormInternacion->setProfesional($profesional);
         $FormInternacion->setPaciente($paciente);
         $this->cargarObservaciones($FormInternacion);
         $this->cargarEgreso($FormInternacion);
+        $this->cargarLaboratorios($FormInternacion);
 
         return $FormInternacion;
+    }
+
+    public function cargarLaboratorios(FormInternacion $form)
+    {
+        $listaOrina = $this->laboratoriosHechos($form->getId(), TipoLaboratorio::ORINA);
+        $listaSangre = $this->laboratoriosHechos($form->getId(), TipoLaboratorio::SANGRE);
+
+        $form->setEstudiosLaboratorioOrina($listaOrina);
+        $form->setEstudiosLaboratorioSangre($listaSangre);
     }
 
     public function traerTiposObservaciones($idform_internacion)
@@ -476,7 +484,7 @@ class FormInternacionDatabaseLinker
         $query="INSERT INTO
                     form_internacion_egreso
                         (`idform_internacion`,
-                        `idtipo_egreso_FormInternacion`,
+                        `idtipo_egreso_internacion`,
                         `iddiagnostico`,
                         `fecha_creacion`,
                         `iduser`,
@@ -518,7 +526,7 @@ class FormInternacionDatabaseLinker
                     form_internacion_egreso de LEFT JOIN 
                     usuario u ON(u.idusuario=de.iduser) LEFT JOIN
                     diagnosticos_diagnostico d ON(de.iddiagnostico=d.id) LEFT JOIN
-                    form_internacion_tipo_egreso dte ON(dte.id= de.idtipo_egreso_FormInternacion)
+                    form_internacion_tipo_egreso dte ON(dte.id= de.idtipo_egreso_internacion)
                 WHERE
                     de.habilitado=true AND
                     de.idform_internacion = ".Utils::phpIntToSQL($idform_internacion).";";
@@ -618,4 +626,217 @@ class FormInternacionDatabaseLinker
 
         return $result['idatencion'];
     }
+
+    function laboratoriosHechos($idFormInt, $tipoLab)
+    {
+        $sql = "SELECT 
+                    lab.form_internacion_lista_laboratorio_id as id,
+                    lab.value as valor,
+                    lab.text_value as text_value,
+                    listLab.es_numerico as es_numerico,
+                    listLab.nombre as nombre,
+                    listLab.descripcion as descripcion,
+                    listLab.tipo_laboratorio  as tipo
+                FROM 
+                    form_internacion_laboratorios lab left join
+                    form_internacion_lista_laboratorio listLab ON (lab.form_internacion_lista_laboratorio_id = listLab.id)
+                WHERE 
+                    lab.form_internacion_id = ".Utils::phpIntToSQL($idFormInt)." AND
+                    listLab.tipo_laboratorio = ". Utils::phpIntToSQL($tipoLab).";";
+        
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo traer la informacion del ticket", 201230);
+        }
+        $ret = array();
+        
+        for ($i = 0; $i < $this->dbTurnos->querySize(); $i++) {
+            $result = $this->dbTurnos->fetchRow();
+            $laboratorio = new Labortatorio();
+            $laboratorio->id = Utils::sqlIntToPHP($result['id']);
+            $laboratorio->nombre = htmlentities($result['nombre']);
+            $laboratorio->descripcion = htmlentities($result['descripcion']);
+            $laboratorio->esNumerico = Utils::sqlBoolToPHP($result['es_numerico']);
+            if($laboratorio->esNumerico )
+            {
+                $laboratorio->valor = Utils::sqlFloatToPHP($result['valor']);
+            }
+            else 
+            {
+                $laboratorio->valor = $result['text_value'];
+            }
+            
+            $ret[$i]=$laboratorio;
+        }
+        
+        return $ret;
+    }
+    
+    function esLaboratorioNumerico($idLab)
+    {
+        $sql = "SELECT 
+                    lab.es_numerico as es_numerico
+                FROM 
+                    form_internacion_lista_laboratorio lab
+                WHERE 
+                    lab.id = ".Utils::phpIntToSQL($idLab). "
+                    ;";
+        
+        //$this->firephp->log($sql);
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo ejecutar la consulta: " . $sql, 201230);
+        }
+        
+        $ret = true;
+        if($this->dbTurnos->querySize()>0)
+        {
+            $result = $this->dbTurnos->fetchRow();
+            $ret = Utils::sqlBoolToPHP($result['es_numerico']);
+        }
+        
+        return $ret;
+    }
+    
+    function laboratoriosSinHacer($idFormInt, $tipoLab)
+    {
+        $sql = "SELECT 
+                    lab.id as id,
+                    lab.nombre as nombre,
+                    lab.descripcion as descripcion,
+                    lab.es_numerico as es_numerico
+                FROM 
+                    form_internacion_lista_laboratorio lab
+                WHERE 
+                    not 
+                        (lab.id in (SELECT 
+                                    form_internacion_lista_laboratorio_id 
+                                FROM 
+                                    form_internacion_laboratorios 
+                                WHERE 
+                                form_internacion_id = ".Utils::phpIntToSQL($idFormInt)."
+                                ))
+                    and lab.favorito > 0
+                    and lab.tipo_laboratorio = ". Utils::phpIntToSQL($tipoLab)."
+                    Order By favorito asc;";
+        
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo ejecutar la consulta: " . $sql, 201230);
+        }
+        $ret = array();
+        
+        for ($i = 0; $i < $this->dbTurnos->querySize(); $i++) {
+            $result = $this->dbTurnos->fetchRow();
+            $laboratorio = new Labortatorio();
+            $laboratorio->id = Utils::sqlIntToPHP($result['id']);
+            $laboratorio->nombre = htmlentities($result['nombre']);
+            $laboratorio->descripcion = htmlentities($result['descripcion']);
+            $laboratorio->esNumerico = Utils::sqlBoolToPHP($result['es_numerico']);
+            $ret[$i]=$laboratorio;
+        }
+        
+        return $ret;
+        
+    }
+    
+    function hayLaboratoriosSinHacer($idFormInt)
+    {
+        $sql = "SELECT 
+                    count(*) as cantidad
+                FROM 
+                    form_internacion_lista_laboratorio 
+                WHERE 
+                    not 
+                        (id in (select 
+                                form_internacion_lista_laboratorio_id 
+                                from 
+                                form_internacion_laboratorios 
+                                where 
+                                form_internacion_id = ".Utils::phpIntToSQL($idFormInt)."
+                                ))
+                    and favorito > 0
+                    Order By favorito asc;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo traer la informacion del ticket", 201230);
+        }
+        
+        
+        
+        $result = $this->dbTurnos->fetchRow();
+        $cantidad= Utils::sqlIntToPHP($result['cantidad']);
+        return $cantidad>0;
+        
+    }
+
+    function insertarLaboratorio($idFormInt, Labortatorio $laboratorio, $idusuario)
+    {
+        $query ="insert into 
+                    form_internacion_laboratorios 
+                    (
+                    form_internacion_lista_laboratorio_id,
+                    form_internacion_id,";
+        
+        if($laboratorio->esNumerico)
+        {
+            $query .= " value ,";
+        }
+        else 
+        {
+            $query .= " text_value ,";
+        }
+            
+        $query .="  idusuario,
+                    fecha_creacion
+                    )
+                    values
+                    (
+                    ".Utils::phpIntToSQL($laboratorio->id).",
+                    ".Utils::phpIntToSQL($idFormInt).", ";
+        if($laboratorio->esNumerico)
+        {
+            $query .= Utils::phpFloatToSQL($laboratorio->valor) . " ,";
+        }
+        else 
+        {
+            $query .= Utils::phpStringToSQL($laboratorio->valor) . " ,";
+        }
+                    
+        $query .=   $idusuario.",
+                    now()
+                    );
+            ";
+        
+        try {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
+        } catch (Exception $e) {
+            throw new Exception("Error intentando ejecutar: $query");
+        }
+        
+        $this->dbTurnos->desconectar();
+    }
+
 }

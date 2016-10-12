@@ -9,16 +9,40 @@ class FormInternacion
 {
     var $idatencion;
     var $id;
-    var $profesional;
     var $paciente;
     var $observaciones;
     var $egreso;
     var $fecha;
     var $idusuario;
+    var $estudiosLaboratorioSangre;
+    var $estudiosLaboratorioOrina;
+    
 
     function FormInternacion()
     {
         $this->observaciones = array();
+        $this->estudiosLaboratorioOrina = array();
+        $this->estudiosLaboratorioSangre = array();
+    }
+
+    function setEstudiosLaboratorioOrina($estudios)
+    {
+        $this->estudiosLaboratorioOrina = $estudios;
+    }
+
+    function getEstudiosLaboratorioOrina()
+    {
+        return $this->estudiosLaboratorioOrina;
+    }
+
+    function setEstudiosLaboratorioSangre($estudios)
+    {
+        $this->estudiosLaboratorioSangre = $estudios;
+    }
+
+    function getEstudiosLaboratorioSangre()
+    {
+        return $this->estudiosLaboratorioSangre;
     }
 
     function getId()
@@ -49,11 +73,6 @@ class FormInternacion
     function getObservaciones()
     {
         return $this->observaciones;
-    }
-
-    function setProfesional(Profesional $prof)
-    {
-        $this->idProfesional = $prof;
     }
 
     function setPaciente(Paciente $pac)

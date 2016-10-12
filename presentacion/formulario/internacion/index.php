@@ -1,8 +1,10 @@
 <?php
 include_once '../../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
-include_once neg_formulario.'demanda/demanda.class.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once datos.'atencionDatabaseLinker.class.php';
+include_once datos.'internacionDatabaseLinker.class.php';
+include_once neg_formulario.'formInternacion/formInternacion.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
 include_once datos.'generalesDatabaseLinker.class.php';
 include_once datos.'utils.php';
 session_start();
@@ -20,13 +22,21 @@ $data = unserialize($usuario);
 /*fin de agregado usuario*/
 $idAtencion = $_REQUEST['id'];
 
-$dbDemanda = new DemandaDatabaseLinker();
+$dbFormInt = new FormInternacionDatabaseLinker();
+$dbInt = new InternacionDatabaseLinker();
+$dbAtencion = new AtencionDatabaseLinker();
+$dbGen = new GeneralesDatabaseLinker();
 
-$demanda = $dbDemanda->obtenerFormulario($idAtencion,$data->getId());
-$observaciones = $demanda->getObservaciones();
-$egreso = $demanda->getEgreso();
+$idInternacion = $dbAtencion->obtenerIdTurno($idAtencion);
+$InternacionPaciente = $dbInt->getInternado($idInternacion);
+$partido = $dbGen->getPartido($InternacionPaciente->getPaciente()->getPais(), $InternacionPaciente->getPaciente()->getProvincia(), $InternacionPaciente->getPaciente()->getPartido());
+$localidad = $dbGen->getLocalidad($InternacionPaciente->getPaciente()->getPais(), $InternacionPaciente->getPaciente()->getProvincia(), $InternacionPaciente->getPaciente()->getPartido(), $InternacionPaciente->getPaciente()->getLocalidad());
 
-$id = $demanda->getId();
+$Internacion = $dbFormInt->obtenerFormulario($idAtencion,$data->getId());
+$observaciones = $Internacion->getObservaciones();
+$egreso = $Internacion->getEgreso();
+
+$id = $Internacion->getId();
 ?>
 <!DOCTYPE html>
 <html lang="en" class="no-js demo-7">
@@ -34,8 +44,8 @@ $id = $demanda->getId();
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
-        <title>Formulario Demanda</title>
-        <meta name="description" content="formulario para atencion en demanda para cualquier especialidad" />
+        <title>Formulario Internacion</title>
+        <meta name="description" content="formulario para atencion en Internacion para cualquier especialidad" />
         <meta name="keywords" content="expanding button, morph, modal, fullscreen, transition, ui" />
         <meta name="author" content="Juan Ferreyra" />
 
@@ -51,8 +61,8 @@ $id = $demanda->getId();
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
 
-        <link type="text/css" rel="stylesheet" href="includes/css/formularioDemanda.css" />
-        <link type="text/css" rel="stylesheet" href="includes/css/formularioDemandaImprimir.css" media="print" />
+        <link type="text/css" rel="stylesheet" href="includes/css/formularioInternacion.css" />
+        <link type="text/css" rel="stylesheet" href="includes/css/formularioInternacionImprimir.css" media="print" />
 
 <!--Scripts-->
 
@@ -63,7 +73,7 @@ $id = $demanda->getId();
         
         <script type="text/javascript" src="../../includes/plug-in/jqPrint/jquery.jqprint-0.3.js"></script>
 
-        <script type="text/javascript" src="includes/js/formularioDemanda.js"></script>
+        <script type="text/javascript" src="includes/js/formularioInternacion.js"></script>
 
         <script>
             var id = <?=$id ?>;
@@ -87,7 +97,7 @@ $id = $demanda->getId();
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Formulario Demanda</a>
+                &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Formulario Internacion</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->
@@ -102,114 +112,220 @@ $id = $demanda->getId();
                 <form>
                     <div class="mockup-content">
                         <div class="hoja">
-                            <div id="datosPaciente">
+                            <fieldset>
+                                <legend>Datos Personales / Internacion</legend>
+                                <table id="tblFichaPaciente" class="hor-minimalist-b"  width="100%">
+                                    <tr>
+                                        <td><b>Fecha: </b><?php echo Utils::sqlDateTimeToHtmlDateTime($InternacionPaciente->getFecha_creacion()); ?></td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Nombre: </b><?php echo $InternacionPaciente->getPaciente()->getNombre()." ".$InternacionPaciente->getPaciente()->getApellido(); ?></td>
+                                        <td><b>TipoDoc: </b><?php  echo Utils::nombreCortoTipodoc($Internacion->getPaciente()->getTipodoc()); ?></td>
+                                        <td><b>NroDoc: </b><?php echo $InternacionPaciente->getPaciente()->getNrodoc(); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>Obra Social: </b><?php echo $InternacionPaciente->getObraSocial()['detalle']; ?></td>
+                                        <td><b>Edad: </b><?php echo $InternacionPaciente->getPaciente()->getEdadActual()." Años";?></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>Domicilio: </b><?php echo $InternacionPaciente->getPaciente()->getCalleNombre()." ".$InternacionPaciente->getPaciente()->getCalleNumero()." - ".$localidad['descripcion']; ?></td>
+                                        <td><b>Partido: </b><?php echo $partido['descripcion']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>Telefono: </b><?php echo $InternacionPaciente->getPaciente()->getTelefono()."   ".$InternacionPaciente->getPaciente()->getTelefono2(); ?></td>
+                                        <td><b><span class="noImprimir"></span></b></td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <div style="text-align:left;">
+                                <br>
+                                &nbsp;<b>Motivo Ingreso:</b>&nbsp;<?php echo $InternacionPaciente->getMotivo_ingreso(); ?>
+                                <br>
+                                <br>
+                            </div>
+                                <fieldset>
+                                <legend>Sangre</legend>
+                                <?php
+                                    $tipo = TipoLaboratorio::SANGRE;
+                                    $laboratorios = $Internacion->getEstudiosLaboratorioSangre();
+                                    
+                                    $elementosPorFila = 8;
+                                    $elementosDibujados = 0;
+                                    $i=0;
+                                ?>
+                                    
+                                    <table cellspacing="8px" style="width: 100%">
+                                        <?php
+                                            /* @var $labo Laboratorio  */
+                                            foreach ($laboratorios as $labo) {  
+                                                if($i%$elementosPorFila==0)
+                                                {
+                                                    echo "<tr>";
+                                                }
+                                                //escribo datos 
+                                                if($labo->esNumerico)
+                                                {
+                                                    echo '<td title="' . Utils::phpStringToHTML($labo->descripcion) . '" style="width:'.((int)(100/$elementosPorFila)).'% " nowrap>';
+                                                }
+                                                else
+                                                {
+                                                    echo '<td title="' . Utils::phpStringToHTML($labo->valor) . '" style="width:'.((int)(100/$elementosPorFila)).'% " nowrap>'; 
+                                                }
+                                                
+                                                    echo "<b>". $labo->nombre . "</b><br />";
+                                                    if($labo->esNumerico)
+                                                    {
+                                                        echo $labo->valor;
+                                                    }
+                                                    else
+                                                    {
+                                                        echo Utils::phpStringToHTML($labo->valor);
+                                                    }
+                                                echo "</td>";
+                                                
+                                                
+                                                if ($i%$elementosPorFila==7)
+                                                {
+                                                    echo "</tr>";   
+                                                }
+                                                $i++;
+                                            }
+                                            //Si tengo que cerrar la ultima fila
+                                            if($i%$elementosPorFila!=0)
+                                            {
+                                                //echo '</tr>';
+                                                echo '<td colspan = "'.($elementosPorFila - (($i%$elementosPorFila!=0))).'"></td>';
+                                                echo '</tr>';
+                                            } 
+                                        ?>
+                                    
+                                    </table>
+                                </fieldset>
+                                
+                                <fieldset>
+                                <legend>Orina</legend>
+                                    
+                                    <?php
+                                    $laboratorios = $Internacion->getEstudiosLaboratorioOrina();
+                                    
+                                    $elementosPorFila = 7;
+                                    $elementosDibujados = 0;
+                                    $i=0;
+                                    ?>
+                                    
+                                    <table cellspacing="8px" style="width: 100%">
+                                        <?php
+                                            /* @var $labo Laboratorio */
+                                            foreach ($laboratorios as $labo) {  
+                                                if($i%$elementosPorFila==0)
+                                                {
+                                                    echo "<tr>";
+                                                }
+                                                //escribo datos 
+                                                if($labo->esNumerico)
+                                                {
+                                                    echo '<td title="' . Utils::phpStringToHTML($labo->descripcion) . '" style="width:'.((int)(100/$elementosPorFila)).'% " nowrap>';
+                                                }
+                                                else
+                                                {
+                                                    echo '<td title="' . Utils::phpStringToHTML($labo->valor) . '" style="width:'.((int)(100/$elementosPorFila)).'% " nowrap>';
+                                                }
+                                                
+                                                    echo "<b>". $labo->nombre . "</b><br />";
+                                                    if($labo->esNumerico)
+                                                    {
+                                                        echo $labo->valor;
+                                                    }
+                                                    else
+                                                    {
+                                                        echo Utils::phpStringToHTML($labo->valor);
+                                                    }
+                                                echo "</td>";
+                                                
+                                                
+                                                if ($i%$elementosPorFila==7)
+                                                {
+                                                    echo "</tr>";   
+                                                }
+                                                $i++;
+                                            }
+                        
+                                            //Si tengo que cerrar la ultima fila
+                                            if($i%$elementosPorFila!=0)
+                                            {
+                                                //echo '</tr>';
+                                                
+                                                echo '<td colspan = "'.($elementosPorFila - (($i%$elementosPorFila!=0))).'">&nbsp;</td>';
+                                                echo '</tr>';
+                                                
+                                            }
+                                        ?>
+                                    </table>
+                                </fieldset>
+
                                 <table width="100%">
                                     <tr>
-                                        <td>
-                                            <div align="center">
-                                                Demanda
-                                            <div>
+                                        <td colspan=4>
+                                            <?php
+                                            for ($q=0; $q < count($observaciones); $q++)
+                                            {
+                                            ?>
+                                            <div class="apartado">
+                                                <fieldset>
+                                                    <legend><?=$observaciones[$q]->getDetalle();?></legend>
+                                                    <div class="lstTextos">
+                                                        <?php
+                                                        $items = $observaciones[$q]->getitemsObservacion();
+
+                                                        for ($y=0; $y < count($items); $y++)
+                                                        {
+                                                            $title = "<b>Fecha:</b>" .$items[$y]->getFecha()."<br/>";
+                                                            $title .= "<b>Usuario:</b>" .$items[$y]->getUsuario()."<br/>";
+                                                            echo "<li class='tool' title='".$title."'>";
+                                                            echo "<span class=\" context-menu-one box menu-1\" obsId=\"".$items[$y]->getId()."\" obsUsr=\"".$items[$y]->getUsuario()."\">\n";
+                                                                
+                                                            print $items[$y]->getDetalle();
+                                                                
+                                                            echo "</span>";
+                                                            if($Internacion->getEgreso()==null)
+                                                            {
+                                                                echo "<input class='btnEditar' type='button' onclick='javascripst:editarObservacion(".$items[$y]->getId().");' value='editar' style='height:22px;width:49px;'>";
+                                                            }
+                                                            echo "</li>";
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <?php
+                                            }
+                                            ?>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <table border="1" width="100%">
-                                                <tr>
-                                                    <td>
-                                                        Nombre y Apellido<br />
-                                                        <div align="center">
-                                                            <?=$demanda->getPaciente()->apellido." ".$demanda->getPaciente()->nombre; ?>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        Sexo<br />
-                                                        <div align="center">
-                                                            <?=$demanda->getPaciente()->sexo; ?>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        Edad<br />
-                                                        <div align="center">
-                                                            <?=$demanda->getPaciente()->getEdadActual(); ?>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        NHC<br />
-                                                        <div align="center">
-                                                            <?=$demanda->getPaciente()->getNrodoc(); ?>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan=4>
-                                                        <br />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan=4>
-                                                        <?php
-                                                        for ($q=0; $q < count($observaciones); $q++)
-                                                        {
-                                                        ?>
-                                                        <div class="apartado">
-                                                            <fieldset>
-                                                                <legend><?=$observaciones[$q]->getDetalle();?></legend>
-                                                                <div class="lstTextos">
-                                                                    <?php
-                                                                    $items = $observaciones[$q]->getitemsObservacion();
+                                        <td colspan=4>
+                                            <?php
+                                            if($egreso->getId()!=NULL)
+                                            {
+                                            ?>
+                                            <fieldset>
+                                                <legend>Egreso</legend>
+                                                <div align="left">
 
-                                                                    for ($y=0; $y < count($items); $y++)
-                                                                    {
-                                                                        $title = "<b>Fecha:</b>" .$items[$y]->getFecha()."<br/>";
-                                                                        $title .= "<b>Usuario:</b>" .$items[$y]->getUsuario()."<br/>";
-                                                                        echo "<li class='tool' title='".$title."'>";
-                                                                        echo "<span class=\" context-menu-one box menu-1\" obsId=\"".$items[$y]->getId()."\" obsUsr=\"".$items[$y]->getUsuario()."\">\n";
-                                                                            
-                                                                        print $items[$y]->getDetalle();
-                                                                            
-                                                                        echo "</span>";
-                                                                        if($demanda->getEgreso()==null)
-                                                                        {
-                                                                            echo "<input class='btnEditar' type='button' onclick='javascripst:editarObservacion(".$items[$y]->getId().");' value='editar' style='height:22px;width:49px;'>";
-                                                                        }
-                                                                        echo "</li>";
-                                                                    }
-                                                                    ?>
-                                                                </div>
-                                                            </fieldset>
-                                                        </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan=4>
-                                                        <?php
-                                                        if($egreso->getId()!=NULL)
-                                                        {
-                                                        ?>
-                                                        <fieldset>
-                                                            <legend>Egreso</legend>
-                                                            <div align="left">
-
-                                                                <b>DIAGNOSTICO:</b>
-                                                                <?=$egreso->getDiagnostico();?><br>
-                                                                <b>DESTINO:</b>
-                                                                <?=$egreso->getTipoEgreso();?><br>
-                                                                <b>FECHA:</b>
-                                                                <?=Utils::sqlDateToHtmlDate($egreso->getFechaCreacion());?><br>
-                                                                <b>PROFESIONAL:</b>
-                                                                <?=$egreso->getUsuario();?>
-                                                            </div>
-                                                        </fieldset>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                </tr>
-                                               
-                                            </table>
+                                                    <b>DIAGNOSTICO:</b>
+                                                    <?=$egreso->getDiagnostico();?><br>
+                                                    <b>DESTINO:</b>
+                                                    <?=$egreso->getTipoEgreso();?><br>
+                                                    <b>FECHA:</b>
+                                                    <?=Utils::sqlDateToHtmlDate($egreso->getFechaCreacion());?><br>
+                                                    <b>PROFESIONAL:</b>
+                                                    <?=$egreso->getUsuario();?>
+                                                </div>
+                                            </fieldset>
+                                            <?php
+                                            }
+                                            ?>
                                         </td>
                                     </tr>
                                 </table>
@@ -227,7 +343,10 @@ $id = $demanda->getId();
                         <span class="icon icon-delete"></span>
                         <h2>Menú ingreso</h2>
                         <ul>
-                            <li><a class="icon icon-pentool" href="#" id="agrEvolucionClinica">Evolucion Clinica</a></li>
+                            <li><a class="icon icon-pentool" href="#" id="agrObservacion">Observacion/Tratamientos</a></li>
+                            <li><a class="icon icon-hand" href="#" id="agrInterconsultas">Interconsultas</a></li>
+                            <li><a class="icon icon-notepad" href="#" id="agrPendientes">Pendientes</a></li>
+                            <li><a class="icon icon-share" href="#" id="agrLaboratorios">Laboratorios</a></li>
                             <li><a class="icon icon-exit" href="#" id="agrEgreso">Egreso</a></li>
                             <li><a class="icon icon-printer" href="#" id="imprimir">Imprimir</a></li>
                         </ul>
@@ -308,7 +427,7 @@ $id = $demanda->getId();
             })();
         </script>
 
-        <form action="index.php" method="post" id="formDemanda">
+        <form action="index.php" method="post" id="formInternacion">
             <input type="hidden" name="id" value="<?php echo $idAtencion; ?>">
         </form>
     </body>

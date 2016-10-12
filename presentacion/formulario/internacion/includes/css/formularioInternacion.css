@@ -1,6 +1,7 @@
 .hoja{
     background-color: #FFF;
     padding: 5px;
+    width: 900px;
 }
 
 .textarea-style-edicion{
@@ -199,4 +200,55 @@ label {
     text-transform: uppercase;
     display: block;
     float: left;
+}
+
+.cnt {
+    clear: both;
+    margin: 10px;
+    font-family: arial;
+    font-size: 11pt;
+}
+
+#contenedorFicha {
+    border: solid;
+    border-width: 1pt;
+}
+
+.hor-minimalist-b {
+    /*background: none repeat scroll 0 0 #FFFFFF;*/
+    border-collapse: collapse;
+    font-family: "Lucida Sans Unicode","Lucida Grande",Sans-Serif;
+    /*font-size: 12px;*/
+    margin: 20px;
+    text-align: left;
+    
+}
+.hor-minimalist-b thead th {
+    border-bottom: 2px solid #6678B1;
+    /*color: #003399;*/
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px 8px;
+}
+
+.hor-minimalist-b tfoot th {
+    /*color: #003399;*/
+    font-size: 11px;
+    font-weight: normal;
+    padding: 4px 8px;
+}
+
+.hor-minimalist-b td {
+    border-bottom: 1px solid #CCCCCC;
+    /*color: #666699;*/
+    padding: 6px 8px;
+}
+.hor-minimalist-b tbody tr:hover td {
+    /*color: #000099;*/
+}
+
+#tblFichaPaciente{
+    margin:0 auto 0 auto; 
+    width: 100%;
+    text-align: left !important;
 }

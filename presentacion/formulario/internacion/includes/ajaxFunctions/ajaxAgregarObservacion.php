@@ -1,6 +1,6 @@
 <?php
 include_once '../../../../../namespacesAdress.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 
 session_start();
@@ -30,11 +30,11 @@ else
 
 if($data->result)
 {
-  $dbEpicrisis = new DemandaDatabaseLinker();
+  $dbInt = new FormInternacionDatabaseLinker();
   
     try
     {
-      $dbEpicrisis->insertarObservacion($_REQUEST['id'], $_REQUEST['tipo_observacion'], $descripcion, $usuarioUnset->getId() );    
+      $dbInt->insertarObservacion($_REQUEST['id'], $_REQUEST['tipo_observacion'], $descripcion, $usuarioUnset->getId() );    
     } 
     catch (Exception $e)
     {

@@ -1,6 +1,6 @@
 function refreshPagina()
 {
-    $("#formDemanda").submit();
+    $("#formInternacion").submit();
 }
 
 function mostrarDialogo(paginaVista, paginaFuncion, ide)
@@ -27,7 +27,7 @@ function mostrarDialogo(paginaVista, paginaFuncion, ide)
                                     if(data.show){
                                         alert(data.message);
                                     }
-                                    $("#formDemanda").submit();
+                                    $("#formInternacion").submit();
                                 }
                                 else{
                                     alert(data.message);
@@ -71,7 +71,7 @@ function mostrarDialogoObservacion(paginaVista, paginaFuncion, ide, observacion)
                                     {
                                         alert(data.message);
                                     }
-                                    $("#formDemanda").submit();
+                                    $("#formInternacion").submit();
                                 }
                                 else
                                 {
@@ -114,7 +114,7 @@ $(document).ready(function()
         mostrarDialogo("formAgregarEgreso.php", "ajaxAgregarEgreso.php", id);
     });
 
-    $("#agrEvolucionClinica").click(function(event){
+    $("#agrObservacion").click(function(event){
         event.preventDefault();
         if (tieneEgreso)
         {
@@ -124,5 +124,34 @@ $(document).ready(function()
         {
             mostrarDialogoObservacion("formAgregarObservacion.php", "ajaxAgregarObservacion.php", id, 1);
         }
+    });
+
+    $("#agrInterconsultas").click(function(event){
+        event.preventDefault();
+        if (tieneEgreso)
+        {
+            alert("No se puede agregar una vez ingresado el egreso.")
+        }
+        else
+        {
+            mostrarDialogoObservacion("formAgregarObservacion.php", "ajaxAgregarObservacion.php", id, 2);
+        }
+    });
+
+    $("#agrPendientes").click(function(event){
+        event.preventDefault();
+        if (tieneEgreso)
+        {
+            alert("No se puede agregar una vez ingresado el egreso.")
+        }
+        else
+        {
+            mostrarDialogoObservacion("formAgregarObservacion.php", "ajaxAgregarObservacion.php", id, 3);
+        }
+    });
+
+    $("#agrLaboratorios").click(function(event){
+        event.preventDefault();
+        mostrarDialogo("formAgregarLaboratorios.php", "ajaxAgregarLaboratorios.php",id);
     });
 });

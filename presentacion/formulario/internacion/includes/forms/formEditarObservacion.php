@@ -1,6 +1,6 @@
 <?php
 include_once '../../../../../namespacesAdress.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 include_once datos . 'utils.php';
 
@@ -19,13 +19,13 @@ $error = false;
 
 $message = "";
 
-$dbDemanda = new DemandaDatabaseLinker();
+$dbInter = new FormInternacionDatabaseLinker();
 
 $message = "";
 
 $idObservacion = Utils::postIntToPHP($_REQUEST['id']);
 
-$observacion = $dbDemanda->obtenerObservacion($idObservacion);
+$observacion = $dbInter->obtenerObservacion($idObservacion);
 
 ?>
 
@@ -35,7 +35,6 @@ $observacion = $dbDemanda->obtenerObservacion($idObservacion);
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Editar Observacion</title>
     <script type="text/javascript" src="../../includes/plug-in/jnumeric/jquery.numeric.js"></script>
-    <!--<script type="text/javascript" src="/tools/jquery/jqprint/jquery.jqprint-0.3.js"></script>-->
 </head>
 
 <body bgcolor = "#FFFFFF" style="width: 100%; text-align: center;">

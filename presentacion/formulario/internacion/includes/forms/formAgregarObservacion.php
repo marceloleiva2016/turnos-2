@@ -1,6 +1,6 @@
 <?php
 include_once '../../../../../namespacesAdress.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 
 session_start();
@@ -18,11 +18,11 @@ $error = false;
 
 $message = "";
 
-$dbDemanda = new DemandaDatabaseLinker();
+$dbInter = new FormInternacionDatabaseLinker();
 
-$TipoObservacion = $dbDemanda->nombreTipoObservacion($_REQUEST['tipo_observacion']);
+$TipoObservacion = $dbInter->nombreTipoObservacion($_REQUEST['tipo_observacion']);
 
-$observaciones = $dbDemanda->obtenerCantidadObservacionesDeTipo($_REQUEST['id'], $_REQUEST['tipo_observacion']);
+$observaciones = $dbInter->obtenerCantidadObservacionesDeTipo($_REQUEST['id'], $_REQUEST['tipo_observacion']);
 
 if($observaciones>=5)
 {

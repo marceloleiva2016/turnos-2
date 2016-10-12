@@ -1,19 +1,19 @@
 <?php
 include_once '../../../../../namespacesAdress.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+include_once dat_formulario.'formInternacionDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 include_once datos.'diagnosticoDatabaseLinker.class.php';
 include_once negocio.'usuario.class.php';
 
 session_start();
 
-$idDemanda = Utils::postIntToPHP($_REQUEST['id']);
+$idformInt = Utils::postIntToPHP($_REQUEST['id']);
 
-$dbDemanda = new DemandaDatabaseLinker();
+$dbInt = new FormInternacionDatabaseLinker();
 
-$destinos = $dbDemanda->getTiposEgresos($idDemanda);
+$destinos = $dbInt->getTiposEgresos($idformInt);
 
-$puede = $dbDemanda->puedeDarEgreso($idDemanda);
+$puede = $dbInt->puedeDarEgreso($idformInt);
 
 $error = false;
 
