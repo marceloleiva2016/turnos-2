@@ -44,7 +44,8 @@ if ($data->result == true)
 {
     $ingreso = $dbformInt->insertarEgreso($_REQUEST['id'], $_REQUEST['idDestino'], $_REQUEST['dg_diagnostico'], $usuarioUnset->getId());
     $idAtencion = $dbformInt->getIdAtencion($_REQUEST['id']);
-    $idTurno = $dbAtencion->obtenerIdTurno($idAtencion);
+    $idInternacion = $dbAtencion->obtenerIdTurno($idAtencion);
+    $dbInternacion->salidaAInternacion($idInternacion, $usuarioUnset->getId());
     //ingreso en el log el cambio de estado de internacion
 
     if(!$ingreso)

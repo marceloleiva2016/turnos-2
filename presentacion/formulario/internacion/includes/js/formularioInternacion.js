@@ -99,12 +99,9 @@ $(document).ready(function()
 {
     $("#imprimir").click(function(event){
         event.preventDefault();
-        if (tieneEgreso)
-        {
+        if (tieneEgreso){
             window.print();
-        }
-        else
-        {
+        } else {
             alert("Debe tener el egreso para poder imprimir");
         }
     });
@@ -116,42 +113,56 @@ $(document).ready(function()
 
     $("#agrObservacion").click(function(event){
         event.preventDefault();
-        if (tieneEgreso)
-        {
+        if(tieneEgreso) {
             alert("No se puede agregar una vez ingresado el egreso.")
-        }
-        else
-        {
+        } else {
             mostrarDialogoObservacion("formAgregarObservacion.php", "ajaxAgregarObservacion.php", id, 1);
         }
     });
 
     $("#agrInterconsultas").click(function(event){
         event.preventDefault();
-        if (tieneEgreso)
-        {
+        if(tieneEgreso) {
             alert("No se puede agregar una vez ingresado el egreso.")
-        }
-        else
-        {
+        } else {
             mostrarDialogoObservacion("formAgregarObservacion.php", "ajaxAgregarObservacion.php", id, 2);
         }
     });
 
     $("#agrPendientes").click(function(event){
         event.preventDefault();
-        if (tieneEgreso)
-        {
+        if(tieneEgreso) {
             alert("No se puede agregar una vez ingresado el egreso.")
-        }
-        else
-        {
+        } else {
             mostrarDialogoObservacion("formAgregarObservacion.php", "ajaxAgregarObservacion.php", id, 3);
         }
     });
 
     $("#agrLaboratorios").click(function(event){
         event.preventDefault();
-        mostrarDialogo("formAgregarLaboratorios.php", "ajaxAgregarLaboratorios.php",id);
+        if(tieneEgreso){
+            alert("No se puede agregar una vez ingresado el egreso.")
+        } else {
+            mostrarDialogo("formAgregarLaboratorios.php", "ajaxAgregarLaboratorios.php",id);
+        }
     });
+
+    $("#agrRayos").click(function(event){
+        event.preventDefault();
+        if(tieneEgreso){
+            alert("No se puede agregar una vez ingresado el egreso.")
+        } else {
+            mostrarDialogo("formAgregarRayos.php", "ajaxAgregarRayos.php",id);    
+        }
+    });
+
+    $("#agrAltaComplejidad").click(function(event){
+        event.preventDefault();
+        if(tieneEgreso){
+            alert("No se puede agregar una vez ingresado el egreso.")
+        } else {
+            mostrarDialogo("formAgregarAltaComplejidad.php", "ajaxAgregarAltaComplejidad.php",id);    
+        }
+    });
+
 });

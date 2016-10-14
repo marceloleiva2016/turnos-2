@@ -89,6 +89,10 @@ function resetearVariables()
 {
     $("#nrodoc").val('');
     $("#fichaPaciente").html('');
+    $("#motivo").html('');
+    $("#dg_diagnostico").val('');
+    $('#cama option').remove();
+
     setearValoresChequeo('', '', '', '');
 }
 
@@ -187,7 +191,7 @@ $(document).ready(function(){
                         success: function(json)
                         {
                             if (json.ret==true)
-                            {º
+                            {
                                 $("#dialog").dialog("open");
                                 pacienteValido = false;
                                 resetearVariables();

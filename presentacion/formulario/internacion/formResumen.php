@@ -1,11 +1,10 @@
 <?php
 include_once '../../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
-
-include_once datos.'generalesDatabaseLinker.class.php';
+include_once datos.'atencionDatabaseLinker.class.php';
+include_once datos.'internacionDatabaseLinker.class.php';
 include_once datos.'utils.php';
-include_once neg_formulario.'demanda/demanda.class.php';
-include_once dat_formulario.'demandaDatabaseLinker.class.php';
+
 session_start();
 
 /*Agregado para que tenga el usuario*/
@@ -20,7 +19,7 @@ $usuario = $_SESSION['usuario'];
 $data = unserialize($usuario);
 /*fin de agregado usuario*/
 $idAtencion = $_REQUEST['id'];
-
+/*
 $dbDemanda = new DemandaDatabaseLinker();
 
 $demanda = $dbDemanda->obtenerFormulario($idAtencion,$data->getId());
@@ -76,3 +75,6 @@ if($egreso->getId()!=NULL)
 </fieldset>
 <?php
 }
+*/
+
+echo "Formulario Internacion no realizado";

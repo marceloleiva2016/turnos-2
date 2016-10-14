@@ -27,6 +27,13 @@ class InternacionDatabaseLinker
         $this->dbObraSocial = new ObraSocialDatabaseLinker();
     }
 
+    function salidaAInternacion($idInternacion, $idusuario)
+    {
+        $idCama = $this->dbCama->getIdCamaEnInternacion($idInternacion);
+
+        $this->dbCama->salidaInternacionCama($idCama, $idusuario);
+    }
+
     function obtenerVariablesInternacion($idInternacion)
     {
         /*van a ser variables basicas para la lectura del formulario principal*/
@@ -73,11 +80,6 @@ class InternacionDatabaseLinker
             {                
                 $obraSocial = $this->dbObraSocial->getObraSocialPaciente($tipodoc, $nrodoc);
 
-                if(!$obraSocial){
-                    $obraSocial = array();                
-                    $obraSocial['id'] = 0;
-                }
-
                 $query="INSERT INTO
                             internacion(
                                 `tipodoc`,
@@ -95,7 +97,7 @@ class InternacionDatabaseLinker
                                 $idatencionPredecesora,
                                 ".Utils::phpStringToSQL($motivoIngreso).",
                                 $idDiagnosticoIngreso,
-                                ".Utils::phpStringToSQL($obraSocial['id']).",
+                                '".$obraSocial['id']."',
                                 now(),
                                 $idusuario,
                                 true

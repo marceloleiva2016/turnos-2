@@ -462,6 +462,32 @@ class CamaDatabaseLinker
         return true;
     }
 
+    function salidaInternacionCama($idCama, $idusuario)
+    {
+        $query="UPDATE
+                    cama_internacion
+                SET
+                    `idinternacion` = '0',
+                    `fecha_creacion` = now(),
+                    `idusuario`= $idusuario
+                WHERE
+                    `idcama`=$idCama;";
+        try
+        {
+            $this->dbturnos->conectar();
+            $this->dbturnos->ejecutarAccion($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbturnos->desconectar();
+            return false;
+        }
+
+        $this->dbturnos->desconectar();
+
+        return true;
+    }
+
     function existeInternadoEnCama($idCama)
     {
         $query="SELECT
@@ -516,6 +542,32 @@ class CamaDatabaseLinker
         }
 
         return $std;
+    }
+
+    function getIdCamaEnInternacion($idInternacion)
+    {
+        $query="SELECT
+                    `idCama`
+                FROM
+                    cama_internacion
+                WHERE
+                    idinternacion=$idInternacion;";
+        try
+        {
+            $this->dbturnos->conectar();
+            $this->dbturnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbturnos->desconectar();
+            throw new Exception("Error consultando si existe un internado en la cama!", 1);
+        }
+
+        $result = $this->dbturnos->fetchRow($query);
+
+        $this->dbturnos->desconectar();
+
+        return $result['idCama'];
     }
 
 }

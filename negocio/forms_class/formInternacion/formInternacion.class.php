@@ -16,7 +16,7 @@ class FormInternacion
     var $idusuario;
     var $estudiosLaboratorioSangre;
     var $estudiosLaboratorioOrina;
-    var $altaComplegidad;
+    var $altaComplejidad;
     var $rayos;
 
     function FormInternacion()
@@ -24,18 +24,18 @@ class FormInternacion
         $this->observaciones = array();
         $this->estudiosLaboratorioOrina = array();
         $this->estudiosLaboratorioSangre = array();
-        $this->altaComplegidad = array();
+        $this->altaComplejidad = array();
         $this->rayos = array();
     }
 
-    function setAltaComplegidad($altaComplegidad)
+    function setAltaComplejidad($altaComplejidad)
     {
-        $this->altaComplegidad = $altaComplegidad;
+        $this->altaComplejidad = $altaComplejidad;
     }
 
-    function getAltaComplegidad()
+    function getAltaComplejidad()
     {
-        return $this->altaComplegidad;
+        return $this->altaComplejidad;
     }
 
     function setRayos($rayos)

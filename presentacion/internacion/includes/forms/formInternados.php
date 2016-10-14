@@ -107,7 +107,8 @@ for ($c=0; $c < count($internaciones); $c++)
                         <span class='meta__author'><?php  echo Utils::nombreCortoTipodoc($internacion->getPaciente()->getTipodoc())."-".$internacion->getPaciente()->getNrodoc(); ?></span>
                     </div>     
                     <?php
-                    echo "<div class='datosPersona'><span class='meta__misc'>Datos Domicilio: ".$pais['descripcion'].", ".$provincia['descripcion'].", ".$partido['descripcion'].", ".$localidad['descripcion']."</span>";
+                    echo "<div class='datosPersona'>";
+                    echo "<span class='meta__misc'>Datos Domicilio: ".$pais['descripcion'].", ".$provincia['descripcion'].", ".$partido['descripcion'].", ".$localidad['descripcion']."</span>";
                     echo "<span class='meta__misc'>Direccion: ".$internacion->getPaciente()->getCalleNombre()." ".$internacion->getPaciente()->getCalleNumero()."</span>";
                     echo "<span class='meta__misc'>Sexo: ".$internacion->getPaciente()->getSexoLargo()."</span>";
                     echo "<span class='meta__misc'>Edad: ".$internacion->getPaciente()->getEdadActual()." Años</span>";
@@ -117,18 +118,20 @@ for ($c=0; $c < count($internaciones); $c++)
                 </div>    
                 <div class='meta meta--full'>
                 <?php
-                echo "<hr />";
+                echo "<hr/>";
                 echo "<span class='meta__misc'>Fecha Ingreso: <i class='fa fa-calendar-o'></i>".Utils::sqlDateTimeToHtmlDateTime($internacion->getFecha_creacion())."</span>";
                 echo "<span class='meta__misc'> Motivo Ingreso: ".$internacion->getMotivo_ingreso()."</span>";
                 echo "<span class='meta__misc'>Es Donante?: ".$donante."</span>";
                 echo "<span class='meta__misc'>Obra Social: ".$internacion->getObraSocial()['detalle']."</span>";
                 echo "<span class='meta__misc'>Diagnostico Ingreso: ".$diagnostico['codigo_completo']."->".$diagnostico['descripcion']."</span>";
-                echo "<div class='botones'><input type='button' class='button-secondary' value='OBSERVACIONES' onclick=javascript:mostrarFormulario('".$internacion->getId()."'); /></div></div>";
+                echo "<div class='botones'>";
+                echo "<input type='button' class='button-secondary' value='EVOLUCION' onclick=javascript:mostrarFormulario('".$internacion->getId()."'); />";
+                echo "</div></div>";
             }
             else
             {
                 echo "<span class='meta__author'>Sin Internado</span>";
-                echo "<div class='botones'><input type='button' class='button-secondary' value='Internar' onclick=javascript:internarPaciente(); /></div></div>";
+                echo "<div class='botones'><input type='button' class='button-secondary' value='Internar' onclick=javascript:internarPaciente(); /></div>";
             }
             ?>
                

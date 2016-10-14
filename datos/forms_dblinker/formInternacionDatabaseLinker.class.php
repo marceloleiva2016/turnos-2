@@ -15,7 +15,6 @@ include_once neg_formulario.'formInternacion/formInternacionLaboratorio.class.ph
 include_once neg_formulario.'formInternacion/formInternacionRayos.class.php';
 include_once neg_formulario.'formInternacion/formInternacionAltaComplegidad.class.php';
 
-
 class FormInternacionDatabaseLinker
 {
     private $dbTurnos;
@@ -121,8 +120,18 @@ class FormInternacionDatabaseLinker
         $this->cargarObservaciones($FormInternacion);
         $this->cargarEgreso($FormInternacion);
         $this->cargarLaboratorios($FormInternacion);
+        $this->cargarEstudios($FormInternacion);
 
         return $FormInternacion;
+    }
+
+    public function cargarEstudios(FormInternacion $form)
+    {
+        $listaRayos = $this->rayosHechos($form->getId());
+        $listaAltaComplejidad = $this->altaComplejidadHechos($form->getId());
+
+        $form->setRayos($listaRayos);
+        $form->setAltaComplejidad($listaAltaComplejidad);
     }
 
     public function cargarLaboratorios(FormInternacion $form)
@@ -866,18 +875,18 @@ class FormInternacionDatabaseLinker
             ";
         
         try {
-            $this->baseDeDatos->conectar();
-            $this->baseDeDatos->ejecutarAccion($query);
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
         } catch (Exception $e) {
             throw new Exception("Error intentando ejecutar: $query");
         }
         
-        $this->baseDeDatos->desconectar();
+        $this->dbTurnos->desconectar();
     }
 
     function insertarAltaComplejidad($idFormInt, AltaComplejidad $estudio, $idusuario)
     {
-        $query ="insert into 
+        $query ="INSERT INTO
                     form_internacion_alta_complejidad 
                     (
                     form_internacion_lista_alta_complejidad_id,
@@ -886,24 +895,190 @@ class FormInternacionDatabaseLinker
                     idusuario,
                     fecha_creacion
                     )
-                    values
+                    VALUES
                     (
                     ".Utils::phpIntToSQL($estudio->id).",
                     ".Utils::phpIntToSQL($idFormInt).",
                     ".Utils::phpBoolToSQL($estudio->valor).",
-                    ".Utils::phpStringToSQL($idusuario).",
+                    ".$idusuario.",
                     now()
                     );
             ";
         
         try {
-            $this->baseDeDatos->conectar();
-            $this->baseDeDatos->ejecutarAccion($query);
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarAccion($query);
         } catch (Exception $e) {
             throw new Exception("Error intentando ejecutar: $query");
         }
         
-        $this->baseDeDatos->desconectar();
+        $this->dbTurnos->desconectar();
     }
 
+    function altaComplejidadSinHacer($idFormInt)
+    {
+        $sql = "SELECT 
+                    id,
+                    nombre,
+                    descripcion  
+                FROM 
+                    form_internacion_lista_alta_complejidad
+                WHERE
+                    not 
+                        (id in (SELECT
+                                    form_internacion_lista_alta_complejidad_id 
+                                FROM 
+                                    form_internacion_alta_complejidad 
+                                WHERE
+                                    form_internacion_id = ".Utils::phpIntToSQL($idFormInt)."));";
+        
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo traer la informacion del ticket", 201230);
+        }
+        $ret = array();
+        
+        for ($i = 0; $i < $this->dbTurnos->querySize(); $i++) {
+            $result = $this->dbTurnos->fetchRow();
+            $altComplejidad = new AltaComplejidad();
+            $altComplejidad->id = Utils::sqlIntToPHP($result['id']);
+            $altComplejidad->nombre = htmlentities($result['nombre']);
+            $altComplejidad->descripcion = htmlentities($result['descripcion']);
+            $ret[$i]=$altComplejidad;
+        }
+        
+        return $ret;
+    }
+    
+    function altaComplejidadHechos($idFormInt)
+    {
+        //TODO
+        $sql = "SELECT 
+                    ac.form_internacion_lista_alta_complejidad_id as id,
+                    ac.value as valor,
+                    listac.nombre as nombre,
+                    listac.descripcion as descripcion
+                FROM 
+                    form_internacion_alta_complejidad ac left join
+                    form_internacion_lista_alta_complejidad listac ON (ac.form_internacion_lista_alta_complejidad_id = listac.id)
+                WHERE 
+                    ac.form_internacion_id = ".Utils::phpIntToSQL($idFormInt)." AND
+                    listac.favorito > 0
+                Order by listac.favorito asc;";
+        
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo traer la informacion del ticket", 201230);
+        }
+        $ret = array();
+        
+        for ($i = 0; $i < $this->dbTurnos->querySize(); $i++) {
+            $result = $this->dbTurnos->fetchRow();
+            $ac = new AltaComplejidad();
+            $ac->id = Utils::sqlIntToPHP($result['id']);
+            $ac->nombre = htmlentities($result['nombre']);
+            $ac->descripcion = htmlentities($result['descripcion']);
+            $ac->valor = Utils::sqlBoolToPHP($result['valor']);
+            $ret[$i]=$ac;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+    
+    function rayosSinHacer($idFormInt)
+    {
+        $sql = "SELECT 
+                    id,
+                    nombre,
+                    descripcion 
+                FROM 
+                    form_internacion_lista_rx 
+                WHERE 
+                    not 
+                        (id in (SELECT 
+                                    form_internacion_lista_rx_id 
+                                FROM 
+                                    form_internacion_rx
+                                where 
+                                    form_internacion_id = ".Utils::phpIntToSQL($idFormInt)."
+                                ));";
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo traer la informacion del ticket", 201230);
+        }
+        $ret = array();
+        
+        for ($i = 0; $i < $this->dbTurnos->querySize(); $i++) {
+            $result = $this->dbTurnos->fetchRow();
+            $rayo = new Rayo();
+            $rayo->id = Utils::sqlIntToPHP($result['id']);
+            $rayo->nombre = htmlentities($result['nombre']);
+            $rayo->descripcion = htmlentities($result['descripcion']);
+            $ret[$i]=$rayo;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+    
+    function rayosHechos($idFormInt)
+    {
+        $sql = "SELECT
+                    rx.form_internacion_lista_rx_id as id,
+                    rx.value as valor,
+                    rx.observacion as observacion,
+                    listrx.nombre as nombre,
+                    listrx.descripcion as descripcion
+                FROM
+                    form_internacion_rx rx LEFT JOIN
+                    form_internacion_lista_rx listrx ON (rx.form_internacion_lista_rx_id = listrx.id)
+                WHERE
+                    rx.form_internacion_id = ".Utils::phpIntToSQL($idFormInt)." AND
+                    listrx.favorito > 0
+                Order by listrx.favorito asc;";
+        
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($sql);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("No se pudo traer la informacion del ticket", 201230);
+        }
+        $ret = array();
+        
+        for ($i = 0; $i < $this->dbTurnos->querySize(); $i++) {
+            $result = $this->dbTurnos->fetchRow();
+            $rayo = new Rayo();
+            $rayo->id = Utils::sqlIntToPHP($result['id']);
+            $rayo->nombre = htmlentities($result['nombre']);
+            $rayo->descripcion = htmlentities($result['descripcion']);
+            $rayo->observacion =  htmlentities($result['observacion']);
+            $rayo->valor = Utils::sqlBoolToPHP($result['valor']);
+            $ret[$i]=$rayo;
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;   
+    }
 }

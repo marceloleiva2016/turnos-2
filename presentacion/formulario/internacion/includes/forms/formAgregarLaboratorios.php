@@ -23,7 +23,7 @@ if(!$base->hayLaboratoriosSinHacer($idFormInt)) //tiene que tener algun laborato
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Agregar resultados laboratorio Sangre</title>
     <script type="text/javascript" src="../../includes/plug-in/jnumeric/jquery.numeric.js"></script>
-    <script type="text/javascript" src="../../includes/plug-in/jqPrint/jquery.jqprint-0.3.js"></script>    
+    <script type="text/javascript" src="../../includes/plug-in/jqPrint/jquery.jqprint-0.3.js"></script>
 </head>
 
 <body bgcolor = "#FFFFFF" style="width: 100%; text-align: center;">

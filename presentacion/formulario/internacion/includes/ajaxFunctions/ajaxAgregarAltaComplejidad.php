@@ -16,6 +16,7 @@ $usuario = $_SESSION['usuario'];
 
 $usuarioUnset = unserialize($usuario);
 
+$data = new stdClass();
 
 $data->result = true;
 

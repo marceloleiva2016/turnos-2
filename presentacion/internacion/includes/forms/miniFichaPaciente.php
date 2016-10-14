@@ -21,8 +21,6 @@ else
 
 if(!$error)
 {
-
-
     $pac = $paciente->getDatosPacientePorNumero($tipodoc, $nrodoc);
 
     if ($pac->getNombre()=="")

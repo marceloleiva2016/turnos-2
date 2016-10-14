@@ -112,7 +112,7 @@ $sector = $dbSector->getSector($idsector);
                 echo "<span class='meta__misc'>Es Donante?: ".$donante."</span>";
                 echo "<span class='meta__misc'>Obra Social: ".$internacion->getObraSocial()['detalle']."</span>";
                 echo "<span class='meta__misc'>Diagnostico Ingreso: ".$diagnostico['codigo_completo']."->".$diagnostico['descripcion']."</span>";
-                echo "<div class='botones'><input type='button' class='button-secondary' value='OBSERVACIONES' onclick=javascript:mostrarFormulario('".$internacion->getId()."'); /></div></div>";
+                echo "<div class='botones'><input type='button' class='button-secondary' value='EVOLUCION' onclick=javascript:mostrarFormulario('".$internacion->getId()."'); /></div></div>";
             }
             else
             {
