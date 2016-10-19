@@ -6,7 +6,6 @@ include_once datos.'generalesDatabaseLinker.class.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
 include_once datos.'profesionalDatabaseLinker.class.php';
 include_once datos.'atencionDatabaseLinker.class.php';
-include_once datos.'turnoDatabaseLinker.class.php';
 include_once neg_formulario.'formInternacion/formInternacion.class.php';
 include_once neg_formulario.'formInternacion/formInternacionObservacion.class.php';
 include_once neg_formulario.'formInternacion/formInternacionItemObservacion.class.php';

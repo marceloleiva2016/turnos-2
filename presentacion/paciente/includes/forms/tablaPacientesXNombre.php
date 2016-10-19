@@ -1,6 +1,7 @@
 <?php
 include_once '../../../../namespacesAdress.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
+include_once datos.'utils.php';
 include_once negocio.'usuario.class.php';
 
 session_start();
@@ -42,7 +43,7 @@ if(count($pacientes)!=0)
 <?php
   for ($i=0; $i < count($pacientes); $i++) { 
 ?> 
-  <td ><?php echo $pacientes[$i]->getTipoDoc(); ?></td>
+  <td ><?php echo Utils::nombreCortoTipodoc($pacientes[$i]->getTipoDoc()); ?></td>
   <td ><?php echo $pacientes[$i]->getNrodoc(); ?></td>
   <td><?php echo $pacientes[$i]->getNombre()." ".$pacientes[$i]->getApellido(); ?></td>
   <td>
@@ -52,7 +53,7 @@ if(count($pacientes)!=0)
     }
 
     if ($data->tienePermiso('CONSULTAR_HC')){
-      echo "<input class='button-secondary'  type='button' onclick='location.href=\"../historial_clinico/index.php?tipodoc=".$pacientes[$i]->getTipoDoc()."&nrodoc=".$pacientes[$i]->getNrodoc()." \" ' value='CONSULTAR HC' name='consultarhc' />";
+      echo "&nbsp;<input class='button-secondary'  type='button' onclick='location.href=\"../historial_clinico/index.php?tipodoc=".$pacientes[$i]->getTipoDoc()."&nrodoc=".$pacientes[$i]->getNrodoc()." \" ' value='CONSULTAR HC' name='consultarhc' />";
     }
   echo "</td></tr>";
   }

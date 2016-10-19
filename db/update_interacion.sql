@@ -53,15 +53,17 @@ CREATE TABLE `internacion_log_cama` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 #Actualizacion permisos para internacion
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('ABM_CAMA', 'Alta, Baja y Modificacion de Camas Internacion', 'TODOS');
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('ABM_SECTOR', 'Alta, Baja y Modificacion de Sectores Internacion', 'TODOS');
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('INTERNACION', 'Visualizar Internacion', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('ABM_CAMA', 'Alta, Baja y Modificacion de Camas Internacion', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('ABM_SECTOR', 'Alta, Baja y Modificacion de Sectores Internacion', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('INTERNACION', 'Visualizar Internacion', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('INTERNACION_ASIGNAR', 'Internar Paciente', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('INTERNACION_LISTADO', 'Ver Lista de internaciones', 'TODOS');
 
 #Permisos de pantalla
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('VER_TURNEROS', 'Ver Pantallas de llamados', 'TODOS');
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('EDITAR_TURNEROS', 'Editar Pantallas de llamados', 'TODOS');
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('ELIMINAR_TURNERO', 'Eliminar Pantallas de llamados', 'TODOS');
-INSERT INTO `turnos`.`permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('NUEVO_TURNERO', 'Alta Pantalla de llamados', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('VER_TURNEROS', 'Ver Pantallas de llamados', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('EDITAR_TURNEROS', 'Editar Pantallas de llamados', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('ELIMINAR_TURNERO', 'Eliminar Pantallas de llamados', 'TODOS');
+INSERT INTO `permiso` (`idpermiso`, `detalle`, `entidad`) VALUES ('NUEVO_TURNERO', 'Alta Pantalla de llamados', 'TODOS');
 
 CREATE TABLE `form_internacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -152,6 +154,88 @@ CREATE TABLE `form_internacion_laboratorios` (
   KEY `fk_hca_lista_laboratorio_has_hca_hca_lista_laboratorio` (`form_internacion_lista_laboratorio_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `form_internacion_lista_rx` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `descripcion` text,
+  `favorito` int(11) DEFAULT NULL,
+  `idusuario` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=innodb DEFAULT CHARSET=latin1;
+
+CREATE TABLE `form_internacion_rx` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `form_internacion_id` int(11) NOT NULL,
+  `form_internacion_lista_rx_id` int(11) NOT NULL,
+  `value` tinyint(1) DEFAULT NULL,
+  `observacion` varchar(80) DEFAULT NULL,
+  `idusuario` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
+  `estado` varchar(20) NOT NULL DEFAULT 'ACTIVO',
+  `usuariom` int(11) DEFAULT NULL,
+  `predecesor` int(11) DEFAULT NULL,
+  `comentario` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `hca_lista_rx_id_UNIQUE` (`form_internacion_lista_rx_id`,`form_internacion_id`),
+  KEY `fk_hca_has_hca_lista_rx_hca_lista_rx1` (`form_internacion_lista_rx_id`),
+  KEY `fk_hca_has_hca_lista_rx_hca1` (`form_internacion_id`)
+) ENGINE=innodb DEFAULT CHARSET=latin1;
+
+CREATE TABLE `form_internacion_rx` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `form_internacion_id` int(11) NOT NULL,
+  `form_internacion_lista_rx_id` int(11) NOT NULL,
+  `value` tinyint(1) DEFAULT NULL,
+  `observacion` varchar(80) DEFAULT NULL,
+  `idusuario` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
+  `estado` varchar(20) NOT NULL DEFAULT 'ACTIVO',
+  `usuariom` int(11) DEFAULT NULL,
+  `predecesor` int(11) DEFAULT NULL,
+  `comentario` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `hca_lista_rx_id_UNIQUE` (`form_internacion_lista_rx_id`,`form_internacion_id`),
+  KEY `fk_hca_has_hca_lista_rx_hca_lista_rx1` (`form_internacion_lista_rx_id`),
+  KEY `fk_hca_has_hca_lista_rx_hca1` (`form_internacion_id`)
+) ENGINE=innodb DEFAULT CHARSET=latin1;
+
+CREATE TABLE `form_internacion_lista_alta_complejidad` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `descripcion` text,
+  `favorito` int(11) DEFAULT NULL,
+  `idusuario` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=innodb DEFAULT CHARSET=latin1 COMMENT='Lista de Estudios de Alta Complejidad';
+
+CREATE TABLE `form_internacion_alta_complejidad` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `form_internacion_lista_alta_complejidad_id` int(11) NOT NULL,
+  `form_internacion_id` int(11) NOT NULL,
+  `value` tinyint(1) DEFAULT NULL,
+  `idusuario` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
+  `estado` varchar(20) NOT NULL DEFAULT 'ACTIVO',
+  `usuariom` int(11) DEFAULT NULL,
+  `predecesor` int(11) DEFAULT NULL,
+  `comentario` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `hca_lista_alta_complejidad_con_hca_UNIQUE` (`form_internacion_lista_alta_complejidad_id`,`form_internacion_id`),
+  KEY `fk_hca_lista_alta_complejidad_has_hca_hca1` (`form_internacion_id`),
+  KEY `fk_hca_lista_alta_complejidad_has_hca_hca_lista_alta_compleji1` (`form_internacion_lista_alta_complejidad_id`)
+) ENGINE=innodb DEFAULT CHARSET=latin1;
+
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (1,'Ecografía','Ecografía',1,0,'2012-10-31 14:40:13');
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (2,'TAC/RMN','Tomografía Computada / Resonancia Magnética',2,0,'2012-10-31 14:40:52');
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (3,'Electroncefalograma','Electroncefalograma',3,0,'2012-10-31 14:41:22');
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (4,'Ergometría','Ergometría',4,0,'2013-04-12 15:29:55');
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (5,'Ecocardiograma','Ecocardiograma',5,0,'2013-04-12 15:29:58');
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (6,'Holter','Holter',6,0,'2013-04-12 15:30:00');
+INSERT INTO `form_internacion_lista_alta_complejidad` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (7,'Electrocardiograma','Electrocardiograma',7,0,'2013-04-12 15:30:02');
+
 INSERT INTO `formulario` (`id`,`nombre`,`descripcion`,`ubicacion`,`esDefault`,`nivel`,`icono`,`fecha_creacion`,`idusuario`,`habilitado`) VALUES (3,'INTERNACION','Tiene los movimientos de cama, cambios de evolucion, etc','/internacion/',1,'PRINCIPAL','icon-edit','2016-03-10 10:02:39',0,1);
 
 INSERT INTO `form_internacion_tipo_laboratorio` (`id`,`descripcion`,`idusuario`,`fecha_creacion`) VALUES (1,'Sangre',0,'2012-10-25 16:08:53');
@@ -201,6 +285,16 @@ INSERT INTO `form_internacion_lista_laboratorio` (`id`,`nombre`,`descripcion`,`f
 INSERT INTO `form_internacion_lista_laboratorio` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`,`tipo_laboratorio`,`es_numerico`) VALUES (36,'Cua. Concentración','Cuagudograma Concentración',29,0,'2013-04-12 15:31:34',1,1);
 INSERT INTO `form_internacion_lista_laboratorio` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`,`tipo_laboratorio`,`es_numerico`) VALUES (37,'Cua. KPTT','Cuagudograma KPTT',30,0,'2013-04-12 15:31:34',1,1);
 INSERT INTO `form_internacion_lista_laboratorio` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`,`tipo_laboratorio`,`es_numerico`) VALUES (38,'Cua. RIN','Cuagudograma RIN',31,0,'2013-04-12 15:31:34',1,1);
+
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (1,'Cráneo F y P','Cráneo Frente y Perfil',1,0,'2012-10-31 12:20:43');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (2,'Cervical P','Cervical Perfil',2,0,'2012-10-31 12:21:06');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (3,'Torax F','Torax Frente',3,0,'2012-10-31 12:21:21');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (4,'Cadera Panor.','Panorámica de Cadera',4,0,'2012-10-31 12:23:13');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (5,'Miembros Sup.','Miembros Superiores',5,0,'2012-10-31 12:23:32');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (6,'Miembros Inf.','Miembros Inferiores',6,0,'2012-10-31 12:23:40');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (7,'Abdomen','Abdomen',7,0,'2012-10-31 12:24:23');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (8,'Dorsal','Dorsal',8,0,'2012-11-07 15:17:39');
+INSERT INTO `form_internacion_lista_rx` (`id`,`nombre`,`descripcion`,`favorito`,`idusuario`,`fecha_creacion`) VALUES (9,'Lumbar','Lumbar',9,0,'2012-11-07 15:17:57');
 
 INSERT INTO `form_internacion_tipo_observacion` (`id`,`detalle`,`iduser`,`fecha_creacion`,`habilitado`) VALUES (1,'Observaciones/Tratamientos',0,'2016-04-20 09:34:46',1);
 INSERT INTO `form_internacion_tipo_observacion` (`id`,`detalle`,`iduser`,`fecha_creacion`,`habilitado`) VALUES (2,'Interconsultas',0,'2016-10-11 11:53:21',1);

@@ -106,7 +106,6 @@ $sector = $dbSector->getSector($idsector);
                 </div>    
                 <div class='meta meta--full'>
                 <?php
-                echo "<hr />";
                 echo "<span class='meta__misc'>Fecha Ingreso: <i class='fa fa-calendar-o'></i>".Utils::sqlDateTimeToHtmlDateTime($internacion->getFecha_creacion())."</span>";
                 echo "<span class='meta__misc'> Motivo Ingreso: ".$internacion->getMotivo_ingreso()."</span>";
                 echo "<span class='meta__misc'>Es Donante?: ".$donante."</span>";
@@ -116,7 +115,7 @@ $sector = $dbSector->getSector($idsector);
             }
             else
             {
-                echo "<span class='meta__author'>Sin Internado</span>";
+                echo "<div class='meta meta--full'><br><br><span class='meta__author'>Sin Internado</span></div>";
             }
             ?>
                

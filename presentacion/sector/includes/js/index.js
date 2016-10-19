@@ -48,6 +48,38 @@ function mostrarDialogo(paginaVista, paginaFuncion)
 
 $(document).ready(function() {
 
+    function checkvalid(value, colname)
+    {
+        var gr = jQuery("#jqVerSector").getGridParam('selarrrow');
+
+        if(gr=='')
+        {
+            var flag = false;
+            var allRowsInGrid = $("#jqVerSector").getGridParam("records");
+
+            var ids = jQuery("#jqVerSector").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++)
+            {
+                var rowId = $("#jqVerSector").getRowData(ids[i]);
+                var detId = rowId['detalle'];
+                console.log(detId);
+                if(detId == value)
+                {
+                    flag = true;
+                }
+            }
+
+            if(flag == true)
+                return [false, "El detalle del sector ya existe"];
+            else
+                return [true,""];
+        }
+        else
+        {
+            return [true,""]; 
+        }
+    }
+
     $("#jqVerSector").jqGrid({ 
         url:'includes/ajaxFunctions/verSectores.php', 
         mtype: "POST",
@@ -55,7 +87,12 @@ $(document).ready(function() {
         colNames:['Nro','Detalle','Especialidad',''],
         colModel:[ 
             {name:'id', index:'id',width:'80%',align:"left",fixed:true,editable:false},
-            {name:'detalle', index:'detalle',width:'250%',align:"center",fixed:true,editable:true},
+            {name:'detalle', index:'detalle',width:'250%',align:"center",fixed:true,editable:true,
+                editrules: {
+                    custom: true,
+                    custom_func: checkvalid
+                }
+            },
             {name:'idespecialidad', index:'especialidad',width:'200%',align:"left",fixed:true,search: false, editable:true, edittype:"select",
                 editoptions:{
                     value: especialidadesLista
@@ -68,7 +105,31 @@ $(document).ready(function() {
                     delbutton: true,
                     editbutton: true,
                     onError: function(_, xhr) {
-                        alert(xhr.responseText);
+                        //NOTIFICACION
+                        // create the notification
+                        var notification = new NotificationFx({
+                            message : '<span class="icon icon-message"></span><p>'+xhr.responseText+'</p>',
+                            layout : 'attached',
+                            effect : 'bouncyflip',
+                            type : 'notice'
+                        });
+                        // show the notification
+                        notification.show();
+                        //NOTIFICACION
+                    },
+                    onSave: function(xhr) {
+                        //NOTIFICACION
+                        // create the notification
+                        var notification = new NotificationFx({
+                            message : '<span class="icon icon-message"></span><p>'+xhr.responseText+'</p>',
+                            layout : 'attached',
+                            effect : 'bouncyflip',
+                            type : 'notice'
+                        });
+                        // show the notification
+                        notification.show();
+                        //NOTIFICACION
+                        return false;
                     }
                 }
             }

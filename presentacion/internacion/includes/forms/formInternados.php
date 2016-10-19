@@ -9,8 +9,6 @@ $dbSector = new SectorDatabaseLinker();
 $dbInt = new InternacionDatabaseLinker();
 $dbGen = new GeneralesDatabaseLinker();
 
-//$int = $dbInt->crearInternacion(1, 37360567, 2, "Test en cama libre N", 58, 18, 2);
-
 $internaciones = $dbInt->getInternados();
 ?>
 <section class="grid">
@@ -19,6 +17,8 @@ for ($c=0; $c < count($internaciones); $c++)
 {
     $internados = $internaciones[$c]['internados'];
     $sector = $internaciones[$c]['sector'];
+
+    if(count($internados)!=0){
 ?>
 
     <header class="top-bar">
@@ -65,6 +65,7 @@ for ($c=0; $c < count($internaciones); $c++)
         <span>Camas libres: <?php echo $camas_libres;?></span>
     </footer>
 <?php 
+    }
 }
 ?>
 </section>
@@ -115,10 +116,9 @@ for ($c=0; $c < count($internaciones); $c++)
                     echo "<span class='meta__misc'>Telefonos: ".$internacion->getPaciente()->getTelefono()."   ".$internacion->getPaciente()->getTelefono2()."</span>";
                     echo "</div>";
                     ?>
-                </div>    
+                </div>
                 <div class='meta meta--full'>
                 <?php
-                echo "<hr/>";
                 echo "<span class='meta__misc'>Fecha Ingreso: <i class='fa fa-calendar-o'></i>".Utils::sqlDateTimeToHtmlDateTime($internacion->getFecha_creacion())."</span>";
                 echo "<span class='meta__misc'> Motivo Ingreso: ".$internacion->getMotivo_ingreso()."</span>";
                 echo "<span class='meta__misc'>Es Donante?: ".$donante."</span>";
@@ -130,8 +130,7 @@ for ($c=0; $c < count($internaciones); $c++)
             }
             else
             {
-                echo "<span class='meta__author'>Sin Internado</span>";
-                echo "<div class='botones'><input type='button' class='button-secondary' value='Internar' onclick=javascript:internarPaciente(); /></div>";
+                echo "<div class='meta meta--full'><br><br><span class='meta__author'>Sin Internado</span></div>";
             }
             ?>
                

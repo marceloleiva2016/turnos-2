@@ -114,6 +114,12 @@ $data = unserialize($usuario);
 									if ($data->tienePermiso('VER_TURNEROS')){
 										echo "<li><a href='../turnero/'><span>Pantalla Llamados</span></a></li>";	
 									}
+									if ($data->tienePermiso('ABM_SECTOR')){
+										echo "<li><a href='../sector/'><span>Sector Fisico</span></a></li>";
+									}
+									if ($data->tienePermiso('ABM_CAMA')){
+										echo "<li><a href='../cama/'><span>Camas</span></a></li>";
+									}
 									?>
 								</ul>
 							</li>
@@ -140,14 +146,14 @@ $data = unserialize($usuario);
 								<a href="#">Internacion</a>
 								<ul class="cbp-hssubmenu cbp-hssub-rows">
 									<?php
-									if ($data->tienePermiso('ABM_CAMA')){
-										echo "<li><a href='../cama/'><span>Camas</span></a></li>";
-									}
-									if ($data->tienePermiso('ABM_SECTOR')){
-										echo "<li><a href='../sector/'><span>Sector Fisico</span></a></li>";
-									}
 									if ($data->tienePermiso('INTERNACION')){
-										echo "<li><a href='../internacion/'><span>Internados</span></a></li>";
+										echo "<li><a href='../internacion/'><span>Censo Diario</span></a></li>";
+									}
+									if ($data->tienePermiso('INTERNACION_ASIGNAR')){
+										echo "<li><a href='../internacion/new.php'><span>Internar Paciente</span></a></li>";
+									}
+									if ($data->tienePermiso('INTERNACION_LISTADO')){
+										echo "<li><a href='../internacion/preList.php'><span>Listado</span></a></li>";
 									}
 									?>
 								</ul>

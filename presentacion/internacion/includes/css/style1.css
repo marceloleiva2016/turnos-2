@@ -670,7 +670,6 @@ button:focus {
   font-size: 1em;
   margin: 0 auto 2em;
   max-width: 1200px;
-  float: left;
 }
 .meta--full .meta__author {
   display: block;

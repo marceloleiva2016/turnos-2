@@ -19,12 +19,16 @@ class sectorDatabaseLinker
         $query="SELECT
                     s.id,
                     s.detalle,
-                    e.detalle as especialidad
+                    e.detalle as especialidad,
+                    count(c.id) as cant_camas
                 FROM
                     sector s LEFT JOIN
-                    especialidad e ON(s.idespecialidad = e.id)
+                    especialidad e ON(s.idespecialidad = e.id) LEFT JOIN
+                    cama c ON(c.idsector=s.id)
                 WHERE
-                    s.habilitado=true;";
+                    s.habilitado=TRUE
+                GROUP BY
+                    s.id;";
 
         try
         {
@@ -42,12 +46,13 @@ class sectorDatabaseLinker
         for ($i = 0; $i < $this->dbturnos->querySize; $i++)
         {
             $result = $this->dbturnos->fetchRow($query);
-
-            $Sector = new Sector();
-            $Sector->setId($result['id']);
-            $Sector->setDetalle($result['detalle']);
-            $Sector->setEspecialidad($result['especialidad']);
-            $Sectors[] = $Sector;
+            if($result['cant_camas']!=0){
+                $Sector = new Sector();
+                $Sector->setId($result['id']);
+                $Sector->setDetalle($result['detalle']);
+                $Sector->setEspecialidad($result['especialidad']);
+                $Sectors[] = $Sector;    
+            }
         }
 
         $this->dbturnos->desconectar();
@@ -197,37 +202,74 @@ class sectorDatabaseLinker
     public function crearSector($arraySector, $usuario)
     {
         $response = new stdClass();
-        $query="INSERT INTO 
-                    sector (
-                        `detalle`,
-                        `idespecialidad`,
-                        `habilitado`,
-                        `idusuario`,
-                        `fecha_creacion`
-                ) VALUES (
-                        '".$arraySector['detalle']."',
-                        ".$arraySector['idespecialidad'].",
-                        1,
-                        '".$usuario."',
-                        now()
-                    );";
 
+        $existe = $this->existeSectorConDetalle($arraySector['detalle']);
+
+        if(!$existe)
+        {
+            $query="INSERT INTO 
+                        sector (
+                            `detalle`,
+                            `idespecialidad`,
+                            `habilitado`,
+                            `idusuario`,
+                            `fecha_creacion`
+                    ) VALUES (
+                            '".$arraySector['detalle']."',
+                            ".$arraySector['idespecialidad'].",
+                            1,
+                            '".$usuario."',
+                            now()
+                        );";
+
+            try
+            {
+                $this->dbturnos->conectar();
+                $this->dbturnos->ejecutarAccion($query);    
+                $response->message = "Sector Agregado";
+                $response->ret = true;
+            }
+            catch (Exception $e)
+            {
+                $this->dbturnos->desconectar();
+                
+            }
+            $this->dbturnos->desconectar();
+        }
+        else
+        {
+            $response->message = "El detalle del sector que intenta crear ya existe!";
+            $response->ret = false;
+        }
+
+        return $response;
+    }
+
+    private function existeSectorConDetalle($detalle)
+    {
+        $query="SELECT
+                    *
+                FROM
+                    sector
+                WHERE
+                    detalle='".$detalle."' AND
+                    habilitado=TRUE";
         try
         {
             $this->dbturnos->conectar();
-            $this->dbturnos->ejecutarAccion($query);    
-            $response->message = "Sector Agregado";
-            $response->ret = true;
+            $this->dbturnos->ejecutarQuery($query);
         }
         catch (Exception $e)
         {
             $this->dbturnos->desconectar();
-            $response->message = "Ocurrio un error al crear el Sector!";
-            $response->ret = false;
+            throw new Exception("Error si el paciente se encuentra internado!", 1);
         }
+
+        $result = $this->dbturnos->fetchRow($query);
+
         $this->dbturnos->desconectar();
 
-        return $response;
+        return $result!=null;
     }
 
     public function eliminarSector($id)
@@ -287,28 +329,38 @@ class sectorDatabaseLinker
     {
         $response = new stdClass();
 
-        $query="UPDATE
-                    sector
-                SET
-                    detalle='".$data['detalle']."',
-                    idespecialidad = ".$data['idespecialidad']."
-                WHERE
-                    id=".Utils::phpIntToSQL($data['id']).";";
-        try
-        {
-            $this->dbturnos->conectar();
-            $this->dbturnos->ejecutarAccion($query);
-            $response->message = "Sector modificado";
-            $response->ret = true;
+        $existe = $this->existeSectorConDetalle($data['detalle']);
 
-        }
-        catch (Exception $e)
-        {
+        if(!$existe){
+            $query="UPDATE
+                        sector
+                    SET
+                        detalle='".$data['detalle']."',
+                        idespecialidad = ".$data['idespecialidad']."
+                    WHERE
+                        id=".Utils::phpIntToSQL($data['id']).";";
+            try
+            {
+                $this->dbturnos->conectar();
+                $this->dbturnos->ejecutarAccion($query);
+                $response->message = "Sector modificado";
+                $response->ret = true;
+
+            }
+            catch (Exception $e)
+            {
+                $this->dbturnos->desconectar();
+                $response->message = "Ocurrio un error al editar el Sector!";
+                $response->ret = false;
+            }
+
             $this->dbturnos->desconectar();
-            $response->message = "Ocurrio un error al editar el Sector!";
+        }
+        else
+        {
+            $response->message = "Ya existe un sector con el mismo detalle!";
             $response->ret = false;
         }
-        $this->dbturnos->desconectar();
 
         return $response;
     }

@@ -1,6 +1,7 @@
 <?php
 include_once '../../../../namespacesAdress.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
+include_once datos.'utils.php';
 include_once negocio.'usuario.class.php';
 
 session_start();
@@ -41,7 +42,7 @@ if($pac->getNrodoc()!=null)
     <th>Accion</th>
   </tr>
   <tr>
-    <td><?php echo $pac->getTipoDoc(); ?></td>
+    <td><?php echo Utils::nombreCortoTipodoc($pac->getTipoDoc()); ?></td>
     <td><?php echo $pac->getNrodoc(); ?></td>
     <td><?php echo $pac->getNombre()." ".$pac->getApellido(); ?></td>
     <td>
@@ -51,7 +52,7 @@ if($pac->getNrodoc()!=null)
     }
 
     if ($data->tienePermiso('CONSULTAR_HC')){
-      echo "<input class='button-secondary'  type='button' onclick='location.href=\"../historial_clinico/index.php?tipodoc=".$pac->getTipoDoc()."&nrodoc=".$pac->getNrodoc()." \" ' value='CONSULTAR HC' name='consultarhc' />";
+      echo "&nbsp;<input class='button-secondary'  type='button' onclick='location.href=\"../historial_clinico/index.php?tipodoc=".$pac->getTipoDoc()."&nrodoc=".$pac->getNrodoc()." \" ' value='CONSULTAR HC' name='consultarhc' />";
     }
   echo "</td></tr></table>";
 

@@ -48,13 +48,50 @@ function mostrarDialogo(paginaVista, paginaFuncion)
 
 $(document).ready(function() {
 
+    function checkvalid(value, colname)
+    {
+        var gr = jQuery("#jqVerCamas").getGridParam('selarrrow');
+
+        if(gr=='')
+        {
+            var flag = false;
+            var allRowsInGrid = $("#jqVerCamas").getGridParam("records");
+
+            var ids = jQuery("#jqVerCamas").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++)
+            {
+                var rowId = $("#jqVerCamas").getRowData(ids[i]);
+                var detId = rowId['nro_cama'];
+                console.log(detId);
+                if(detId == value)
+                {
+                    flag = true;
+                }
+            }
+
+            if(flag == true)
+                return [false, "El numero de cama ya existe"];
+            else
+                return [true,""];
+        }
+        else
+        {
+            return [true,""]; 
+        }
+    }
+
     $("#jqVerCamas").jqGrid({ 
         url:'includes/ajaxFunctions/verCamas.php', 
         mtype: "POST",
         datatype: "json",
         colNames:['Nro Cama','Sector',''],
         colModel:[ 
-            {name:'nro_cama', index:'nro_cama',width:'250%',align:"center",fixed:true,editable:true},
+            {name:'nro_cama', index:'nro_cama',width:'250%',align:"center",fixed:true,editable:true,
+                editrules: {
+                    custom: true,
+                    custom_func: checkvalid
+                }
+            },
             {name:'idsector', index:'idsector',width:'200%',align:"left",fixed:true,search: true, editable:true, edittype:"select",
                 searchoptions :{
                     value: ":TODOS;"+sectoresLista

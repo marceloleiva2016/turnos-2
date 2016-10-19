@@ -381,4 +381,68 @@ class GeneralesDatabaseLinker
         return $ret;
     }
 
+    public function mesesConPacientesInternados($anio)
+    {
+        $query="SELECT
+                    MONTH(i.fecha_creacion) as id,
+                    m.detalle
+                FROM
+                    internacion i LEFT JOIN
+                    mes m ON(MONTH(i.fecha_creacion) = m.id)
+                WHERE
+                    YEAR(i.fecha_creacion) = 2016
+                    group by MONTH(i.fecha_creacion);";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function aniosConPacientesInternados()
+    {
+        $query="SELECT
+                    YEAR(i.fecha_creacion) as ano
+                FROM
+                    internacion i
+                group by YEAR(i.fecha_creacion);";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
 }

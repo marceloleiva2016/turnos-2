@@ -97,7 +97,7 @@ class InternacionDatabaseLinker
                                 $idatencionPredecesora,
                                 ".Utils::phpStringToSQL($motivoIngreso).",
                                 $idDiagnosticoIngreso,
-                                '".$obraSocial['id']."',
+                                ".$obraSocial['id'].",
                                 now(),
                                 $idusuario,
                                 true
@@ -229,6 +229,179 @@ class InternacionDatabaseLinker
         $internado->setDiagnostico($diagnostico);
 
         return $internado;
+    }
+
+    function getInternadosTodos($anio, $mes ,$page, $rows, $filters)
+    {
+
+        $where = "";
+        if(count($filters)>0)
+        {
+            for($i=0; $i < count($filters['rules']); $i++ )
+            {
+                $where.=$filters['groupOp']." ";
+                $where.=" ".$filters['rules'][$i]['field']." like '".$filters['rules'][$i]['data']."%'";
+            }
+        }
+
+        $offset = ($page - 1) * $rows;
+
+        $query="SELECT
+                    i.id,
+                    td.detalle_corto as tipodoc,
+                    i.nrodoc,
+                    concat(p.nombre,' ', p.apellido) as nombre,
+                    i.idatencion_predecesora,
+                    i.motivo_ingreso,
+                    d.descripcion as diagnostico,
+                    o.detalle as osoc,
+                    i.fecha_creacion,
+                    s.detalle as sector
+                FROM
+                    internacion i LEFT JOIN
+                    paciente p ON(i.tipodoc=p.tipodoc AND i.nrodoc=p.nrodoc) LEFT JOIN
+                    (SELECT 
+                            il.idinternacion,
+                            (select idcama from internacion_log_cama where fecha_creacion=max(il.fecha_creacion) limit 1) as idcama,
+                            max(il.fecha_creacion) as fecha_creacion
+                    FROM
+                        internacion_log_cama il
+                    group by
+                        idinternacion) ilc ON(ilc.idinternacion=i.id) LEFT JOIN
+                    cama c ON(ilc.idcama=c.id) LEFT JOIN
+                    sector s ON(c.idsector=s.id) LEFT JOIN
+                    especialidad e ON(s.idespecialidad=e.id) LEFT JOIN
+                    diagnosticos_diagnostico d ON(i.iddiagnostico_ingreso=d.id) LEFT JOIN
+                    obra_social o ON(o.id=i.idobra_social) LEFT JOIN
+                    tipo_documento td on(i.tipodoc=td.id)
+                WHERE
+                    i.habilitado=true AND
+                    year(i.fecha_creacion)=2016 AND
+                    month(i.fecha_creacion)=10
+                    ".$where."
+                ORDER BY i.fecha_creacion ASC 
+                LIMIT $rows OFFSET $offset;";
+
+        try
+        {
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e) 
+        {
+            throw new Exception("Error consultando las variables de la internacion", 1);              
+        }
+
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+
+            $int = array();
+            $int['id'] = $result['id'];
+            $int['tipodoc'] = $result['tipodoc'];
+            $int['nrodoc'] = $result['nrodoc'];
+            $int['nombre'] = $result['nombre'];
+            $int['motivo_ingreso'] = $result['motivo_ingreso'];
+            $int['diagnostico'] = $result['diagnostico'];
+            $int['obra_social'] = $result['osoc'];
+            $int['sector'] = $result['sector'];
+            $int['fecha_creacion'] = Utils::sqlDateTimeToHtmlDateTime($result['fecha_creacion']);
+
+            $ret[] = $int;
+        }
+
+        return $ret;
+    }
+
+    private function getCantidadInternadosTodos($anio, $mes ,$filters = null)
+    {
+        $where = "";
+        if(count($filters)>0)
+        {
+            for($i=0; $i < count($filters['rules']); $i++ )
+            {
+                $where.=$filters['groupOp']." ";
+                $where.=" ".$filters['rules'][$i]['field']." like '".$filters['rules'][$i]['data']."%'";
+            }
+        }
+
+        $query="SELECT
+                    count(*) as cantidad
+                FROM
+                    internacion i LEFT JOIN
+                    paciente p ON(i.tipodoc=p.tipodoc AND i.nrodoc=p.nrodoc) LEFT JOIN
+                    (SELECT 
+                            il.idinternacion,
+                            (select idcama from internacion_log_cama where fecha_creacion=max(il.fecha_creacion) limit 1) as idcama,
+                            max(il.fecha_creacion) as fecha_creacion
+                    FROM
+                        internacion_log_cama il
+                    group by
+                        idinternacion) ilc ON(ilc.idinternacion=i.id) LEFT JOIN
+                    cama c ON(ilc.idcama=c.id) LEFT JOIN
+                    sector s ON(c.idsector=s.id) LEFT JOIN
+                    especialidad e ON(s.idespecialidad=e.id) LEFT JOIN
+                    diagnosticos_diagnostico d ON(i.iddiagnostico_ingreso=d.id) LEFT JOIN
+                    obra_social o ON(o.id=i.idobra_social)
+                WHERE
+                    i.habilitado=true AND
+                    year(i.fecha_creacion)=$anio AND
+                    month(i.fecha_creacion)=$mes
+                    ".$where.";";
+        
+        $this->dbTurnos->ejecutarQuery($query);
+        $result = $this->dbTurnos->fetchRow($query);
+        $ret = $result['cantidad'];
+
+        return $ret;
+    }
+
+    function getInternadosTodosJson($anio, $mes ,$page, $rows, $filters)
+    {
+        $response = new stdClass();
+        $this->dbTurnos->conectar();
+
+        $internacion_array = $this->getInternadosTodos($anio, $mes ,$page, $rows, $filters);
+
+        $response->page = $page;
+        $response->total = ceil($this->getCantidadInternadosTodos($anio, $mes ,$filters) / $rows);
+        $response->records = $this->getCantidadInternadosTodos($anio, $mes ,$filters);
+
+        $this->dbTurnos->desconectar();
+
+        for ($i=0; $i < count($internacion_array) ; $i++) 
+        {
+            $internacion = $internacion_array[$i];
+            //id de fila
+            $response->rows[$i]['id'] = $internacion['id']; 
+
+            $row = array();
+            $row['nro'] = $internacion['id'];
+            $row['tipodoc'] = $internacion['tipodoc'];
+            $row['nrodoc'] = $internacion['nrodoc'];
+            $row['nombre'] = $internacion['nombre'];
+            $row['motivo_ingreso'] = $internacion['motivo_ingreso'];
+            $row['diagnostico'] = $internacion['diagnostico'];
+            $row['obra_social'] = $internacion['obra_social'];
+            $row['sector'] = $internacion['sector'];
+            $row['fecha_creacion'] = $internacion['fecha_creacion'];
+            $row[] = '';
+            //agrego datos a la fila con clave cell
+            $response->rows[$i]['cell'] = $row;
+        }
+
+        $response->userdata['tipodoc']= 'Tipodoc';
+        $response->userdata['nrodoc']= 'Nrodoc';
+        $response->userdata['nombre']= 'Nombre';
+        $response->userdata['motivo_ingreso']= 'motivo_ingreso';
+        $response->userdata['diagnostico']= 'diagnostico';
+        $response->userdata['obra_social']= 'obra_social';
+        $response->userdata['sector']= 'sector';
+        $response->userdata['fecha_creacion']= 'fecha_creacion';
+        $response->userdata['myac'] = '';
+
+        return json_encode($response);
     }
 
     function getInternadosEnSector($idsector)
