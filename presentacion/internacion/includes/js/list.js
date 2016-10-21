@@ -21,7 +21,7 @@ $(document).ready(function(){
             {name:'sector', index:'s.detalle',width:'100%',align:"left",fixed:true,editable:false },
             {name:'diagnostico', index:'d.descripcion',width:'150%',align:"left",fixed:true, editable:false},
             {name:'obra_social', index:'o.detalle',width:'150%',align:"left",fixed:true, editable:false },
-            {name:'act',index:'act', width:'50%', sortable:false,align:"center",search:false, fixed:true,editable:false }
+            {name:'act',index:'act', width:'50%', sortable:false,align:"center",search:false, fixed:true,editable:false}
         ],
         rowNum: true,
         viewrecords: true,

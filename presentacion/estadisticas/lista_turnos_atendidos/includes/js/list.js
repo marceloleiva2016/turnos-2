@@ -6,47 +6,41 @@ function mostrarFormulario(sel){
 
 $(document).ready(function(){
 
-    $("#jgVerInternaciones").jqGrid({
-        url:'includes/ajaxFunctions/jsonInternaciones.php?anio='+anio+'&mes='+mes,
+    $("#jgVerTurnosAtendidos").jqGrid({
+        url:'includes/ajaxFunctions/jsonTurnos.php?anio='+anio+'&mes='+mes,
         mtype: "POST",
         datatype: "json",
-        colNames:['Nro' ,'TipoDoc' ,'NroDoc', 'Nombre', 'Ingreso', 'Motivo', 'Sector', 'Diagnostico', 'Obra Social', ''],
-        colModel:[ 
-            {name:'nro', index:'id',width:'50%',align:"left",fixed:true,editable:false },
-            {name:'tipodoc', index:'td.id',width:'50%',align:"left",fixed:true,editable:false },
-            {name:'nrodoc', index:'i.nrodoc',width:'70%',align:"left",fixed:true,editable:false },
-            {name:'nombre', index:'p.nombre',width:'100%',align:"left",fixed:true,editable:false },
-            {name:'fecha_creacion', index:'i.fecha_creacion',width:'100%',align:"left",fixed:true,editable:false },
-            {name:'motivo_ingreso', index:'i.motivo_ingreso',width:'150%',align:"left",fixed:true,editable:false },
-            {name:'sector', index:'s.detalle',width:'100%',align:"left",fixed:true,editable:false },
-            {name:'diagnostico', index:'d.detalle',width:'150%',align:"left",fixed:true, editable:false},
-            {name:'obra_social', index:'osoc',width:'150%',align:"left",fixed:true, editable:false },
-            {name:'act',index:'act', width:'100%', sortable:false,align:"center",search:false, fixed:true,editable:false }
+        colNames:['Nro' ,'Tipo Atencion' ,'Fecha' ,'Hora' ,'Subespedialidad' ,'Profesional' ,'Estado Turno' ,'TipoDoc' ,'NroDoc', 'Nombre', 'Sexo', 'Fecha Nac', 'Partido', 'Obra Social'],
+        colModel:[
+            {name:'id', index:'t.id', width:'20%', align:'left', fixed:true, editable:false },
+            {name:'tipo_atencion', index:'ta.detalle', width:'80%', align:'left', fixed:true, editable:false },
+            {name:'fecha', index:'t.fecha', width:'80%', align:'left', fixed:true, editable:false },
+            {name:'hora', index:'t.hora', width:'60%', align:'left', fixed:true, editable:false },
+            {name:'subespecialidad', index:'s.detalle', width:'120%', align:'left', fixed:true, editable:false },
+            {name:'profesional', index:'prof.apellido', width:'110%', align:'left', fixed:true, editable:false },
+            {name:'estado', index:'et.detalle', width:'100%', align:'left', fixed:true, editable:false },
+            {name:'tipodoc', index:'td.detalle_corto', width:'50%', align:'left', fixed:true, editable:false },
+            {name:'nrodoc', index:'p.nrodoc', width:'80%', align:'left', fixed:true, editable:false },
+            {name:'nombre', index:'p.apellido', width:'110%', align:'left', fixed:true, editable:false },
+            {name:'sexo', index:'p.sexo', width:'30%', align:'left', fixed:true, editable:false },
+            {name:'fecha_nacimiento', index:'p.fecha_nacimiento', width:'70%', align:'left', fixed:true, editable:false },
+            {name:'partido', index:'vpa.descripcion', width:'90%', align:'left', fixed:true, editable:false },
+            {name:'obra_social', index:'o.detalle', width:'200%', align:'left', fixed:true, editable:false }
         ],
         rowNum: true,
         viewrecords: true,
         altRows: true,
-        caption: "<a href='includes/ajaxFunctions/equiposToExcel.php' >Exportar Excel</a>",
+        caption: "<a href='includes/ajaxFunctions/turnosToExcel.php' >Exportar Excel</a>",
         rowNum: 20,
         rowList: [10,20,30,50],
-        pager: '#jgVerInternacionesFoot',
+        pager: '#jgVerTurnosAtendidosFoot',
         sortname: 'id',
         sortorder: "desc",
         width: '100%',
-        height: '100%',
-        gridComplete: function()
-        {
-            var ids = jQuery("#jgVerInternaciones").jqGrid('getDataIDs');
-            for(var i=0;i < ids.length;i++)
-            {
-                var cl = ids[i];
-                be = "<input class='button-secondary2' value='ver' type='button' onclick=\"javascript:mostrarFormulario('"+cl+"');\" />";
-                jQuery("#jgVerInternaciones").jqGrid('setRowData',ids[i],{act:be});
-            }
-        }
+        height: '100%'
     });
 
-    $('#jgVerInternaciones').jqGrid('navGrid', '#jgVerInternacionesFoot', {
+    $('#jgVerTurnosAtendidos').jqGrid('navGrid', '#jgVerTurnosAtendidosFoot', {
         edit:false,
         add:false,
         del:false,
@@ -54,7 +48,7 @@ $(document).ready(function(){
         search:false
     });
 
-    $("#jgVerInternaciones").jqGrid('filterToolbar', {
+    $("#jgVerTurnosAtendidos").jqGrid('filterToolbar', {
         stringResult: true,
         searchOnEnter: false,
         defaultSearch : "cn"

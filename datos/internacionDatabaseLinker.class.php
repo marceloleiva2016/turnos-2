@@ -276,8 +276,8 @@ class InternacionDatabaseLinker
                     tipo_documento td on(i.tipodoc=td.id)
                 WHERE
                     i.habilitado=true AND
-                    year(i.fecha_creacion)=2016 AND
-                    month(i.fecha_creacion)=10
+                    year(i.fecha_creacion)=$anio AND
+                    month(i.fecha_creacion)=$mes
                     ".$where."
                 ORDER BY i.fecha_creacion ASC 
                 LIMIT $rows OFFSET $offset;";

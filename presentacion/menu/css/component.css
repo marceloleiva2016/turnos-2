@@ -36,7 +36,8 @@
 }
 
 .cbp-hsmenu > li {
-	margin-left: 4em;
+	margin-left: 1em;
+	margin-right: 1em;
 	display: inline-block;
 }
 

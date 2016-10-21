@@ -55,7 +55,7 @@ $data = unserialize($usuario);
 			<header class="clearfix">
 			</header>	
 			<div class="main">
-				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper" style="text-align:center;">
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
 							<li>
@@ -140,6 +140,7 @@ $data = unserialize($usuario);
 									<li><a href="../estadisticas/hoja2.0/indexDemanda.php"><span>Hoja 2 Demanda</span></a></li>
 									<li><a href="../estadisticas/hoja2.0/indexProgramado.php"><span>Hoja 2 Programado</span></a></li>
 									<li><a href="../estadisticas/hoja2.1/"><span>Hoja 2.1</span></a></li>
+									<li><a href="../estadisticas/lista_turnos_atendidos/preList.php"><span>Turnos Atendidos</span></a></li>
 								</ul>
 							</li>
 							<li>
@@ -156,6 +157,16 @@ $data = unserialize($usuario);
 										echo "<li><a href='../internacion/preList.php'><span>Listado</span></a></li>";
 									}
 									?>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Links</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a href="http://institucional.pami.org.ar/result.php?c=6-2" class="linknegro" target="_blank"><span>PAMI</span></a></li>
+									<li><a href="http://www.sssalud.gov.ar/?page=bus650" class="linknegro" target="_blank"><span>Super Intendencia</span></a></li>
+									<li><a href="http://servicioswww.anses.gov.ar/ooss2/" class="linknegro" target="_blank"><span>CODEM</span></a></li>
+									<li><a href="http://www.ioma.gba.gov.ar/sistemas/consulta_capita/consulta_capita1.php" class="linknegro" target="_blank"><span>IOMA</span></a></li>
+									<li><a href="http://www.cie10.org/Cie10_Buscar_Consultar_En_Linea.php#PorCaps" class="linknegro" target="_blank"><span>CIE10</span></a></li>
 								</ul>
 							</li>
 						</ul>
