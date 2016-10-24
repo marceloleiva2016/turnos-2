@@ -38,20 +38,19 @@ $id = $demanda->getId();
         <meta name="description" content="formulario para atencion en demanda para cualquier especialidad" />
         <meta name="keywords" content="expanding button, morph, modal, fullscreen, transition, ui" />
         <meta name="author" content="Juan Ferreyra" />
-
-        <link rel="shortcut icon" href="/includes/img/malvinasargentinas.icon.png">
+        
         <link type="text/css" rel="stylesheet" href="../includes/css/normalize.css" />
         <link type="text/css" rel="stylesheet" href="../includes/css/demo.css" />
-        <link type="text/css" rel="stylesheet" href="../includes/css/component.css" />
+        <link type="text/css" rel="stylesheet" href="../includes/css/component.php" />
         <link type="text/css" rel="stylesheet" href="../includes/css/content.css" />
 
-        <link type="text/css" rel="stylesheet" href="../../includes/css/barra.css" />
+        <link type="text/css" rel="stylesheet" href="../../includes/css/barra.php" />
         <link type="text/css" rel="stylesheet" href="../../includes/css/iconos.css" />
         
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
 
-        <link type="text/css" rel="stylesheet" href="includes/css/formularioDemanda.css" />
+        <link type="text/css" rel="stylesheet" href="includes/css/formularioDemanda.php" />
         <link type="text/css" rel="stylesheet" href="includes/css/formularioDemandaImprimir.css" media="print" />
 
 <!--Scripts-->

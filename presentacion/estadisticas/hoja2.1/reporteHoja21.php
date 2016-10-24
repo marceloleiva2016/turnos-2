@@ -38,8 +38,8 @@ $datos = $db->especialidadesConSexosyRangos($mes,$anio);
         <meta name="keywords" content="expanding button, morph, modal, fullscreen, transition, ui" />
         <meta name="author" content="Juan Ferreyra" />
 
-        <link media="screen" type='text/css' rel='stylesheet' href='../../includes/css/demo.css' >
-        <link media="screen" type="text/css" rel="stylesheet" href="../../includes/css/barra.css">
+        <link media="screen" type='text/css' rel='stylesheet' href='../../includes/css/demo.php' >
+        <link media="screen" type="text/css" rel="stylesheet" href="../../includes/css/barra.php">
         <link media="screen" type="text/css" rel="stylesheet" href="../../includes/css/iconos.css">
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
         <link type="text/css" rel="stylesheet" href="../../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />

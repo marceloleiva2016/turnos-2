@@ -26,9 +26,9 @@ $data = unserialize($usuario);
 		<meta name="keywords" content="horizontal, slide out, menu, navigation, responsive, javascript, images, grid" />
 		<meta name="author" content="Juan Ferreyra" />
 		<link rel="shortcut icon" href="../favicon.ico">
-		<link rel="stylesheet" type="text/css" href="css/default.css" />
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
-		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+		<link rel="stylesheet" type="text/css" href="css/default.php" />
+		<link rel="stylesheet" type="text/css" href="css/component.php" />
+		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
 		<script src="js/modernizr.custom.js"></script>
 	</head>

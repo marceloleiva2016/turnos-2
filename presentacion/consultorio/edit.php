@@ -34,10 +34,10 @@ $fecha_fin = Utils::sqlDateToHtmlDate($consultorio['fecha_fin']);
 <html>
 <head>
   <title>Consultorio N&deg; <?php echo $id; ?></title>
-  <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/demo.php">
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
-  <link media="screen" type="text/css" rel="stylesheet" href="includes/css/consultorio.css">
+  <link media="screen" type="text/css" rel="stylesheet" href="includes/css/css_consultorio.php">
   <!--NOTIFICACION -->
   <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-default.css" />
   <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-style-attached.css" />

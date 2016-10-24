@@ -19,8 +19,8 @@ $data = unserialize($usuario);
 <html>
 <head>
     <title>Especialidad</title>
-    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-    <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.php' >
+    <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />

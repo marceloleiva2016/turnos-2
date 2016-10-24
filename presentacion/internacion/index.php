@@ -28,11 +28,11 @@ $sectores = $dbSector->getSectores();
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Internacion</title>
 		<link rel="shortcut icon" href="../favicon.ico">
-		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
 		<link rel="stylesheet" type="text/css" href="includes/css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="includes/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="includes/css/style1.css" />
+		<link rel="stylesheet" type="text/css" href="includes/css/style1.php" />
 		
 		<script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
 		<script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>

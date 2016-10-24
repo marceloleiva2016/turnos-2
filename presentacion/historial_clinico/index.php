@@ -53,9 +53,9 @@ $especialidadesRows = $ListaEspecialidades->data;
 		<title>HC <?php echo $nombre; ?></title>
 		<meta name="keywords" content="timeline, vertical, layout, style, component, web development, template, responsive" />
 		<meta name="author" content="Juan Ferreyra" />
-		<link rel="stylesheet" type="text/css" href="css/default.css" />
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
-		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+		<link rel="stylesheet" type="text/css" href="css/default.php" />
+		<link rel="stylesheet" type="text/css" href="css/component.php" />
+		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
 		<script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
   		<script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>

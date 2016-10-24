@@ -47,13 +47,13 @@ $ret = $db->turnosConfirmadosDemanda($dateNew, $idsubespecialidad);
         <meta name="keywords" content="expanding button, morph, modal, fullscreen, transition, ui" />
         <meta name="author" content="Juan Ferreyra" />
 
-        <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-        <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+        <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/demo.php">
+        <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
         <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
         <link type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
         <link type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="../includes/plug-in/jqGrid_5.0.2/css/ui.jqgrid.css" />
-        <link media="screen" type="text/css" rel="stylesheet" href="includes/css/style.css">
+        <link media="screen" type="text/css" rel="stylesheet" href="includes/css/style.php">
         
         <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
         <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
