@@ -499,17 +499,7 @@ class TurnoDatabaseLinker
                     p.telefono2,
                     p.email,
                     IF(es_donante = '1', 'SI', 'NO') AS donante,
-                    IFNULL((SELECT
-                        o.detalle
-                    FROM
-                        paciente p2 LEFT JOIN
-                        paciente_obra_social po ON(p2.tipodoc=po.tipodoc AND p2.nrodoc=po.nrodoc) LEFT JOIN
-                        obra_social o ON(o.id=po.idobra_social)
-                    WHERE
-                        p2.nrodoc=p.nrodoc AND
-                        p2.tipodoc=p.tipodoc
-                    ORDER BY 
-                        o.fecha_creacion ASC LIMIT 1),'SIN OBRA SOCIAL') as obra_social
+                    IFNULL((o.detalle),'SIN OBRA SOCIAL') as obra_social
                 FROM
                     turno t 
                         LEFT JOIN
@@ -540,6 +530,10 @@ class TurnoDatabaseLinker
                         AND p.idpais = vloc.idresapro_pais
                         AND p.idprovincia = vloc.idresapro_provincia
                         AND p.idpartido = vloc.idresapro_partido)
+                        LEFT JOIN
+                    paciente_obra_social po ON(p.tipodoc=po.tipodoc AND p.nrodoc=po.nrodoc AND po.habilitado=true)
+                        LEFT JOIN
+                    obra_social o ON(o.id=po.idobra_social)
                 WHERE
                     YEAR(t.fecha)=$anio AND
                     MONTH(t.fecha)=$mes 
@@ -634,6 +628,10 @@ class TurnoDatabaseLinker
                         AND p.idpais = vloc.idresapro_pais
                         AND p.idprovincia = vloc.idresapro_provincia
                         AND p.idpartido = vloc.idresapro_partido)
+                        LEFT JOIN
+                    paciente_obra_social po ON(p.tipodoc=po.tipodoc AND p.nrodoc=po.nrodoc AND po.habilitado=true)
+                        LEFT JOIN
+                    obra_social o ON(o.id=po.idobra_social)
                 WHERE
                     YEAR(t.fecha)=$anio AND
                     MONTH(t.fecha)=$mes 
