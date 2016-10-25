@@ -53,6 +53,9 @@ $data = unserialize($usuario);
 		<!-- /barra -->
 		<div class="container">
 			<header class="clearfix">
+				<div class="imagenLogoLocal">
+
+				</div>
 			</header>	
 			<div class="main">
 				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper" style="text-align:center;">

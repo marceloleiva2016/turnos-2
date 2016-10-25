@@ -46,7 +46,7 @@ a:hover {
 	width: 90%;
 	max-width: 69em;
 	margin: 0 auto;
-	padding: 2.875em 1.875em 1.875em;
+	text-align: center;
 }
 
 .container > header h1 {
@@ -201,9 +201,20 @@ a:hover {
     height: 200px;
     display: block;
     margin: 0 auto 0 auto;
-    background-image: url(../../includes/images/logob.png);
+    background-image: url(../../includes/images/logow.png);
     background-size: contain;
     margin-top: 50px;
+    border-radius: 15px;
+}
+
+.imagenLogoLocal {
+	background-position: 0px;
+	background-image: url(../../includes/images/logo.png);
+	background-repeat: no-repeat;
+	background-position: 0px;
+	width: 88px;
+    height: 88px;
+    display: inline-block;
 }
 
 FINCSS;
