@@ -1,6 +1,7 @@
 <?php
 /*Agregado para que tenga el usuario*/
 include_once '../../../../namespacesAdress.php';
+include_once negocio.'usuario.class.php';
 include_once datos.'turnoDatabaseLinker.class.php';
 include_once datos.'turneroDatabaseLinker.class.php';
 
@@ -17,10 +18,23 @@ if($idsubespecialidad==null OR !isset($idsubespecialidad)) {
     echo "<br><br><br><br>No se pudo consultar los pacientes sin obtener un profesional";
     die();
 }
+session_start();
+
+if(!isset($_SESSION['usuario']))
+{
+    echo "No se encontro ningun usuario registrado. Actualice la pagina por favor.";
+}
+
+$usuario = $_SESSION['usuario'];
+
+$data = unserialize($usuario);
+/*fin de agregado usuario*/
 
 $existe = $dbTurnero->existeConsultorioEnTurnero2($idsubespecialidad, $idprofesional);
 
-$turnos = $dbTurno->getTurnosConfirmadosConsultorio($idsubespecialidad, $idprofesional);    
+$turnos = $dbTurno->getTurnosConfirmadosConsultorio($idsubespecialidad, $idprofesional);
+
+$caducar = $dbTurno->caducarTurnosProgramados($idsubespecialidad, $idprofesional, $data->getId());
 
 if(count($turnos)==0) {
     echo "<br><br><br><br>Sin pacientes en espera";

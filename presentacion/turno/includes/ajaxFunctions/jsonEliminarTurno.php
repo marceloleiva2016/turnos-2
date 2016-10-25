@@ -8,7 +8,7 @@ $iduser =  $_REQUEST['idusuario'];
 
 $DBturno = new TurnoDatabaseLinker();
 
-$ingreso = $DBturno->insertarEnLog($idturno, 0, $iduser);
+$ingreso = $DBturno->insertarEnLog($idturno, 6, $iduser);
 
 $std = new stdClass();
 

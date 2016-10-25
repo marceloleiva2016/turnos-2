@@ -169,7 +169,7 @@ class TurnoDatabaseLinker
 			    	p.nombre,
 			    	p.apellido,
 			    	ct.detalle,
-			    	t.fecha_creacion
+			    	concat(t.fecha,' ', t.hora) as fecha
 		    	FROM
 			    	turno t LEFT JOIN
 			    	paciente p ON(t.tipodoc=p.tipodoc AND t.nrodoc=p.nrodoc) LEFT JOIN
@@ -181,8 +181,8 @@ class TurnoDatabaseLinker
 			    	c.idsubespecialidad = $idsubespecialidad AND
 			    	c.idtipo_consultorio = 2 AND
                     c.idprofesional = $idprofesional
-			    	ORDER BY t.fecha_creacion ASC;";
-    
+			    	ORDER BY t.fecha ASC, t.hora ASC;";
+
     	$this->dbTurnos->ejecutarQuery($query);
     
     	$ret = array();
@@ -198,7 +198,7 @@ class TurnoDatabaseLinker
     		$turno['nrodoc'] = $result['nrodoc'];
     		$turno['nombre'] = $result['nombre']." ".$result['apellido'];
     		$turno['tipo_turno'] = $result['detalle'];
-    		$turno['fecha'] = Utils::sqlDateTimeToHtmlDateTime($result['fecha_creacion']);
+    		$turno['fecha'] = Utils::sqlDateTimeToHtmlDateTime($result['fecha']);
     		$ret[] = $turno;
     	}
     
@@ -386,6 +386,224 @@ class TurnoDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return true;
+    }
+
+    function caducarTurnosProgramados($idsubespecialidad, $idprofesional, $iduser)
+    {
+
+        //caduco los turnos asignados
+                $query="SELECT
+                    t.id,
+                    td.detalle_corto as tipodoc,
+                    t.nrodoc,
+                    p.nombre,
+                    p.apellido,
+                    ct.detalle,
+                    concat(t.fecha,' ', t.hora) as fecha
+                FROM
+                    turno t LEFT JOIN
+                    paciente p ON(t.tipodoc=p.tipodoc AND t.nrodoc=p.nrodoc) LEFT JOIN
+                    consultorio c ON(t.idconsultorio=c.id) LEFT JOIN
+                    tipo_consultorio ct ON(c.idtipo_consultorio=ct.id) LEFT JOIN
+                    tipo_documento  td ON(t.tipodoc=td.id)
+                WHERE
+                    t.idestado_turno = 1 AND
+                    c.idsubespecialidad = $idsubespecialidad AND
+                    c.idtipo_consultorio = 2 AND
+                    c.idprofesional = $idprofesional AND 
+                    t.fecha<date(now())
+                ORDER BY t.fecha ASC, t.hora ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+
+        $ret = array();
+    
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+
+            $ret[] = $result['id'];    
+        }
+
+        $this->dbTurnos->desconectar();
+
+        for ($i=0; $i < count($ret); $i++)
+        {
+            $idturno = $ret[$i];
+            //Le pongo el estado de NO ATENDIDO
+            $this->insertarEnLog($idturno, 4, $iduser); 
+        }
+        //fin caduco los turnos asignados
+
+        //------------------------------------------------------------------------------------//
+
+        //caduco los turnos confirmados
+        $query="SELECT
+                    t.id,
+                    td.detalle_corto as tipodoc,
+                    t.nrodoc,
+                    p.nombre,
+                    p.apellido,
+                    ct.detalle,
+                    concat(t.fecha,' ', t.hora) as fecha
+                FROM
+                    turno t LEFT JOIN
+                    paciente p ON(t.tipodoc=p.tipodoc AND t.nrodoc=p.nrodoc) LEFT JOIN
+                    consultorio c ON(t.idconsultorio=c.id) LEFT JOIN
+                    tipo_consultorio ct ON(c.idtipo_consultorio=ct.id) LEFT JOIN
+                    tipo_documento  td ON(t.tipodoc=td.id)
+                WHERE
+                    t.idestado_turno = 2 AND
+                    c.idsubespecialidad = $idsubespecialidad AND
+                    c.idtipo_consultorio = 2 AND
+                    c.idprofesional = $idprofesional AND 
+                    t.fecha<date(now())
+                ORDER BY t.fecha ASC, t.hora ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+
+        $ret = array();
+    
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+
+            $ret[] = $result['id'];    
+        }
+
+        $this->dbTurnos->desconectar();
+
+        for ($i=0; $i < count($ret); $i++)
+        {
+            $idturno = $ret[$i];
+            //Le pongo el estado de NO ATENDIDO
+            $this->insertarEnLog($idturno, 5, $iduser); 
+        }
+        //fin caduco los turnos confirmados
+    }
+
+    function caducarTurnosDemanda($idsubespecialidad, $iduser)
+    {
+
+        //caduco los turnos asignados
+                $query="SELECT
+                    t.id,
+                    td.detalle_corto as tipodoc,
+                    t.nrodoc,
+                    p.nombre,
+                    p.apellido,
+                    ct.detalle,
+                    concat(t.fecha,' ', t.hora) as fecha
+                FROM
+                    turno t LEFT JOIN
+                    paciente p ON(t.tipodoc=p.tipodoc AND t.nrodoc=p.nrodoc) LEFT JOIN
+                    consultorio c ON(t.idconsultorio=c.id) LEFT JOIN
+                    tipo_consultorio ct ON(c.idtipo_consultorio=ct.id) LEFT JOIN
+                    tipo_documento  td ON(t.tipodoc=td.id)
+                WHERE
+                    t.idestado_turno = 1 AND
+                    c.idsubespecialidad = $idsubespecialidad AND
+                    c.idtipo_consultorio = 1 AND
+                    t.fecha<date(now())
+                ORDER BY t.fecha ASC, t.hora ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+
+        $ret = array();
+    
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+
+            $ret[] = $result['id'];    
+        }
+
+        $this->dbTurnos->desconectar();
+
+        for ($i=0; $i < count($ret); $i++)
+        {
+            $idturno = $ret[$i];
+            //Le pongo el estado de NO ATENDIDO
+            $this->insertarEnLog($idturno, 4, $iduser); 
+        }
+        //fin caduco los turnos asignados
+
+        //------------------------------------------------------------------------------------//
+
+        //caduco los turnos confirmados
+        $query="SELECT
+                    t.id,
+                    td.detalle_corto as tipodoc,
+                    t.nrodoc,
+                    p.nombre,
+                    p.apellido,
+                    ct.detalle,
+                    concat(t.fecha,' ', t.hora) as fecha
+                FROM
+                    turno t LEFT JOIN
+                    paciente p ON(t.tipodoc=p.tipodoc AND t.nrodoc=p.nrodoc) LEFT JOIN
+                    consultorio c ON(t.idconsultorio=c.id) LEFT JOIN
+                    tipo_consultorio ct ON(c.idtipo_consultorio=ct.id) LEFT JOIN
+                    tipo_documento  td ON(t.tipodoc=td.id)
+                WHERE
+                    t.idestado_turno = 2 AND
+                    c.idsubespecialidad = $idsubespecialidad AND
+                    c.idtipo_consultorio = 1 AND
+                    t.fecha<date(now())
+                ORDER BY t.fecha ASC, t.hora ASC;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
+
+        $ret = array();
+    
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $result = $this->dbTurnos->fetchRow($query);
+
+            $ret[] = $result['id'];    
+        }
+
+        $this->dbTurnos->desconectar();
+
+        for ($i=0; $i < count($ret); $i++)
+        {
+            $idturno = $ret[$i];
+            //Le pongo el estado de NO ATENDIDO
+            $this->insertarEnLog($idturno, 5, $iduser); 
+        }
+        //fin caduco los turnos confirmados
     }
 
     private function actualizarEstadoTurno($idTurno, $idEstado)

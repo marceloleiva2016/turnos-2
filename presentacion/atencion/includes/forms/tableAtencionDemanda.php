@@ -13,10 +13,23 @@ if($idsubespecialidad==null OR !isset($idsubespecialidad)) {
     echo "<br><br><br><br>No se pudo consultar los pacientes sin obtener una subespecialidad";
     die();
 }
+session_start();
+
+if(!isset($_SESSION['usuario']))
+{
+    echo "No se encontro ningun usuario registrado. Actualice la pagina por favor.";
+}
+
+$usuario = $_SESSION['usuario'];
+
+$data = unserialize($usuario);
+/*fin de agregado usuario*/
 
 $existe = $dbTurnero->existeConsultorioEnTurnero2($idsubespecialidad, '');
 
-$turnos = $dbTurno->getTurnosConfirmadosDemanda($idsubespecialidad);    
+$turnos = $dbTurno->getTurnosConfirmadosDemanda($idsubespecialidad);
+
+$caducar = $dbTurno->caducarTurnosDemanda($idsubespecialidad, $data->getId());
 
 if(count($turnos)==0) {
     echo "<br><br><br><br>Sin pacientes en espera";
