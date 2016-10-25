@@ -109,6 +109,8 @@ $(document).ready(function() {
 
     $("#apartadoObraSocial").load("includes/forms/obraSocialActual.php",{tipodoc:tipoDoc, nrodoc:nroDoc});
 
+    $("#obraSocialDeclarada").load("https://sisa.msal.gov.ar/sisa/services/rest/puco/"+nroDoc);
+
     $('#guardar').click(function(event){
         event.preventDefault();
         $.ajax({

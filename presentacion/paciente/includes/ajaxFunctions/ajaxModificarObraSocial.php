@@ -15,7 +15,7 @@ $return->ret = true;
 
 $ingreso = true;
 
-if($llegada['osoc']!=0)
+if(isset($llegada['osoc']) AND $llegada['osoc']!="")
 {
     if(!isset($llegada['osoc_fecha_emision']) OR $llegada['osoc_fecha_emision']=="")
     {
@@ -59,7 +59,7 @@ if($llegada['osoc']!=0)
         $llegada['osoc_direccion'] = "";
     } 
 }
-else if(!isset($llegada['osoc']) OR $llegada['osoc']=="" OR $llegada['osoc']==0)
+else
 {
     $return->ret = false;
     $ingreso = false;

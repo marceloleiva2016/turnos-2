@@ -109,10 +109,17 @@ class FormularioDatabaseLinker
     {
         $dbSub = new SubespecialidadDatabaseLinker();
 
-        $idEspecialidad = $dbSub->obtenerEspecialidadPadre($idSubespecialidad);
+        if(!$idSubespecialidad=="")
+        {
+            $idEspecialidad = $dbSub->obtenerEspecialidadPadre($idSubespecialidad);
 
-        $idFormulario = $this->especialidadTieneFormularioDefinido($idEspecialidad, $idTipoAtencion);
-        
+            $idFormulario = $this->especialidadTieneFormularioDefinido($idEspecialidad, $idTipoAtencion);
+        }
+        else
+        {
+            $idFormulario=null;
+        }
+            
         if($idFormulario==null)
         {
             $idFormulario = $this->formularioDefautlEnTipoAtencion($idTipoAtencion);
@@ -123,5 +130,6 @@ class FormularioDatabaseLinker
         }
         
         return $idFormulario;
+    
     }
 }

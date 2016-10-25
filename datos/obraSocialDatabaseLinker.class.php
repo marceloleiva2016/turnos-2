@@ -140,12 +140,19 @@ class ObraSocialDatabaseLinker
         catch (Exception $e)
         {
             $this->dbTurnos->desconectar();
-            throw new Exception("No se pudo consultar las atenciones del paciente", 201230);
+            throw new Exception("No se pudo consultar la obra social del paciente", 201230);
         }
 
         $ret= $this->dbTurnos->fetchRow($query);
 
         $this->dbTurnos->desconectar();
+
+        if($ret==false){
+            $obsoc= array();
+            $obsoc['id'] = 0;
+
+            return $obsoc;
+        }
 
         return $ret;
     }
@@ -183,6 +190,35 @@ class ObraSocialDatabaseLinker
         $this->dbTurnos->desconectar();
 
         return $obrasSociales;
+    }
+
+    function getObraSocial($id)
+    {
+        $query="SELECT
+                    id,
+                    detalle_corto,
+                    detalle
+                FROM
+                    obra_social
+                WHERE
+                    id=$id;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("No se pudo consultar la obra social del paciente", 201230);
+        }
+
+        $ret= $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
     }
 
 }

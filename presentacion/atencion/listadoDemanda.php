@@ -27,13 +27,13 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
 <html lang="es">
 <head>
   <title>Atencion</title>
-  <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/demo.php">
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="../includes/plug-in/jqGrid_5.0.2/css/ui.jqgrid.css" />
-  <link media="screen" type="text/css" rel="stylesheet" href="includes/css/style.css">
+  <link media="screen" type="text/css" rel="stylesheet" href="includes/css/style.php">
   <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
   <script type="text/javascript" src="../includes/plug-in/jqGrid_5.0.2/js/i18n/grid.locale-es.js" ></script>
@@ -79,6 +79,7 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
 
   <form method="post" id="frmSeleccionarPaciente" target="_blank" >
     <input type="hidden" name="id" value="" id="id" />
+    <input type="hidden" name="tipo" value="1" id="tipo" />
   </form>
   <script src="../includes/plug-in/progressButton/js/btnProgressClassie.js"></script>
   <script src="../includes/plug-in/progressButton/js/btnProgressProgressButton.js"></script>

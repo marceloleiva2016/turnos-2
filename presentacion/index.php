@@ -5,10 +5,10 @@
 <html>
 <head>
 	<title>Turnos</title>
-	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/login.css">
-	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/barra.css">
+	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/login.php">
+	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/barra.php">
 	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/iconos.css">
-	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/demo.css">
+	<link media="screen" type="text/css" rel="stylesheet" href="includes/css/demo.php">
 </head>
 <body>
 	<div class="post">

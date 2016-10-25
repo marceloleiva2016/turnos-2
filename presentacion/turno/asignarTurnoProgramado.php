@@ -27,8 +27,8 @@ $gen = new GeneralesDatabaseLinker();
 <html>
 <head>
     <title>Asignar Turno Programado</title>
-    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-    <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.php' >
+    <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
@@ -61,7 +61,10 @@ $gen = new GeneralesDatabaseLinker();
     </div>
     <!-- /barra -->
     <div id="container">
-        <br><br>
+        <br>
+        <div align="center">
+            <h2>Asignar Turno Programado</h2>
+        </div>
         <div>
             <div id="tabs">
                 <ul>

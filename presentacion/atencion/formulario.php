@@ -4,6 +4,7 @@ include_once negocio.'usuario.class.php';
 include_once datos.'formularioReferiDatabaseLinker.class.php';
 
 $idTurno = $_REQUEST['id'];
+$tipo_atencion = $_REQUEST['tipo'];
 
 session_start();
 
@@ -21,4 +22,4 @@ $data = unserialize($usuario);
 
 $db = new FormularioReferiDatabaseLinker();
 
-$db->delegarFormulario($idTurno, $data->getId());
+$db->delegarFormulario($idTurno, $tipo_atencion, $data->getId());

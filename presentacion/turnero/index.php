@@ -21,8 +21,8 @@ $data = unserialize($usuario);
 <html>
 <head>
     <title>Turneros</title>
-    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-    <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.php' >
+    <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
@@ -64,7 +64,11 @@ $data = unserialize($usuario);
         <br>
         <table id="jqTurneros"></table>
         <div id="jqTurnerosFoot"></div>
-        <input class="button-secondary" type="submit" value="Nuevo" id="btnNuevoTurnero"  data-dialog="somedialog">
+        <input class="button-secondary" type="submit" value="Nuevo" id="btnNuevoTurnero"  data-dialog="somedialog" <?php
+        if (!$data->tienePermiso('NUEVO_TURNERO')){
+            echo " style='display:none;' ";
+        }
+        ?> >
         <input type="submit"  data-dialogo="somedialog2" id="verTurnero" style='display:none;'>
     </div>
     <!--dialogo 1 -->

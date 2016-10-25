@@ -26,9 +26,9 @@ $data = unserialize($usuario);
 		<meta name="keywords" content="horizontal, slide out, menu, navigation, responsive, javascript, images, grid" />
 		<meta name="author" content="Juan Ferreyra" />
 		<link rel="shortcut icon" href="../favicon.ico">
-		<link rel="stylesheet" type="text/css" href="css/default.css" />
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
-		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+		<link rel="stylesheet" type="text/css" href="css/default.php" />
+		<link rel="stylesheet" type="text/css" href="css/component.php" />
+		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
 		<script src="js/modernizr.custom.js"></script>
 	</head>
@@ -53,9 +53,12 @@ $data = unserialize($usuario);
 		<!-- /barra -->
 		<div class="container">
 			<header class="clearfix">
+				<div class="imagenLogoLocal">
+
+				</div>
 			</header>	
 			<div class="main">
-				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper" style="text-align:center;">
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
 							<li>
@@ -111,6 +114,15 @@ $data = unserialize($usuario);
 									if ($data->tienePermiso('ADMINISTRAR_FERIADO')){
 										echo "<li><a href='../feriados/'><span>Feriados / Vacaciones</span></a></li>";	
 									}
+									if ($data->tienePermiso('VER_TURNEROS')){
+										echo "<li><a href='../turnero/'><span>Pantalla Llamados</span></a></li>";	
+									}
+									if ($data->tienePermiso('ABM_SECTOR')){
+										echo "<li><a href='../sector/'><span>Sector Fisico</span></a></li>";
+									}
+									if ($data->tienePermiso('ABM_CAMA')){
+										echo "<li><a href='../cama/'><span>Camas</span></a></li>";
+									}
 									?>
 								</ul>
 							</li>
@@ -131,6 +143,33 @@ $data = unserialize($usuario);
 									<li><a href="../estadisticas/hoja2.0/indexDemanda.php"><span>Hoja 2 Demanda</span></a></li>
 									<li><a href="../estadisticas/hoja2.0/indexProgramado.php"><span>Hoja 2 Programado</span></a></li>
 									<li><a href="../estadisticas/hoja2.1/"><span>Hoja 2.1</span></a></li>
+									<li><a href="../estadisticas/lista_turnos_atendidos/preList.php"><span>Turnos Atendidos</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Internacion</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<?php
+									if ($data->tienePermiso('INTERNACION')){
+										echo "<li><a href='../internacion/'><span>Censo Diario</span></a></li>";
+									}
+									if ($data->tienePermiso('INTERNACION_ASIGNAR')){
+										echo "<li><a href='../internacion/new.php'><span>Internar Paciente</span></a></li>";
+									}
+									if ($data->tienePermiso('INTERNACION_LISTADO')){
+										echo "<li><a href='../internacion/preList.php'><span>Listado</span></a></li>";
+									}
+									?>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Links</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a href="http://institucional.pami.org.ar/result.php?c=6-2" class="linknegro" target="_blank"><span>PAMI</span></a></li>
+									<li><a href="http://www.sssalud.gov.ar/?page=bus650" class="linknegro" target="_blank"><span>Super Intendencia</span></a></li>
+									<li><a href="http://servicioswww.anses.gov.ar/ooss2/" class="linknegro" target="_blank"><span>CODEM</span></a></li>
+									<li><a href="http://www.ioma.gba.gov.ar/sistemas/consulta_capita/consulta_capita1.php" class="linknegro" target="_blank"><span>IOMA</span></a></li>
+									<li><a href="http://www.cie10.org/Cie10_Buscar_Consultar_En_Linea.php#PorCaps" class="linknegro" target="_blank"><span>CIE10</span></a></li>
 								</ul>
 							</li>
 						</ul>

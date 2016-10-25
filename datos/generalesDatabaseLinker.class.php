@@ -264,4 +264,185 @@ class GeneralesDatabaseLinker
         return $ret;
     }
 
+    public function getPais($id)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    pais
+                WHERE
+                    idresapro=$id;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar los paises", 17052013);
+        }
+
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    public function getProvincia($idpais, $idprovincia)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    provincia
+                WHERE
+                    idresapro_pais=$idpais AND
+                    idresapro=$idprovincia;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar las provincias", 17052013);
+        }
+        $ret =  $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    public function getPartido($idpais, $idprovincia, $idpartido)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    partido
+                WHERE
+                    idresapro_pais = $idpais AND
+                    idresapro_provincia = $idprovincia AND
+                    idresapro = $idpartido;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar los partidos", 17052013);
+        }
+
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    public function getLocalidad($idpais, $idprovincia, $idpartido, $idlocalidad)
+    {
+        $query="SELECT
+                    idresapro as id,
+                    descripcion
+                FROM
+                    localidad
+                WHERE
+                    idresapro_pais = $idpais AND
+                    idresapro_provincia = $idprovincia AND
+                    idresapro_partido=$idpartido AND
+                    idresapro=$idlocalidad;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            throw new Exception("Error al conectar con la base de datos para consultar las localidades", 17052013);
+        }
+        
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    public function mesesConPacientesInternados($anio)
+    {
+        $query="SELECT
+                    MONTH(i.fecha_creacion) as id,
+                    m.detalle
+                FROM
+                    internacion i LEFT JOIN
+                    mes m ON(MONTH(i.fecha_creacion) = m.id)
+                WHERE
+                    YEAR(i.fecha_creacion) = 2016
+                    group by MONTH(i.fecha_creacion);";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
+    function aniosConPacientesInternados()
+    {
+        $query="SELECT
+                    YEAR(i.fecha_creacion) as ano
+                FROM
+                    internacion i
+                group by YEAR(i.fecha_creacion);";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+        $ret = array();
+
+        for ($i = 0; $i < $this->dbTurnos->querySize; $i++)
+        {
+            $ret[] = $this->dbTurnos->fetchRow($query);
+        }
+
+        $this->dbTurnos->desconectar();
+
+        return $ret;
+    }
+
 }

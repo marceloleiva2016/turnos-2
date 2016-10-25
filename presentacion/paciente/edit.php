@@ -39,8 +39,8 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
 <html lang="en" class="no-js">
 <head>
   <title>Paciente</title>
-  <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.css' >
-  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.css">
+  <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.php' >
+  <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
   <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.theme.css" />
@@ -159,6 +159,8 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
                 <option value="1">SI</option>
                 <option value="2">NO SABE</option>
               </select>
+              <div align="center" id="obraSocialDeclarada">
+              </div>
             </div>
           <h3>Datos de Ubicacion</h3>
             <div align="center">
@@ -208,7 +210,6 @@ $paciente = $pacDB->getDatosPacientePorNumero($tipodoc, $nrodoc);
              
               
             </div>
-
         </div>
         <div align="center">
           <button id="guardar" style="height:50px; width:200px;">Guardar</button>
