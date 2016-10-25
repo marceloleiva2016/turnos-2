@@ -3,7 +3,7 @@ include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
 include_once negocio.'profesional.class.php';
 include_once datos.'utils.php';
-require_once 'Spreadsheet/Excel/Writer.php';
+//require_once 'Spreadsheet/Excel/Writer.php';
 
 class TurnoDatabaseLinker
 {
