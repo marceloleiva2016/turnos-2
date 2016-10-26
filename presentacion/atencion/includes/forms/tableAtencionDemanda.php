@@ -1,6 +1,7 @@
 <?php
 /*Agregado para que tenga el usuario*/
 include_once '../../../../namespacesAdress.php';
+include_once negocio.'usuario.class.php';
 include_once datos.'turnoDatabaseLinker.class.php';
 include_once datos.'turneroDatabaseLinker.class.php';
 
