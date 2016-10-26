@@ -3,7 +3,7 @@ include_once conexion.'conectionData.php';
 include_once conexion.'dataBaseConnector.php';
 include_once negocio.'profesional.class.php';
 include_once datos.'utils.php';
-//require_once 'Spreadsheet/Excel/Writer.php';
+include_once pres_includes.'plug-in/PHPExcel/Classes/PHPExcel.php';
 
 class TurnoDatabaseLinker
 {
@@ -962,95 +962,81 @@ class TurnoDatabaseLinker
 
         $filename = $hora . "_Turnos Atendidos.xls";
         
-        $docExcel = new Spreadsheet_Excel_Writer(); 
-        
-        $nuevahoja =& $docExcel->addWorksheet("Turnos");
-        
-        $format =& $docExcel->addFormat(array('Size' => 10,
-                                      'Align' => 'center',
-                                      'Color' => 'black',
-                                      'FgColor' => 'white',
-                                      'Pattern' => 1,
-                                      'Bold' => 1));
+        $objPHPExcel = new PHPExcel();
 
-        $fila =0;
+        $objPHPExcel->getProperties()
+        ->setCreator("Sistema Turnos SITU")
+        ->setLastModifiedBy("Sistema Turnos SITU")
+        ->setTitle("Exportacion")
+        ->setSubject("Documento")
+        ->setDescription("Documento generado con SITU")
+        ->setKeywords("Turnos")
+        ->setCategory("reportes");
 
-        $nuevahoja->write($fila, 0,'Nro',$format);
-        $nuevahoja->write($fila, 1,'tipo_atencion',$format);
-        $nuevahoja->write($fila, 2,'fecha',$format);
-        $nuevahoja->write($fila, 3,'hora',$format);
-        $nuevahoja->write($fila, 4,'subespecialidad',$format);
-        $nuevahoja->write($fila, 5,'profesional',$format);
-        $nuevahoja->write($fila, 6,'estado',$format);
-        $nuevahoja->write($fila, 7,'tipodoc',$format);
-        $nuevahoja->write($fila, 8,'nrodoc',$format);
-        $nuevahoja->write($fila, 9,'nombre',$format);
-        $nuevahoja->write($fila, 10,'apellido',$format);
-        $nuevahoja->write($fila, 11,'sexo',$format);
-        $nuevahoja->write($fila, 12,'fecha_nacimiento',$format);
-        $nuevahoja->write($fila, 13,'pais',$format);
-        $nuevahoja->write($fila, 14,'provincia',$format);
-        $nuevahoja->write($fila, 15,'partido',$format);
-        $nuevahoja->write($fila, 16,'codigo_postal',$format);
-        $nuevahoja->write($fila, 17,'calle',$format);
-        $nuevahoja->write($fila, 18,'telefonos',$format);
-        $nuevahoja->write($fila, 19,'email',$format);
-        $nuevahoja->write($fila, 20,'obra_social',$format);
+        $fila =1;
 
-        $fila=1;
+        $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A'.$fila,'Nro')
+            ->setCellValue('B'.$fila,'tipo_atencion')
+            ->setCellValue('C'.$fila,'fecha')
+            ->setCellValue('D'.$fila,'hora')
+            ->setCellValue('E'.$fila,'subespecialidad')
+            ->setCellValue('F'.$fila,'profesional')
+            ->setCellValue('G'.$fila,'estado')
+            ->setCellValue('H'.$fila,'tipodoc')
+            ->setCellValue('I'.$fila,'nrodoc')
+            ->setCellValue('J'.$fila,'nombre')
+            ->setCellValue('K'.$fila,'apellido')
+            ->setCellValue('L'.$fila,'sexo')
+            ->setCellValue('M'.$fila,'fecha_nacimiento')
+            ->setCellValue('N'.$fila,'pais')
+            ->setCellValue('R'.$fila,'provincia')
+            ->setCellValue('S'.$fila,'partido')
+            ->setCellValue('T'.$fila,'codigo_postal')
+            ->setCellValue('U'.$fila,'calle')
+            ->setCellValue('V'.$fila,'telefonos')
+            ->setCellValue('W'.$fila,'email')
+            ->setCellValue('X'.$fila,'obra_social');
+
+        $fila=2;
         
         for ($i = 0; $i < count($turnos); $i++) 
         {
-            $columna=0;
-
-            $nuevahoja->write($fila, $columna, Utils::sqlIntToPHP($turnos[$i]['id']));
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['tipo_atencion']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['fecha']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['hora']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['subespecialidad']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['profesional']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['estado']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['tipodoc']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['nrodoc']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['nombre']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['apellido']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['sexo']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['fecha_nacimiento']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['pais']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['provincia']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['partido']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['codigo_postal']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['calle']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['telefonos']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['email']);
-            $columna++;
-            $nuevahoja->write($fila, $columna, $turnos[$i]['obra_social']);
-            $columna++;
+            $objPHPExcel->getActiveSheet()
+                ->setCellValue('A'.$fila, Utils::sqlIntToPHP($turnos[$i]['id']))
+                ->setCellValue('B'.$fila, $turnos[$i]['tipo_atencion'])
+                ->setCellValue('C'.$fila, $turnos[$i]['fecha'])
+                ->setCellValue('D'.$fila, $turnos[$i]['hora'])
+                ->setCellValue('E'.$fila, $turnos[$i]['subespecialidad'])
+                ->setCellValue('F'.$fila, $turnos[$i]['profesional'])
+                ->setCellValue('G'.$fila, $turnos[$i]['estado'])
+                ->setCellValue('H'.$fila, $turnos[$i]['tipodoc'])
+                ->setCellValue('I'.$fila, $turnos[$i]['nrodoc'])
+                ->setCellValue('J'.$fila, $turnos[$i]['nombre'])
+                ->setCellValue('K'.$fila, $turnos[$i]['apellido'])
+                ->setCellValue('L'.$fila, $turnos[$i]['sexo'])
+                ->setCellValue('M'.$fila, $turnos[$i]['fecha_nacimiento'])
+                ->setCellValue('N'.$fila, $turnos[$i]['pais'])
+                ->setCellValue('R'.$fila, $turnos[$i]['provincia'])
+                ->setCellValue('S'.$fila, $turnos[$i]['partido'])
+                ->setCellValue('T'.$fila, $turnos[$i]['codigo_postal'])
+                ->setCellValue('U'.$fila, $turnos[$i]['calle'])
+                ->setCellValue('V'.$fila, $turnos[$i]['telefonos'])
+                ->setCellValue('W'.$fila, $turnos[$i]['email'])
+                ->setCellValue('X'.$fila, $turnos[$i]['obra_social']);
 
             $fila++;
         }
-        
-        $docExcel->send($filename);
 
-        $docExcel->close();
+        $objPHPExcel->getActiveSheet()->setTitle('Turnos');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0');
+         
+        $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        exit;
     }
 }
