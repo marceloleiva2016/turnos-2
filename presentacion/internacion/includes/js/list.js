@@ -26,7 +26,7 @@ $(document).ready(function(){
         rowNum: true,
         viewrecords: true,
         altRows: true,
-        caption: "<a href='includes/ajaxFunctions/internacionesToExcel.php'>Exportar Excel</a>",
+        caption: "Internaciones",
         rowNum: 20,
         rowList: [10,20,30,50],
         pager: '#jgVerInternacionesFoot',
