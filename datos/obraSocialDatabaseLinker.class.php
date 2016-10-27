@@ -150,6 +150,13 @@ class ObraSocialDatabaseLinker
         if($ret==false){
             $obsoc= array();
             $obsoc['id'] = 0;
+            $obsoc['obra_social'] = 'SIN OBRA SOCIAL';
+            $obsoc['nro_afiliado'] = '';
+            $obsoc['empresa_nombre'] = '';
+            $obsoc['empresa_direccion'] = '';
+            $obsoc['fecha_emision'] = '';
+            $obsoc['fecha_vencimiento'] = '';
+            $obsoc['fecha_creacion'] = '';
 
             return $obsoc;
         }
