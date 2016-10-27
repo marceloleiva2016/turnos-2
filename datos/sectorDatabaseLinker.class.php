@@ -46,13 +46,13 @@ class sectorDatabaseLinker
         for ($i = 0; $i < $this->dbturnos->querySize; $i++)
         {
             $result = $this->dbturnos->fetchRow($query);
-            if($result['cant_camas']!=0){
-                $Sector = new Sector();
-                $Sector->setId($result['id']);
-                $Sector->setDetalle($result['detalle']);
-                $Sector->setEspecialidad($result['especialidad']);
-                $Sectors[] = $Sector;    
-            }
+        
+            $Sector = new Sector();
+            $Sector->setId($result['id']);
+            $Sector->setDetalle($result['detalle']);
+            $Sector->setEspecialidad($result['especialidad']);
+            $Sectors[] = $Sector;    
+            
         }
 
         $this->dbturnos->desconectar();

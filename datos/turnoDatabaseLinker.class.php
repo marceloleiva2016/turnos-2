@@ -977,26 +977,26 @@ class TurnoDatabaseLinker
 
         $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.$fila,'Nro')
-            ->setCellValue('B'.$fila,'tipo_atencion')
-            ->setCellValue('C'.$fila,'fecha')
-            ->setCellValue('D'.$fila,'hora')
-            ->setCellValue('E'.$fila,'subespecialidad')
-            ->setCellValue('F'.$fila,'profesional')
-            ->setCellValue('G'.$fila,'estado')
-            ->setCellValue('H'.$fila,'tipodoc')
-            ->setCellValue('I'.$fila,'nrodoc')
-            ->setCellValue('J'.$fila,'nombre')
-            ->setCellValue('K'.$fila,'apellido')
-            ->setCellValue('L'.$fila,'sexo')
-            ->setCellValue('M'.$fila,'fecha_nacimiento')
-            ->setCellValue('N'.$fila,'pais')
-            ->setCellValue('R'.$fila,'provincia')
-            ->setCellValue('S'.$fila,'partido')
-            ->setCellValue('T'.$fila,'codigo_postal')
-            ->setCellValue('U'.$fila,'calle')
-            ->setCellValue('V'.$fila,'telefonos')
-            ->setCellValue('W'.$fila,'email')
-            ->setCellValue('X'.$fila,'obra_social');
+            ->setCellValue('B'.$fila,'Tipo Atencion')
+            ->setCellValue('C'.$fila,'Feca')
+            ->setCellValue('D'.$fila,'Hora')
+            ->setCellValue('E'.$fila,'Subespecialidad')
+            ->setCellValue('F'.$fila,'Profesional')
+            ->setCellValue('G'.$fila,'Estado')
+            ->setCellValue('H'.$fila,'Tipodoc')
+            ->setCellValue('I'.$fila,'Nrodoc')
+            ->setCellValue('J'.$fila,'Nombre')
+            ->setCellValue('K'.$fila,'Apellido')
+            ->setCellValue('L'.$fila,'Sexo')
+            ->setCellValue('M'.$fila,'Fecha Nacimiento')
+            ->setCellValue('N'.$fila,'Pais')
+            ->setCellValue('O'.$fila,'Provincia')
+            ->setCellValue('P'.$fila,'Partido')
+            ->setCellValue('Q'.$fila,'Codigo Postal')
+            ->setCellValue('R'.$fila,'Calle')
+            ->setCellValue('S'.$fila,'Telefonos')
+            ->setCellValue('T'.$fila,'Email')
+            ->setCellValue('U'.$fila,'Obra Social');
 
         $fila=2;
         
@@ -1017,13 +1017,13 @@ class TurnoDatabaseLinker
                 ->setCellValue('L'.$fila, $turnos[$i]['sexo'])
                 ->setCellValue('M'.$fila, $turnos[$i]['fecha_nacimiento'])
                 ->setCellValue('N'.$fila, $turnos[$i]['pais'])
-                ->setCellValue('R'.$fila, $turnos[$i]['provincia'])
-                ->setCellValue('S'.$fila, $turnos[$i]['partido'])
-                ->setCellValue('T'.$fila, $turnos[$i]['codigo_postal'])
-                ->setCellValue('U'.$fila, $turnos[$i]['calle'])
-                ->setCellValue('V'.$fila, $turnos[$i]['telefonos'])
-                ->setCellValue('W'.$fila, $turnos[$i]['email'])
-                ->setCellValue('X'.$fila, $turnos[$i]['obra_social']);
+                ->setCellValue('O'.$fila, $turnos[$i]['provincia'])
+                ->setCellValue('P'.$fila, $turnos[$i]['partido'])
+                ->setCellValue('Q'.$fila, $turnos[$i]['codigo_postal'])
+                ->setCellValue('R'.$fila, $turnos[$i]['calle'])
+                ->setCellValue('S'.$fila, $turnos[$i]['telefonos'])
+                ->setCellValue('T'.$fila, $turnos[$i]['email'])
+                ->setCellValue('U'.$fila, $turnos[$i]['obra_social']);
 
             $fila++;
         }
