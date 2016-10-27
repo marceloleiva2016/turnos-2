@@ -37,11 +37,7 @@ $data = unserialize($usuario);
                 });
                 // show the notification
                 notification.show();
-                //NOTIFICACION   ccc         217++
-
-
-                gjbbju0ilk
-                b
+                //NOTIFICACION
                 return false;
             } else {
                 return true;
