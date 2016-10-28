@@ -255,7 +255,7 @@ fieldset {
 .tabla2 tr:nth-child(even) {background-color: #f2f2f2}
 
 .contenedorPaciente {
-    padding: 20px 30px 20px 30px;
+    padding: 10px 20px 10px 20px;
     overflow: hidden;
     width:auto;
     height:auto;
@@ -370,12 +370,12 @@ fieldset {
     padding: 13px 15px 12px 15px;
     margin-left: 20px;
     overflow: hidden;
-    width:auto;
+    width: 400px;
     height:auto;
     border-color: black;
     border-width: 0pt;
     border-style: solid;
-    background-color:$colorPrincipal;
+    background-color: #d8a600;
     color: #fff;
     border-radius: 5px;
 }

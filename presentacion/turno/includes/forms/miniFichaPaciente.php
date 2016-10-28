@@ -3,9 +3,12 @@
 include_once '../../../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
+include_once datos.'obraSocialDatabaseLinker.class.php';
 include_once datos.'utils.php';
 
 $paciente = new PacienteDataBaseLinker();
+$osocDB = new ObraSocialDatabaseLinker();
+
 $error = false;
 
 if($_POST['nroDoc']=="")
@@ -29,6 +32,10 @@ if(!$error)
     {
         $error = true;
         $errorMesage = "El paciente no existe";
+    }
+    else
+    {
+        $osoc = $osocDB->getObraSocialPaciente($tipodoc, $nrodoc);
     }
 
     $nombrePaciente = $pac->getNombre().", ".$pac->getApellido();
@@ -69,16 +76,23 @@ if(!$error)
     if($sexo == "M")
     { 
     ?>
-        <div class="imagenSexoPacienteHombre"></div>
+        <div class="imagenSexoPacienteHombre"></div><br>
     <?php
     }
     else
     {
     ?>
-        <div class="imagenSexoPacienteMujer"></div>
+        <div class="imagenSexoPacienteMujer"></div><br>
     <?php
     }
-    echo "</div>";
+    ?>
+    <div style="display: inline-block;">
+        <h3>Datos Obra Social Local</h3>
+        <hr>
+        <b><?php echo Utils::phpStringToHTML($osoc['obra_social'])?></b>
+    </div>
+    </div>
+    <?php
 }
 else
 {

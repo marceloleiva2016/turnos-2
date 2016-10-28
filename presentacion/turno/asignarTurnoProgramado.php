@@ -89,7 +89,7 @@ $gen = new GeneralesDatabaseLinker();
                                   }
                                   ?>
                                 </select><br>
-                                <input type="text" name="nrodoc" id="nrodoc" placeholder="Nro Documento"/>
+                                <input  style="width: 90px" type="text" name="nrodoc" id="nrodoc" placeholder="Nro Documento"/>
                                 <button id="buscarxnum">Buscar</button>
                             </form>
                             <div id="miCargando" style="display:none;">
