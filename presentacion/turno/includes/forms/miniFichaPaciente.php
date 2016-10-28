@@ -89,6 +89,7 @@ else
     </div>
     <div class="imagenMessage">
         <b><p align="center"> <?php echo $errorMesage?></p></b>
+        <a href="http://localhost/sistema-turnos/presentacion/paciente/new.php" target="_blank" class="button-secondary">Alta Paciente</a>
     </div>
 </div>
 
