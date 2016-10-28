@@ -12,11 +12,26 @@ $obras_social = $obsocDB->getObraSocialPaciente($tipodoc, $nrodoc);
 ?>
 <script type="text/javascript">
 $(document).ready(function() {
-       $("#modificarOsoc").click(function(event){
-              event.preventDefault();
-              var idosoc = $("#idFichaOsoc").val();
-              $("#dialog_subcontent").load("includes/forms/modificarObraSocial.php",{id:idosoc, tipodoc:<?php echo $tipodoc; ?>, nrodoc:<?php echo $nrodoc; ?>});
-       });
+    $("#modificarOsoc").click(function(event){
+        event.preventDefault();
+        var idosoc = $("#idFichaOsoc").val();
+        $("#dialog_subcontent").load("includes/forms/modificarObraSocial.php",{id:idosoc, tipodoc:<?php echo $tipodoc; ?>, nrodoc:<?php echo $nrodoc; ?>});
+    });
+
+    $.ajax({
+        url: 'includes/ajaxFunctions/puco.php',
+        async:false,
+        type: "POST",
+        dataType: "json",
+        data: "nrodoc="+<?php echo $nrodoc; ?>,
+        async:true,
+        success: function (result) {
+            $("#obraSocialDeclarada").html(result.coberturaSocial);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr);
+        }
+    });
 });
 </script>
 <input type="hidden" id="idFichaOsoc" value="<?php echo $obras_social['id']; ?>">
@@ -32,13 +47,19 @@ $(document).ready(function() {
 }
 ?>
 
-<button class="button-secondary" id="modificarOsoc" data-dialog="somedialog" ><?php
-       if($obras_social==null){
-              echo "Ingresar";
-       } else {
-              echo "Modificar";
-       }?></button>
+<button class="button-secondary" id="modificarOsoc" data-dialog="somedialog" >
+  <?php
+  if($obras_social==null) {
+        echo "Ingresar";
+  } else {
+        echo "Modificar";
+  }
+  ?>
+</button>
 
+<div>
+  Obra Social:<div align="center" id="obraSocialDeclarada"></div>
+</div>
 
 <script>
   (function() {

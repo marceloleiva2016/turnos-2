@@ -366,5 +366,29 @@ fieldset {
     cursor:pointer;
 }
 
+.contenedorObraSocial {
+    padding: 13px 15px 12px 15px;
+    margin-left: 20px;
+    overflow: hidden;
+    width:auto;
+    height:auto;
+    border-color: black;
+    border-width: 0pt;
+    border-style: solid;
+    background-color:$colorPrincipal;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.pageOsoc {
+    margin: 5px auto 5px auto;
+    padding: 5px 5px 5px 5px;
+    border: 5px solid rgba(0,0,0,.05);
+    box-shadow: 0px 0px 0px 10px rgba(0,0,0,0.03);
+    border-radius: 5px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 FINCSS;
 ?>

@@ -200,6 +200,13 @@ $(document).ready(function(){
                 $("#miCargando").css("display", "none");
                 $("#fichaPaciente").css("display", "inline");
             });
+
+            $("#miCargandoOsoc").css("display", "inline");
+            $("#fichaOsoc").css("display", "none");
+            $("#fichaOsoc").load("includes/forms/miniFichaOsoc.php",{nroDoc:nrodoc,tipoDoc:tipodoc},function(){
+                $("#miCargandoOsoc").css("display", "none");
+                $("#fichaOsoc").css("display", "inline");
+            });
         }
 
         $.ajax({

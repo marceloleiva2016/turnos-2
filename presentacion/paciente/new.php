@@ -166,9 +166,6 @@ $obsocDB = new ObraSocialDatabaseLinker();
         <div align="center">
           <button id="guardar" style="height:50px; width:200px;">Crear Paciente</button>
         </div>
-
-      
-
     </div>
     <!--NOTIFICACION -->
     <script src="../includes/plug-in/notificacion/js/classie.js"></script>
