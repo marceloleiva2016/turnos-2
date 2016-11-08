@@ -93,11 +93,21 @@ $gen = new GeneralesDatabaseLinker();
                             </form>
                             <div id="miCargando" style="display:none;">
                                 <p align="center">
-                                    <img id="loading" src="../includes/images/loader.gif" alt="Cargando..."/>
-                                    Espere mientras carga
+                                    <img id="loading" src="../includes/images/loader.gif" alt="Cargando..."/><br>
+                                    Cargando Paciente
+                                </p>
+                            </div>
+                            <div id="miCargandoOsoc" style="display:none;">
+                                <p align="center">
+                                    <img id="loading" src="../includes/images/loader.gif" alt="Cargando..."/><br>
+                                    Buscando Obra social en linea
                                 </p>
                             </div>
                         </div>
+                        <div id="fichaOsoc" style="display:none; float:right;">
+
+                        </div>
+
                         <div id="fichaPaciente" style="display:none; float:right;">
 
                         </div>

@@ -12,6 +12,8 @@ $ingreso = $DBturno->insertarEnLog($idturno, 2, $iduser);
 
 $std = new stdClass();
 
+$std->idturno = $idturno;
+
 $std->ret = $ingreso;
 
 echo json_encode($std);

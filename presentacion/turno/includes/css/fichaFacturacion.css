@@ -1,0 +1,25 @@
+table{ border-collapse:collapse; }
+
+font{ font-size: 10px; }
+
+.tbord{ border: 2px solid; }
+
+.tbordS{ border: none; }
+
+.tbordL{ border-left: 1px solid; }
+
+.tW1{ width: 2em; }
+
+.tW2{ width: 3em; }
+
+.tH1 { height: 1em; }
+
+.tH2 { height: 1em; }
+
+.tH8 { height: 8em; }
+
+.al { text-align: right; }
+
+.acd { text-align: center; vertical-align: bottom; }
+
+.alt { text-align: left; vertical-align: top; }

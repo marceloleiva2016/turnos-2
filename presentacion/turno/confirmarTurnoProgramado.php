@@ -27,7 +27,7 @@ $gen = new GeneralesDatabaseLinker();
 <html>
 <head>
     <title>Confirmar Turno Programado</title>
-    <link media="screen" type='text/css' rel='stylesheet' href='../includes/css/demo.php' >
+    <link media="screen" type="text/css" rel="stylesheet" href='../includes/css/demo.php' >
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
     <link media="screen" type="text/css" rel="stylesheet" href="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.css" />
@@ -37,8 +37,11 @@ $gen = new GeneralesDatabaseLinker();
     <link rel="stylesheet" type="text/css" href="../includes/plug-in/notificacion/css/ns-style-attached.css" />
     <script src="../includes/plug-in/notificacion/js/modernizr.custom.js"></script>
     <!--/NOTIFICACION -->
+    <link media="screen"  type="text/css" rel="stylesheet" href="includes/css/fichaFacturacion.css"/>
+    <link media="print"  type="text/css" rel="stylesheet" href="includes/css/fichaFacturacionPrint.css"/>
     <script type="text/javascript" src="../includes/plug-in/jquery-core-1.11.3/jquery-core.min.js" ></script>
     <script type="text/javascript" src="../includes/plug-in/jquery-ui-1.11.4/jquery-ui.js" ></script>
+    <script type="text/javascript" src="../includes/plug-in/jqPrint/jquery.jqprint-0.3.js"></script>
     <script type="text/javascript" src="includes/js/confirmarTurnoProgramado.js" ></script>
 </head>
 <body>
@@ -61,7 +64,7 @@ $gen = new GeneralesDatabaseLinker();
     <!-- /barra -->
     <div id="container" align="center">
         <br>
-         <div style="display: inline-block;">
+        <div style="display: inline-block;">
             <div style="word-break: break-all;">
                 <form id="buscarPorNum">
                     <h4>Buscar Paciente</h4>
@@ -88,10 +91,14 @@ $gen = new GeneralesDatabaseLinker();
             </div>
             <div align="center" id="divConfTurno" style="display:none;" >
             
-	        </div><br>
+	        </div>
+            <br>
 	        <div align="center" id="botonConfirmar" style="display:none;">
 	        	<button class="button-secondary" id="confirmarTurnoProgramado">Confirmar</button>
 	        </div>
+        </div>
+        <div id="dialog" title="Turno confirmado">
+            
         </div>
     </div>
     <input type="hidden" id="idusuario" name="idusuario" value=<?php echo $data->getId();?> >

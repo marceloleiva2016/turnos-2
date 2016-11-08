@@ -86,7 +86,7 @@ if(!$error)
     <?php
     }
     ?>
-    <div style="display: inline-block;">
+    <div -style="display: inline-block;">
         <h3>Datos Obra Social Local</h3>
         <hr>
         <b><?php echo Utils::phpStringToHTML($osoc['obra_social'])?></b>

@@ -1,3 +1,51 @@
+var idtur = "";
+var usuario = "";
+
+function confirmarTurno(){
+    $.ajax({
+        type:'post',
+        dataType:'json',
+        url:'includes/ajaxFunctions/jsonConfirmarTurno.php',
+        data:{idturno:idtur ,idusuario:usuario},
+        success: function(json)
+        {
+            if (json.ret==true)
+            {
+
+                $("#divConfTurno").css("display", "none");
+                $("#fichaPaciente").css("display", "none");
+                $("#botonConfirmar").css("display", "none");
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon2 icon-message"></span><p>Turno confirmado correctamente!</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
+            }
+            else
+            {
+                //NOTIFICACION
+                // create the notification
+                var notification = new NotificationFx({
+                    message : '<span class="icon2 icon-message"></span><p>Ocurrio un error al confirmar el turno para el paciente!</p>',
+                    layout : 'attached',
+                    effect : 'bouncyflip',
+                    type : 'notice'
+                });
+                // show the notification
+                notification.show();
+                //NOTIFICACION
+            }
+        }
+    }); 
+}
+
+
 $(document).ready(function(){
 
     $("#confirmarTurnoProgramado").button();
@@ -27,51 +75,14 @@ $(document).ready(function(){
     
     $("#confirmarTurnoProgramado").click(function(event){
         event.preventDefault();
-        var idtur = $("#turnoRadio:checked").val();
-        var usuario = $("#idusuario").val();
+        idtur = $("#turnoRadio:checked").val();
+        usuario = $("#idusuario").val();
 
         if(idtur!=null)
         {
-            $.ajax({
-                type:'post',
-                dataType:'json',
-                url:'includes/ajaxFunctions/jsonConfirmarTurno.php',
-                data:{idturno:idtur ,idusuario:usuario},
-                success: function(json)
-                {
-                    if (json.ret==true)
-                    {
-                        $("#divConfTurno").css("display", "none");
-                        $("#fichaPaciente").css("display", "none");
-                        $("#botonConfirmar").css("display", "none");
-                        //NOTIFICACION
-                        // create the notification
-                        var notification = new NotificationFx({
-                            message : '<span class="icon2 icon-message"></span><p>Turno confirmado correctamente!</p>',
-                            layout : 'attached',
-                            effect : 'bouncyflip',
-                            type : 'notice'
-                        });
-                        // show the notification
-                        notification.show();
-                        //NOTIFICACION
-                    }
-                    else
-                    {
-                        //NOTIFICACION
-                        // create the notification
-                        var notification = new NotificationFx({
-                            message : '<span class="icon2 icon-message"></span><p>Ocurrio un error al confirmar el turno para el paciente!</p>',
-                            layout : 'attached',
-                            effect : 'bouncyflip',
-                            type : 'notice'
-                        });
-                        // show the notification
-                        notification.show();
-                        //NOTIFICACION
-                    }
-                }
-            });    
+            $("#dialog").load("includes/forms/fichaFacturacion.php",{idturno:idtur, idusuario:usuario},function(){
+                $("#dialog").dialog("open");
+            });
         }
         else
         {
@@ -87,6 +98,10 @@ $(document).ready(function(){
             notification.show();
             //NOTIFICACION
         }
+    });
+    
+    $("#dialog").dialog({
+        autoOpen: false,
     });
 
 });

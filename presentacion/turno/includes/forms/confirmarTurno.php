@@ -75,7 +75,7 @@ if(!$error)
     <?php
 
     if($sexo == "M")
-    { 
+    {
     ?>
     	<!-- imagen de Hombre -->
         <div class="imagenSexoPacienteHombre" ></div>
