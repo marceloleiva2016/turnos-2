@@ -635,14 +635,32 @@ class ConsultorioDatabaseLinker
             //
             if(array_key_exists($nroDia, $diasSemanaConsultorio))
             {
-                if(!$this->dbFeriados->existeFeriado($fecha, $idprofesional))
+                if($this->dbFeriados->existeFeriado($fecha))
                 {
-                    $tupla = array();
-                    $tupla['iddia'] = $nroDia;
-                    $tupla['dia'] = $diasSemanaConsultorio[$nroDia];
-                    $tupla['fecha'] = $fecha;
+                    if($consultorio['feriados']=="1")
+                    {
+                        if(!$this->dbFeriados->existeVacacion($fecha, $idprofesional))
+                        {
+                            $tupla = array();
+                            $tupla['iddia'] = $nroDia;
+                            $tupla['dia'] = $diasSemanaConsultorio[$nroDia];
+                            $tupla['fecha'] = $fecha;
 
-                    $ret[$tupla['iddia']][] = $tupla;
+                            $ret[$tupla['iddia']][] = $tupla;
+                        }
+                    }
+                }
+                else
+                {
+                    if(!$this->dbFeriados->existeVacacion($fecha, $idprofesional))
+                    {
+                        $tupla = array();
+                        $tupla['iddia'] = $nroDia;
+                        $tupla['dia'] = $diasSemanaConsultorio[$nroDia];
+                        $tupla['fecha'] = $fecha;
+
+                        $ret[$tupla['iddia']][] = $tupla;
+                    }
                 }
             }
 

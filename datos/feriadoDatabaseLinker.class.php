@@ -141,7 +141,7 @@ class FeriadoDatabaseLinker
 
     }
 
-    function existeFeriado($fecha, $profesional)
+    function existeVacacion($fecha, $profesional)
     {
         $query="SELECT
                     * 
@@ -150,6 +150,40 @@ class FeriadoDatabaseLinker
                 WHERE
                     fecha = '$fecha' AND 
                     idprofesional = $profesional AND 
+                    habilitado=true;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+        }
+
+        $result = $this->dbTurnos->fetchRow();
+
+        $this->dbTurnos->desconectar();
+
+        if($result!=false) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    function existeFeriado($fecha)
+    {
+        $query="SELECT
+                    *
+                FROM
+                    excepciones_turno
+                WHERE
+                    fecha = '$fecha' AND 
+                    idprofesional = 0 AND 
                     habilitado=true;";
 
         try
