@@ -207,7 +207,7 @@ echo <<<FINCSS
 	width: 100%;
 	top: 100%;
 	left: 0;
-	z-index: 0;
+	z-index: 2;
 	height: 0px;
 }
 

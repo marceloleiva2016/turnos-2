@@ -2,6 +2,8 @@
 /*Agregado para que tenga el usuario*/
 include_once '../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
+include_once datos.'postitDatabaseLinker.class.php';
+
 session_start();
 
 if(!isset($_SESSION['usuario']))
@@ -13,6 +15,10 @@ if(!isset($_SESSION['usuario']))
 $usuario = $_SESSION['usuario'];
 
 $data = unserialize($usuario);
+
+$dbPostit = new PostitDatabaseLinker();
+
+$postits = $dbPostit->getPostitDeUsuario($data->getId());
 
 /*fin de agregado usuario*/
 ?>
@@ -30,6 +36,7 @@ $data = unserialize($usuario);
 		<link rel="stylesheet" type="text/css" href="css/component.php" />
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/barra.php">
 		<link media="screen" type="text/css" rel="stylesheet" href="../includes/css/iconos.css">
+		<link type="text/css" rel="stylesheet" href="../includes/plug-in/postit/css/style.css">
 		<script src="js/modernizr.custom.js"></script>
 	</head>
 	<body>
@@ -175,10 +182,21 @@ $data = unserialize($usuario);
 						</ul>
 					</div>
 				</nav>
-			</div>
-
-			<div class="imagenLogo">
-
+				<div class="pizarra">
+				<?php
+				for ($i=0; $i < count($postits); $i++) {
+				?>
+					<div class="quote-container">
+					  <i class="pin"></i>
+					  <blockquote class="note yellow">
+					    <?php echo $postits[$i]->getDescripcion(); ?>
+					    <cite class="author"><?php echo $postits[$i]->getUsuario()->getNombre(); ?></cite>
+					  </blockquote>
+					</div>
+				<?php 
+				}
+				?>
+				</div>
 			</div>
 		</div>
 		<script src="js/cbpHorizontalSlideOutMenu.min.js"></script>

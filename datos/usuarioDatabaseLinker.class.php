@@ -807,5 +807,35 @@ class UsuarioDatabaseLinker
 
         return $ret; 
     }
+
+    function getUsuarioPorId($idusuario)
+    {
+        $query="SELECT 
+                    *
+                FROM
+                    usuario
+                WHERE
+                    idusuario = '".$idusuario."';";
+        try
+            {
+                $this->dbusuario->conectar();
+                $this->dbusuario->ejecutarQuery($query);
+            }
+            catch (Exception $e)
+            {
+                throw new Exception("Error al conectar con la base de datos", 17052013);
+            }
+
+        $result = $this->dbusuario->fetchRow($query);
+
+        $usuario = new Usuario();
+        $usuario->setId($result['idusuario']);
+        $usuario->setApodo($result['detalle']);
+        $usuario->setNombre($result['nombre']);
+        $usuario->setContrasena($result['contrasena']);
+        $usuario->setPermisos($this->permisosDeUsuario($result['idusuario']));
+
+        return $usuario;
+    }
 }
 ?>
