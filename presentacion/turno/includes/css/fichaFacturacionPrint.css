@@ -74,13 +74,17 @@ font{ font-size: 10px; }
 
 .tbordL{ border-left: 1px solid; }
 
-.tW1{ width: 1em; }
+.tW1{ width: 2em; }
 
-.tW2{ width: 2em; }
+.tW2{ width: 5em; }
+
+.tW5{ width: 25em; }
+
+.tW8{ width: 8em; }
 
 .tH1 { height: 1em; }
 
-.tH2 { height: 1em; }
+.tH2 { height: 2em; }
 
 .tH8 { height: 8em; }
 
