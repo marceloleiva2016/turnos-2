@@ -390,5 +390,12 @@ fieldset {
     text-transform: uppercase;
 }
 
+.inputsScroll {
+    border:2px solid #ccc;
+    width: 500px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
 FINCSS;
 ?>

@@ -61,9 +61,9 @@ if(!isset($_SESSION['usuario']))
                     <td>
                         <div class="content" align="center">
                             <?php
-                            if ($data->tienePermiso('CREAR_USUARIO')){ echo "<input id='btnAgregarUsuario' class='button-secondary'  type='button' value='Nuevo usuario' /><br>";}
-                            if ($data->tienePermiso('ELIMINAR_USUARIO')){ echo "<input id='btnEliminarUsuario' class='button-secondary'  type='button' value='Baja de usuario' /><br>";}
-                            if ($data->tienePermiso('VER_USUARIOS')){ echo "<input id='btnVerUsuarios' class='button-secondary'  type='button' value='Ver usuarios' /><br>";}
+                            if ($data->tienePermiso('CREAR_USUARIO')){ echo "<input id='btnAgregarUsuario' class='button-secondary'  type='button' value='Nuevo usuario' />&nbsp;";}
+                            if ($data->tienePermiso('ELIMINAR_USUARIO')){ echo "<input id='btnEliminarUsuario' class='button-secondary'  type='button' value='Baja de usuario' />&nbsp;";}
+                            if ($data->tienePermiso('VER_USUARIOS')){ echo "<input id='btnVerUsuarios' class='button-secondary'  type='button' value='Ver usuarios' />&nbsp;";}
                             echo "<input id='btnVerMiUsuario' class='button-secondary'  type='button' value='Mi Usuario' /><br>";
                             ?>
                         </div>

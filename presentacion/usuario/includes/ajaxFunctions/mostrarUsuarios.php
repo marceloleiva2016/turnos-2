@@ -4,7 +4,14 @@ include_once datos.'usuarioDatabaseLinker.class.php';
 
 $obj = new UsuarioDatabaseLinker();
 
-$ret = $obj->getUsuariosJson($_POST['entidad'], $_REQUEST['page'], $_REQUEST['rows']);
+$arr= array();
+
+if($_POST["_search"] == "true")
+{
+    $arr = json_decode($_POST['filters'], true);
+}
+
+$ret = $obj->getUsuariosJson($_POST['entidad'], $_REQUEST['page'], $_REQUEST['rows'], $arr);
 	
 echo $ret;
 

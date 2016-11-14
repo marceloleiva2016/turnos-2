@@ -6,13 +6,15 @@ $obj = new UsuarioDatabaseLinker();
 
 session_start();
 
-$nomUsuario=$_POST['usuario'];
+$nomUsuario = $_POST['usuario'];
 
-$contraUsuario=$_POST['contra'];
+$contraUsuario = $_POST['contra'];
 
-$entidad=$_POST['entidad'];
+$entidad = $_POST['entidad'];
 
-$acceso = $obj->acceso($nomUsuario,$contraUsuario,$entidad);
+$centro = $_POST['centro'];
+
+$acceso = $obj->acceso($nomUsuario, $contraUsuario, $entidad, $centro);
 
 $data->result = true;
 

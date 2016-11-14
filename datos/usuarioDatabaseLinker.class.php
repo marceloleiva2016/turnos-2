@@ -51,8 +51,19 @@ class UsuarioDatabaseLinker
 				$response->ret = false;
 				return $response;
 			}
+
+            try //savepoint en registrarEgreso
+            {
+                $cargo2 = $this->registrarTodosCentrosUsuario($idusuario,$data['accesosCentros']);
+            } 
+            catch (Exception $e) 
+            {
+                $response->message = "Se produjo un error al registrar los centros del usuario";
+                $response->ret = false;
+                return $response;
+            }
 			
-			if(!$cargo)
+			if(!$cargo or !$cargo2)
 			{
 				$this->eliminarConfirmacionRegistro();
 				$response->message = "El usuario no se a creado correctamente";
@@ -201,6 +212,59 @@ class UsuarioDatabaseLinker
 		return true;
 	}
 
+    function registrarTodosCentrosUsuario($idusuario, $centros)
+    {
+        $completado = true;
+
+        $query="SET AUTOCOMMIT=0;";
+        $query2= "SAVEPOINT punto;";
+
+        try
+        {
+            $this->dbusuario->conectar();
+            $this->dbusuario->ejecutarAccion($query);
+            $this->dbusuario->ejecutarAccion($query2);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error al conectar con la base de datos", 17052013);
+        }
+
+        for($i=0; $i<count($centros); $i++)
+        {
+            try 
+            {
+                $this->registrarCentro($idusuario, $centros[$i]);
+            }
+            catch (Exception $e)
+            {
+                $completado = false;
+                break;
+            }
+        }
+
+        return $completado;
+    }
+
+    function registrarCentro($idusuario, $centro)
+    {   
+        $query="INSERT INTO centro_usuario (idusuario, idcentro) VALUES (".$idusuario.", '".$centro."');";
+
+        try
+        {
+            $this->dbusuario->conectar();
+            $this->dbusuario->ejecutarAccion($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error al conectar con la base de datos", 17052013);
+            $this->dbusuario->desconectar();
+            return false;
+        }
+
+        return true;
+    }
+
 	function finalizarRegistroUsuario()
 	{
 		$query = "COMMIT;";
@@ -272,7 +336,7 @@ class UsuarioDatabaseLinker
 		$response = new stdClass();
         $idusuario = $data['idusuario'];
         $permisos = $data['accesos'];
-        
+
         try
         {
             // CONECTARSE A LA DB
@@ -316,6 +380,8 @@ class UsuarioDatabaseLinker
             $response->ret = false;
         }
 
+
+
         // DESCONECTARSE DE LA DB
         $this->dbusuario->desconectar();
         
@@ -323,8 +389,76 @@ class UsuarioDatabaseLinker
         return $response;
 	}
 
-    public function getUsuarios($entidad, $page, $rows)
+    function confirmarCentrosUsuario($data)
+    {
+        $response = new stdClass();
+        $idusuario = $data['idusuario'];
+        $permisosCentros = $data['accesosCentros'];
+        
+        try
+        {
+            // CONECTARSE A LA DB
+            $this->dbusuario->conectar();
+            
+            // CREAR PUNTO DE RECUPERACION
+            $this->dbusuario->ejecutarAccion('SET AUTOCOMMIT = 0;');
+            $this->dbusuario->ejecutarAccion('SAVEPOINT puntoCentros;');
+            
+            // BORRAR TODOS LOS PERMISOS
+            $query = "DELETE FROM centro_usuario WHERE idusuario = " . $idusuario;
+            $this->dbusuario->ejecutarAccion($query);
+            
+            // AGREGAR LOS NUEVOS PERMISOS
+            for($i = 0; $i < count($permisosCentros); $i++)
+            {
+                $query = "INSERT INTO centro_usuario (idusuario, idcentro) VALUES (".$idusuario.", '".$permisosCentros[$i]."');";
+                $this->dbusuario->ejecutarAccion($query);
+            }
+                
+            // COMMIT
+            $this->dbusuario->ejecutarAccion("COMMIT;");
+            
+            // SETEAR MENSAJE DE EXITO
+            $response->message = "Los permisos se registraron exitosamente!";
+            $response->ret = true;
+        }
+        catch (Exception $e)
+        {
+            // ROLLBACK
+            try
+            {
+                $this->dbusuario->ejecutarAccion("ROLLBACK TO SAVEPOINT puntoCentros;");
+            }
+            catch (Exception $e)
+            {
+            }
+            
+            // SETEAR MENSAJE DE ERROR
+            $response->message = "Error al intentar guardar los accessos a los centros para el usuario";
+            $response->ret = false;
+        }
+
+
+
+        // DESCONECTARSE DE LA DB
+        $this->dbusuario->desconectar();
+        
+        // ENVIAR REPSUESTA
+        return $response;
+    }
+
+    public function getUsuarios($entidad, $page, $rows, $filters)
 	{
+        $where = "";
+        if(count($filters)>0)
+        {
+            for($i=0; $i < count($filters['rules']); $i++ )
+            {
+                $where.=$filters['groupOp']." ";
+                $where.=" ".$filters['rules'][$i]['field']." like '".$filters['rules'][$i]['data']."%'";
+            }
+        }
+
 		$offset = ($page - 1) * $rows;
 
 		$query="SELECT 
@@ -336,8 +470,9 @@ class UsuarioDatabaseLinker
                 WHERE
                 	entidad = '".$entidad."' AND
                 	habilitado = '1'
-                LIMIT ".$rows." OFFSET ".$offset."
-                ";
+                    ".$where."
+                ORDER BY detalle ASC 
+                LIMIT $rows OFFSET $offset;";
 
         $this->dbusuario->ejecutarQuery($query);
 
@@ -352,15 +487,25 @@ class UsuarioDatabaseLinker
 		return $ret;
 	}
 	
-    private function getCantidadUsuarios($entidad)
+    private function getCantidadUsuarios($entidad, $filters)
     {
+        $where = "";
+        if(count($filters)>0)
+        {
+            for($i=0; $i < count($filters['rules']); $i++ )
+            {
+                $where.=$filters['groupOp']." ";
+                $where.=" ".$filters['rules'][$i]['field']." like '".$filters['rules'][$i]['data']."%'";
+            }
+        }
+
         $query="SELECT 
             		COUNT(*) as cantidad
             	FROM 
             		usuario
             	WHERE
             		entidad = '".$entidad."' AND
-            		habilitado = '1'";
+            		habilitado = true ".$where.";";
         
         $this->dbusuario->ejecutarQuery($query);
         $result = $this->dbusuario->fetchRow($query);
@@ -369,15 +514,15 @@ class UsuarioDatabaseLinker
         return $ret;
     }
         
-    function getUsuariosJson($entidad, $page, $rows)
+    function getUsuariosJson($entidad, $page, $rows, $filters)
     {
         $response = new stdClass();
         $this->dbusuario->conectar();
 
-        $usuariosarray = $this->getUsuarios($entidad, $page, $rows);
+        $usuariosarray = $this->getUsuarios($entidad, $page, $rows, $filters);
 
         $response->page = $page;
-        $response->total = ceil($this->getCantidadUsuarios($entidad) / $rows);
+        $response->total = ceil($this->getCantidadUsuarios($entidad, $filters) / $rows);
         $response->records = count($usuariosarray); 
 
         $this->dbusuario->desconectar();
@@ -577,7 +722,39 @@ class UsuarioDatabaseLinker
 		return $arr;
     }
 
-	function acceso($usuario, $contrasenaIngresada, $entidad)
+    function centroHabilitadoUsuario($idusuario, $idcentro)
+    {
+        $query="SELECT
+                    count(*) as cantidad
+                FROM 
+                    centro_usuario
+                WHERE
+                    idusuario=".$idusuario." AND
+                    idcentro=".$idcentro.";";
+
+        try
+        {
+            $this->dbusuario->conectar();
+            $this->dbusuario->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            throw new Exception("Error al conectar con la base de datos", 17052013);
+        }
+
+        $result = $this->dbusuario->fetchRow($query);
+        
+        if($result['cantidad']!="0")
+        {
+            return true; //usuario puede ingresar al centro
+        }
+        else
+        {
+            return false; //usuario no puede ingresar al centro
+        }
+    }
+
+	function acceso($usuario, $contrasenaIngresada, $entidad, $idcentro)
 	{
 		
 		if(!$this->usuarioExiste(strtolower($usuario),$entidad))
@@ -613,10 +790,19 @@ class UsuarioDatabaseLinker
 
 			if($contrasenaIngresadamd5 == $result['contrasena'])
 			{
-				
-				$_SESSION['usuario'] =  serialize($this->getUsuario(strtolower($usuario), $entidad));
-				$_SESSION['entidad'] = $entidad;
-				return true; //usuario existe y contraseña coincide
+				$usuario = $this->getUsuario(strtolower($usuario), $entidad);
+
+                if($this->centroHabilitadoUsuario($usuario->getId(), $idcentro))
+                {
+                    $_SESSION['usuario'] =  serialize($usuario);
+                    $_SESSION['entidad'] = $entidad;
+                    $_SESSION['centro'] = $idcentro;
+                    return true;//usuario existe y contraseña coincide
+                }
+                else
+                {
+                    return false;//usuario existe y contraseña coincide pero el centro no
+                }
 			}
 			else
 			{
@@ -836,6 +1022,48 @@ class UsuarioDatabaseLinker
         $usuario->setPermisos($this->permisosDeUsuario($result['idusuario']));
 
         return $usuario;
+    }
+
+    function traerPermisosCentrosUsuario($idusuario, $idempresa)
+    {
+        $query="SELECT 
+                    c.id as idcentro, 
+                    c.detalle as detalle,
+                    cu.idusuario IS NOT NULL as tiene
+                FROM 
+                    centro c LEFT JOIN 
+                    centro_usuario cu ON cu.idcentro = c.id AND cu.idusuario = $idusuario
+                WHERE
+                    c.idempresa = '".$idempresa."';";
+
+        try
+        {
+                $this->dbusuario->conectar();
+                $this->dbusuario->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+                throw new Exception("Error consultando los permisos de centros para el usuario", 17052013);
+        }
+
+        $arr = array();
+
+        for($i = 0 ; $i < $this->dbusuario->querySize; $i++)
+        {
+            $result = $this->dbusuario->fetchRow($query);
+                        
+            $arrdos = array(
+                                'idcentro' => $result['idcentro'],
+                                'detalle'   => $result['detalle'],
+                                'tiene'     => $result['tiene']
+                        );
+            
+                        $arr[] = $arrdos;
+        }
+
+        $this->dbusuario->desconectar();
+
+        return $arr;
     }
 }
 ?>

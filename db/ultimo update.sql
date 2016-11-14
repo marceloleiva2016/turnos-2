@@ -6,8 +6,6 @@ INSERT INTO `turnos`.`estado_turno` (`id`, `detalle`) VALUES ('4', 'NO ASISTIDO'
 INSERT INTO `turnos`.`estado_turno` (`id`, `detalle`) VALUES ('5', 'NO ATENDIDO');
 INSERT INTO `turnos`.`estado_turno` (`id`, `detalle`) VALUES ('6', 'ELIMINADO');
 
-
-
 CREATE TABLE `turnos`.`postit` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `idusuario` INT NULL,
@@ -15,3 +13,13 @@ CREATE TABLE `turnos`.`postit` (
   `fecha_creacion` DATETIME NULL,
   `habilitado` TINYINT(1) NULL,
 PRIMARY KEY (`id`));
+
+#actualizar los centros de los usuarios
+INSERT INTO centro_usuario  (idcentro, idusuario)
+        SELECT 
+            1,
+            idusuario
+        FROM
+                usuario
+        WHERE
+            habilitado=true;

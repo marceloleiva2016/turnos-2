@@ -1,14 +1,20 @@
 <?php
 include_once '../../../../namespacesAdress.php';
 include_once datos.'usuarioDatabaseLinker.class.php';
+include_once datos.'centroDatabaseLinker.class.php';
+include_once conexion.'conectionData.php';
 
 session_start();
 
 $obj = new UsuarioDatabaseLinker();
 
+$centDB = new CentroDatabaseLinker();
+
 $entidad = $_POST['entidad'];
 
 $permisos = $obj->traerPermisos($entidad);
+
+$centros = $centDB->getCentros(Business);
 
 ?>
 <script type="text/javascript">
@@ -52,6 +58,22 @@ $permisos = $obj->traerPermisos($entidad);
 			return false;
 		}
 
+        var accesoCentros= document.getElementsByName('accesosCentros[]');
+        var hasChecked=false;
+        for(var i=0; i< accesoCentros.length; i++)
+        {
+            if(accesoCentros[i].checked)
+            {
+                hasChecked=true;
+                break;
+            }
+        }
+        if(hasChecked==false)
+        {
+            alert("Debe seleccionar al menos un centro donde va a operar el usuario");
+            return false;
+        }
+
 		return true;
 	}
 
@@ -85,18 +107,34 @@ $permisos = $obj->traerPermisos($entidad);
 
 	<a>Alias de usuario: </a><input class="input" name="detalle" placeholder="Identificacion de Usuario"></br>
 
-	<a>Contras&ntilde;a: </a><input class="input" type="password" name="contrasena" placeholder="Password"></br>
+	<a>Contrase&ntilde;a: </a><input class="input" type="password" name="contrasena" placeholder="Password"></br>
 
 	<a>Vuelva a ingresar: </a><input class="input" type="password" name="contra2" placeholder="Reingresar"></br>
 
-	<a>Este Usuario puede tener permiso a</a></br></br>
+	<a>Este Usuario puede tener permiso a</a></br>
 
-	<?php
-	for ($i=0; $i < count($permisos); $i++) 
-	 { 
-		echo "<input type='checkbox' name='accesos[]' value=".$permisos[$i]['idpermiso'].">".$permisos[$i]['detalle']."</br>";
-	}
-	?>
+    <div class="inputsScroll">
+
+	    <?php
+	    for ($i=0; $i < count($permisos); $i++) 
+	    { 
+    		echo "<input type='checkbox' name='accesos[]' value=".$permisos[$i]['idpermiso'].">".$permisos[$i]['detalle']."</br>";
+    	}
+    	?>
+
+    </div><br>
+
+    <a>En los siguientes centros...</a></br>
+
+    <div class="inputsScroll">
+        <?php
+        for ($i=0; $i < count($centros); $i++) 
+        { 
+            echo "<input type='checkbox' name='accesosCentros[]' value=".$centros[$i]->getId().">".$centros[$i]->getDetalle()."</br>";
+        }
+        ?>
+
+    </div>
 
 	<input type="hidden" name="entidad" value='<?php echo $entidad ?>' >
 

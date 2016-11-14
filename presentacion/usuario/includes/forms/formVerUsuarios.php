@@ -30,9 +30,24 @@ $entidad = $_POST['entidad'];
 		return hasChecked;
 	}
 
-    $("#jqusuarios").jqGrid(
-    {
+    function validarCentrosPermisosUsuario()
+    {       
+        var acceso = document.getElementsByName('accesosCentros[]');
+        var hasChecked = false;
+        
+                for (var i=0; i< acceso.length; i++)
+        {
+            if (acceso[i].checked)
+            {
+                hasChecked = true;
+                break;
+            }
+        }
+               
+        return hasChecked;
+    }
 
+    $("#jqusuarios").jqGrid({
         url:'includes/ajaxFunctions/mostrarUsuarios.php', 
         postData: {'entidad' : "<?php echo $entidad; ?>" },
         mtype: "POST",
@@ -45,12 +60,25 @@ $entidad = $_POST['entidad'];
         viewrecords: true,
         altRows: true,
         caption: "Usuarios",
-        rowNum: 20,
+        rowNum: 10,
         rowList:[10,20,30,50],
-        pager: '#jqusuariosfoot', 
-        //editurl :'includes/ajaxFunctions/eliminarUsuario.php',
+        pager: '#jqusuariosfoot',
         width: '100%',
         height: '100%'
+    });
+
+    $('#jqusuarios').jqGrid('navGrid', '#jqusuariosfoot', {
+        edit:false,
+        add:false,
+        del:false,
+        trash:false,
+        search:false
+    });
+
+    $("#jqusuarios").jqGrid('filterToolbar', {
+        stringResult: true,
+        searchOnEnter: false,
+        defaultSearch : "cn"
     });
 
     $("#editarPermisos").click(function(event) {
@@ -67,14 +95,14 @@ $entidad = $_POST['entidad'];
                     $("#dialogEditarPermisosUsuario").dialog({
                         title: "Permisos de usuario",
                         modal: true,
-                        width: 1000,
+                        width: 600,
                         buttons:
                         {
                             Guardar: function() 
                             {
                                 var self = this;
                                 
-                                if(validarEditarPermisosUsuario())
+                                if(validarEditarPermisosUsuario() && validarCentrosPermisosUsuario())
                                 {
                                     $.ajax({
                                         data: $('#editarPermisosUsuarioform').serialize(),
@@ -90,7 +118,7 @@ $entidad = $_POST['entidad'];
                                 }
                                 else
                                 {
-                                        alert("Debe ingresar al menos una pantalla de acceso");
+                                        alert("Debe ingresar al menos una pantalla de acceso y seleccionar al menos un centro.");
                                 }
                             },
                             Cerrar: function() {

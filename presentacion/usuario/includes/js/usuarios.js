@@ -9,7 +9,8 @@ $(document).ready(function(){
       $( "#dialogAgregarUsuario" ).css('visibility',"visible");
       $( "#dialogAgregarUsuario" ).dialog({
   			title:"Agregar Usuario",
-  			resizable: false
+  			resizable: false,
+        width: 600
   		});       
     });
 

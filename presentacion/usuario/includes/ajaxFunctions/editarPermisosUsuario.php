@@ -6,6 +6,21 @@ $obj = new UsuarioDatabaseLinker();
 
 $registro = $obj->confirmarPermisosUsuario($_POST);
 
-echo json_encode($registro);
+$registroCentros = $obj->confirmarCentrosUsuario($_POST);
 
+if($registro->ret==true AND $registroCentros->ret=true)
+{
+    echo json_encode($registro);
+}
+else
+{
+    if($registro->ret==false)
+    {
+        echo json_encode($registro);
+    }
+    else
+    {
+        echo json_encode($registroCentros);
+    }
+}
 ?>
