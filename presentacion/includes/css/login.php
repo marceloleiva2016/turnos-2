@@ -78,10 +78,8 @@ h1
 
 .error
 {
-	float: left;
+	margin-top: 10px;
 	text-align: center;
-	height: 70px;
-	width: 190px;
 	padding :10px 10px 10px 10px;
 	background: #F08080;
 	box-shadow: 0px 0px 0px 10px rgba(0,9,15,0.13);

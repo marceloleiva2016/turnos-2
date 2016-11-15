@@ -59,38 +59,38 @@ if(!$error)
 {
 ?>
     <div class="contenedorPaciente">
+        <div class="subContenedorPaciente">
+            <div class="datosPaciente" >
+                <br/>
+                <b><?php echo Utils::phpStringToHTML($nombrePaciente)?></b><br>
+                <br /> 
+                <b>Fecha Nacimiento: </b><?php echo $fechaNac?><br>
+                <b>Edad: </b><?php echo $edad?><br>
+                <b>Domicilio: </b><?php echo $domicilio?><br>
+                <b>Telefono: </b><?php echo $tel?><br />
+                <br/>
+            </div>
+    <?php
 
-        <div class="datosPaciente" >
-            <br />
-            <b><?php echo Utils::phpStringToHTML($nombrePaciente)?></b><br>
-            <br /> 
-            <b>Fecha Nacimiento: </b><?php echo $fechaNac?><br>
-            <b>Edad: </b><?php echo $edad?><br>
-            <b>Domicilio: </b><?php echo $domicilio?><br>
-            <b>Telefono: </b><?php echo $tel?><br />
-            <br />
+        if($sexo == "M")
+        { 
+        ?>
+            <div class="imagenSexoPacienteHombre"></div><br>
+        <?php
+        }
+        else
+        {
+        ?>
+            <div class="imagenSexoPacienteMujer"></div><br>
+        <?php
+        }
+        ?>
         </div>
-
-    <?php
-
-    if($sexo == "M")
-    { 
-    ?>
-        <div class="imagenSexoPacienteHombre"></div><br>
-    <?php
-    }
-    else
-    {
-    ?>
-        <div class="imagenSexoPacienteMujer"></div><br>
-    <?php
-    }
-    ?>
-    <div -style="display: inline-block;">
-        <h3>Datos Obra Social Local</h3>
-        <hr>
-        <b><?php echo Utils::phpStringToHTML($osoc['obra_social'])?></b>
-    </div>
+        <div -style="display: inline-block;">
+            <h3>Datos Obra Social Local</h3>
+            <hr>
+            <b><?php echo Utils::phpStringToHTML($osoc['obra_social'])?></b>
+        </div>
     </div>
     <?php
 }

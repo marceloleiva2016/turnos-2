@@ -3,20 +3,41 @@ include_once "../../../../namespacesAdress.php";
 include_once datos."turnoDatabaseLinker.class.php";
 include_once datos."pacienteDatabaseLinker.class.php";
 include_once datos."obraSocialDatabaseLinker.class.php";
+include_once datos."centroDatabaseLinker.class.php";
+
+session_start();
+
+if(!isset($_SESSION['usuario']))
+{
+    echo "La session a superado el tiempo de inactividad.<br> Por favor vuelva a registrarse para confirmar turnos.";
+    die();
+}
 
 $idTurno = $_REQUEST['idturno'];
 
+$dbCent = new CentroDatabaseLinker();
 $dbPac = new PacienteDatabaseLinker();
 $dbTurno = new TurnoDatabaseLinker();
 $dbOsoc = new ObraSocialDatabaseLinker();
 
 $varTurno = $dbTurno->obtenerVariablesTurno($idTurno);
 
+$centro = $dbCent->getCentro($_SESSION['centro']);
+
 $paciente = $dbPac->getDatosPacientePorNumero($varTurno['tipodoc'], $varTurno['nrodoc']);
 
 $obraSocial = $dbOsoc->getObraSocialPaciente($varTurno['tipodoc'], $varTurno['nrodoc']);
 
 $edad = $paciente->getEdadActual();
+
+$nrodoc = $paciente->getNroDoc();
+
+for ($i=strlen($nrodoc); $i < 8; $i++) { 
+    $nrodoc = " ".$nrodoc;
+}
+
+$fecha = date("dmY");
+
 ?>
 <script type="text/javascript">
 
@@ -50,25 +71,25 @@ else
         <div id="imprimir">
             <table>
                 <tr class="tbordS">
-                    <td colspan="30"><font>Establecimiento</font></td>
-                    <td colspan="6"><font>Codigo</font></td>
+                    <td colspan="30"><font>1-Establecimiento</font></td>
+                    <td colspan="6"><font>2-Codigo</font></td>
                 </tr>
                 <tr class="tbord">
-                    <td class="tbord tW1 tH2" colspan="30">1-Hospital Municipal de Merlo "Eva Perón"</td>
-                    <td class="tbord tW1 tH2 acd" colspan="6">26210</td>
+                    <td class="tbord tW1 tH12" colspan="30"><?php echo $centro->getDetalle(); ?></td>
+                    <td class="tbord tW1 tH12 ac" colspan="6"><?php echo $centro->getCodigoCentro(); ?></td>
                 </tr>
                 <tr>
                     <td class="tbordS" colspan="30"><font>Apellido y Nombre</font></td>
                     <td class="tbordS" colspan="6"><font>3-Fecha</font></td>
                 </tr>
                 <tr>
-                    <td class="tbord tH2 acd" colspan="30"><?php echo $paciente->getNombre()." ".$paciente->getApellido(); ?></td>
-                    <td class="tbord tW1 tH2">1</td>
-                    <td class="tbord tW1 tH2">2</td>
-                    <td class="tbord tW1 tH2">1</td>
-                    <td class="tbord tW1 tH2">0</td>
-                    <td class="tbord tW1 tH2">1</td>
-                    <td class="tbord tW1 tH2">6</td>
+                    <td class="tbord tH12 ac" colspan="30"><?php echo $paciente->getNombre()." ".$paciente->getApellido(); ?></td>
+                    <td class="tbord tW1 tH12"><?php echo substr($fecha, -8, 1); ?></td>
+                    <td class="tbord tW1 tH12"><?php echo substr($fecha, -7, 1); ?></td>
+                    <td class="tbord tW1 tH12"><?php echo substr($fecha, -6, 1); ?></td>
+                    <td class="tbord tW1 tH12"><?php echo substr($fecha, -5, 1); ?></td>
+                    <td class="tbord tW1 tH12"><?php echo substr($fecha, -2, 1); ?></td>
+                    <td class="tbord tW1 tH12"><?php echo substr($fecha, -1); ?></td>
                 </tr>
                 <tr>
                     <td class="tbordS tW2" ><font>4-Sexo</font></td>
@@ -82,28 +103,28 @@ else
                 </tr>
                 <tr>
                     <!--Sexo-->
-                    <td class="tbord tH2 acd" ><?php echo $paciente->getSexo(); ?></td>
+                    <td class="tbord tH12 ac" ><?php echo $paciente->getSexo(); ?></td>
                     <!--Edad-->
-                    <td class="tbord tW1 tH2 acd" ><?php echo $edad; ?></td>
+                    <td class="tbord tW1 tH12 ac" ><?php echo $edad; ?></td>
                     <!--Nro de Documento-->
-                    <td class="tbord tW1 tH2 acd" ><?php echo $paciente->getNroDoc(); ?></td>
+                    <td class="tbord tW1 tH12 ac" ><?php echo $paciente->getNroDoc(); ?></td>
                     <!--Tipo de Documento-->
-                    <td class="tbord tW1 tH2 acd" colspan="14"><?php echo Utils::nombreCortoTipodoc($paciente->getTipoDoc()); ?></td>
+                    <td class="tbord tW1 tH12 ac" colspan="14"><?php echo Utils::nombreCortoTipodoc($paciente->getTipoDoc()); ?></td>
                     <!--CE-->
-                    <td class="tbord tW1 tH2" colspan="5" ></td>
+                    <td class="tbord tW1 tH12" colspan="5" ></td>
                     <!--SALA-->
-                    <td class="tbord tW1 tH2"  colspan="3"></td>
+                    <td class="tbord tW1 tH12"  colspan="3"></td>
                     <!--CAMA-->
-                    <td class="tbord tW1 tH2" colspan="3"></td>
+                    <td class="tbord tW1 tH12" colspan="3"></td>
                     <!--HCN-->
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
-                    <td class="tbord tW1 tH2" ></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -8, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -7, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -6, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -5, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -4, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -3, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -2, 1); ?></td>
+                    <td class="tbord tW1 tH12" ><?php echo substr($nrodoc, -1, 1); ?></td>
                 </tr>
                 <tr>
                     <td colspan="2"><font>12-CONDICION</font></td>
@@ -113,7 +134,7 @@ else
                 </tr>
                 <tr>
                     <td class="tbord" colspan="2"></td>
-                    <td class="tbord" colspan="2"></td>
+                    <td class="tbord" colspan="2"><font class="lc"><?php echo $obraSocial['obra_social']; ?></font></td>
                     <td class="tbord tH2 tW2" colspan="8"></td>
                     <td class="tbord tH2 tW1" colspan="1"></td>
                     <td class="tbord tH2 tW2" colspan="3"></td>

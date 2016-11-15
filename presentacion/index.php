@@ -57,16 +57,14 @@
 							</td>
 						</tr>
 						<tr>
-							<td>
+							<td >
 								<?php 
 								if (isset($_GET['error']))
 								{
 								?>
-								<div >
-									<div class="error">
+									<div align="center" class="error">
 										<p >Credenciales de Sesion incorrectos</p>
 									</div>
-								</div>
 								<?php
 								}
 								else if(isset($_GET['logout']))
@@ -74,10 +72,8 @@
 									unset($_SESSION);
 									session_destroy();
 									?>
-									<div >
-									<div class="error">
+									<div align="center" class="error">
 										<p >El usuario ha terminado su session!</p>
-									</div>
 									</div>
 									<?php
 								}

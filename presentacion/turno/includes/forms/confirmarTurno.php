@@ -4,10 +4,12 @@ include_once '../../../../namespacesAdress.php';
 include_once negocio.'usuario.class.php';
 include_once datos.'pacienteDatabaseLinker.class.php';
 include_once datos.'turnoDatabaseLinker.class.php';
+include_once datos.'obraSocialDatabaseLinker.class.php';
 include_once datos.'utils.php';
 
 $paciente = new PacienteDataBaseLinker();
 $turnoDB = new TurnoDatabaseLinker();
+$osocDB = new ObraSocialDatabaseLinker();
 
 $error = false;
 
@@ -45,6 +47,10 @@ if(!$error)
         $error = true;
         $errorMesage = "El paciente no existe";
     }
+    else
+    {
+        $osoc = $osocDB->getObraSocialPaciente($tipodoc, $nrodoc);
+    }
     
 }
 else
@@ -59,36 +65,39 @@ else
 if(!$error)
 {
 ?>
-    <div class="contenedorPaciente" >
+    <div class="contenedorPaciente">
+        <div class="subContenedorPaciente">
+            <div class="datosPaciente" >
+                <br/>
+                <b><?php echo Utils::phpStringToHTML($nombrePaciente)?></b><br>
+                <br /> 
+                <b>Fecha Nacimiento: </b><?php echo $fechaNac?><br>
+                <b>Edad: </b><?php echo $edad?><br>
+                <b>Domicilio: </b><?php echo $domicilio?><br>
+                <b>Telefono: </b><?php echo $tel?><br />
+                <br/>
+            </div>
+    <?php
 
-        <div class= "datosPaciente">
-            <br />
-            <b><?php echo Utils::phpStringToHTML($nombrePaciente)?></b><br>
-            <br /> 
-            <b>Fecha Nacimiento: </b><?php echo $fechaNac?><br>
-            <b>Edad: </b><?php echo $edad?><br>
-            <b>Domicilio: </b><?php echo $domicilio?><br>
-            <b>Telefono: </b><?php echo $tel?><br />
-            <br />
+        if($sexo == "M")
+        { 
+        ?>
+            <div class="imagenSexoPacienteHombre"></div><br>
+        <?php
+        }
+        else
+        {
+        ?>
+            <div class="imagenSexoPacienteMujer"></div><br>
+        <?php
+        }
+        ?>
         </div>
-
-    <?php
-
-    if($sexo == "M")
-    {
-    ?>
-    	<!-- imagen de Hombre -->
-        <div class="imagenSexoPacienteHombre" ></div>
-    <?php
-    }
-    else
-    {
-    ?>
-    	<!-- imagen de Mujer -->
-        <div class="imagenSexoPacienteMujer"></div>
-    <?php
-    }
-    ?>
+        <div -style="display: inline-block;">
+            <h3>Datos Obra Social Local</h3>
+            <hr>
+            <b><?php echo Utils::phpStringToHTML($osoc['obra_social'])?></b>
+        </div>
     </div>
     <div id="listaDeTurnos">
         <?php 

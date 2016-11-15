@@ -17,6 +17,7 @@ class CentroDatabaseLinker
     {
         $query="SELECT
                     id,
+                    codigo_centro,
                     detalle,
                     direccion,
                     telefono
@@ -46,6 +47,7 @@ class CentroDatabaseLinker
 
             $centro = new Centro();
             $centro->setId($ret['id']);
+            $centro->setCodigoCentro($ret['codigo_centro']);
             $centro->setDetalle($ret['detalle']);
             $centro->setDireccion($ret['direccion']);
             $centro->setTelefono($ret['telefono']);
@@ -58,6 +60,46 @@ class CentroDatabaseLinker
         return $centros;
     }
 
+    function getCentro($id)
+    {
+        $query="SELECT
+                    id,
+                    codigo_centro,
+                    detalle,
+                    direccion,
+                    telefono
+                FROM
+                    centro
+                WHERE
+                    id = $id AND
+                    habilitado=true;";
+
+        try
+        {
+            $this->dbTurnos->conectar();
+            $this->dbTurnos->ejecutarQuery($query);
+        }
+        catch (Exception $e)
+        {
+            $this->dbTurnos->desconectar();
+            return false;
+            throw new Exception("No se pudo consultar los centros de la empresa Nro $idEmpresa", 201230);
+        }
+
+        $ret = $this->dbTurnos->fetchRow($query);
+
+        $centro = new Centro();
+        $centro->setId($ret['id']);
+        $centro->setCodigoCentro($ret['codigo_centro']);
+        $centro->setDetalle($ret['detalle']);
+        $centro->setDireccion($ret['direccion']);
+        $centro->setTelefono($ret['telefono']);
+
+        $this->dbTurnos->desconectar();
+
+        return $centro;
+    }
+    
     
 
 }

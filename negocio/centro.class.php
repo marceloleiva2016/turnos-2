@@ -2,6 +2,7 @@
 class Centro
 {
     var $id;
+    var $codigo_centro;
     var $detalle;
     var $direccion;
     var $telefono;
@@ -19,6 +20,16 @@ class Centro
     function getId()
     {
         return $this->id;
+    }
+
+    function setCodigoCentro($codigo_centro)
+    {
+        $this->codigo_centro = $codigo_centro;
+    }
+
+    function getCodigoCentro()
+    {
+        return $this->codigo_centro;
     }
 
     function setDetalle($detalle)

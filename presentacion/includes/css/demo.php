@@ -257,7 +257,7 @@ fieldset {
 .contenedorPaciente {
     padding: 10px 20px 10px 20px;
     overflow: hidden;
-    width:auto;
+    width:400px;
     height:auto;
     border-color: black;
     border-width: 0pt;
@@ -265,6 +265,10 @@ fieldset {
     background-color:$colorPrincipal;
     color: #fff;
     border-radius: 5px;
+}
+
+.subContenedorPaciente{
+    contain: content;
 }
 
 .datosPaciente {
