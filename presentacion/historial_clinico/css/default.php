@@ -1,8 +1,18 @@
 <?php
+include_once '../../../namespacesAdress.php';
+include_once conexion.'conectionData.php';
+include_once datos.'configuracionDatabaseLinker.class.php';
+
+session_start();
+
+$cnfDb = new ConfiguracionDatabaseLinker();
+
+$configuracion = $cnfDb->getConfiguracion($_SESSION['centro']);
+
 header('content-type:text/css');
  
-$colorPrincipal = '#007e47';
- 
+$colorPrincipal = $configuracion->getColor();
+
 echo <<<FINCSS
 /* General Blueprint Style */
 /*@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);*/

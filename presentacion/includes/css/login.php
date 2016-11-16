@@ -1,7 +1,24 @@
 <?php
+include_once '../../../namespacesAdress.php';
+include_once conexion.'conectionData.php';
+include_once datos.'configuracionDatabaseLinker.class.php';
+
+session_start();
+
+$cnfDb = new ConfiguracionDatabaseLinker();
+
+if(isset($_SESSION['centro']))
+{
+	$configuracion = $cnfDb->getConfiguracion($_SESSION['centro']);	
+}
+else
+{
+	$configuracion = $cnfDb->getConfiguracion(0);
+}
+
 header('content-type:text/css');
  
-$colorPrincipal = '#007e47';
+$colorPrincipal = $configuracion->getColor();
  
 echo <<<FINCSS
 

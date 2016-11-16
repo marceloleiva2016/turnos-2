@@ -26,10 +26,17 @@
 				<h1>Sistema Salud</h1>
 			</div>
 			<div align="center">
+				<?php
+					if(count($centros)==0)
+					{
+						echo "<br><br><h2>No existen centros generados.</h2>";
+						die();
+					}
+				?>
 				<form method="post" action="validarInicioSession.php">
 					<table>
 						<tr>
-							<td>
+							<td align="center">
 								<select class="select" id="inputCentro" name="centro">
 									<?php
 									for ($i=0; $i < count($centros); $i++)
@@ -63,7 +70,7 @@
 								{
 								?>
 									<div align="center" class="error">
-										<p >Credenciales de Sesion incorrectos</p>
+										<p >Credenciales incorrectas</p>
 									</div>
 								<?php
 								}
@@ -73,7 +80,7 @@
 									session_destroy();
 									?>
 									<div align="center" class="error">
-										<p >El usuario ha terminado su session!</p>
+										<p >Session Finalizada!</p>
 									</div>
 									<?php
 								}

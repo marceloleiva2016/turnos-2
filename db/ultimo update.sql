@@ -23,3 +23,41 @@ INSERT INTO centro_usuario  (idcentro, idusuario)
                 usuario
         WHERE
             habilitado=true;
+
+CREATE TABLE `centro` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo_centro` varchar(45) DEFAULT NULL,
+  `detalle` varchar(45) DEFAULT NULL,
+  `direccion` varchar(45) DEFAULT NULL,
+  `telefono` varchar(45) DEFAULT NULL,
+  `idempresa` int(11) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT NULL,
+  `habilitado` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `centro_usuario` (
+  `idcentro` int(11) NOT NULL,
+  `idusuario` int(11) NOT NULL,
+  PRIMARY KEY (`idcentro`,`idusuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `configuracion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idcentro` int(11) DEFAULT NULL,
+  `color` varchar(45) DEFAULT NULL,
+  `nombre_logo` varchar(45) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT NULL,
+  `habilitado` tinyint(1) DEFAULT NULL,
+  `idusuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `empresa` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `detalle` varchar(45) DEFAULT NULL,
+  `telefono` varchar(45) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT NULL,
+  `habilitado` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

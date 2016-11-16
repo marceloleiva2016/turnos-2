@@ -1,8 +1,20 @@
 <?php
+include_once '../../../namespacesAdress.php';
+include_once conexion.'conectionData.php';
+include_once datos.'configuracionDatabaseLinker.class.php';
+
+session_start();
+
+$cnfDb = new ConfiguracionDatabaseLinker();
+
+$configuracion = $cnfDb->getConfiguracion($_SESSION['centro']);
+
 header('content-type:text/css');
  
-$colorPrincipal = '#007e47';
- 
+$colorPrincipal = $configuracion->getColor();
+
+$imagenLogo = "url(../../includes/images/".$configuracion->getNombreLogo().");";
+
 echo <<<FINCSS
 
 
@@ -209,7 +221,7 @@ a:hover {
 
 .imagenLogoLocal {
 	background-position: 0px;
-	background-image: url(../../includes/images/logo.png);
+	background-image: $imagenLogo;
 	background-repeat: no-repeat;
 	background-position: 0px;
 	width: 88px;
