@@ -61,7 +61,7 @@ $ret = $db->turnosAntendidosYporAntenderDemanda($dateNew);
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-               &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema SITU</a>
+               &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema</a>
                 &nbsp;&gt;&nbsp;<a href="indexDemanda.php">Seleccion Mes</a>
                 &nbsp;&gt;&nbsp;<a href="#">Hoja 2 Demanda</a>
             </div>

@@ -64,7 +64,7 @@ $subesp = $dbSubs->getSubespecialidad($idsubespecialidad);
         <span style="font-size: 2em;" class="icon icon-about"></span>
     </div>
     <div id="navegar">
-        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="preTurnoProgramado.php">Atencion Medica Programados</a>
+        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema</a>&nbsp;&gt;&nbsp;<a href="preTurnoProgramado.php">Atencion Medica Programados</a>
         &nbsp;&gt;&nbsp;<a href="#">Listado Programados</a>
     </div>
     <!-- /navegar-->

@@ -47,7 +47,7 @@ $postits = $dbPostit->getPostitDeUsuario($data->getId());
 	 			<span style="font-size: 2em;" class="icon icon-about"></span>
 	        </div>
 	        <div id="navegar">
-	        	&nbsp;&nbsp;&nbsp;<a href="#">Sistema SITU</a>
+	        	&nbsp;&nbsp;&nbsp;<a href="#">Sistema</a>
 	        </div>
 	        <!-- /navegar-->
 	        <!-- usuario -->

@@ -47,7 +47,7 @@ $obsocDB = new ObraSocialDatabaseLinker();
         <span style="font-size: 2em;" class="icon icon-about"></span>
     </div>
     <div id="navegar">
-        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Nuevo Paciente</a>
+        &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema</a>&nbsp;&gt;&nbsp;<a href="#">Nuevo Paciente</a>
     </div>
     <!-- /navegar-->
     <!-- usuario -->

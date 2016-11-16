@@ -60,7 +60,7 @@ $consultorios = $dbcons->getConsultorios($idespecialidad);
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="index.php">Filtro Consultorios</a>&nbsp;&gt;&nbsp;<a href="#">Listado Consultorios</a>
+                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema</a>&nbsp;&gt;&nbsp;<a href="index.php">Filtro Consultorios</a>&nbsp;&gt;&nbsp;<a href="#">Listado Consultorios</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->

@@ -63,7 +63,7 @@ $stringEsp.="NULL:SIN ESP";
             <span style="font-size: 2em;" class="icon icon-about"></span>
         </div>
         <div id="navegar">
-            &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Sectores</a>
+            &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema</a>&nbsp;&gt;&nbsp;<a href="#">Sectores</a>
         </div>
         <!-- /navegar-->
         <!-- usuario -->

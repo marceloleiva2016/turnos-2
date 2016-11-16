@@ -53,7 +53,7 @@ $especialidades = $dbEsp->getEspecialidadesConConsultoriosDeDemandaActivos();
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Atencion Medica Demanda</a>
+                &nbsp;&nbsp;&nbsp;<a href="../menu/">Sistema</a>&nbsp;&gt;&nbsp;<a href="#">Atencion Medica Demanda</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->

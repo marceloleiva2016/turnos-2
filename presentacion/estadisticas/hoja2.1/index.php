@@ -53,7 +53,7 @@ $anios = $gn->aniosConTurnosAtendidos();
                 <span style="font-size: 2em;" class="icon icon-about"></span>
             </div>
             <div id="navegar">
-                &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema SITU</a>&nbsp;&gt;&nbsp;<a href="#">Hoja 2.1 Prefiltro</a>
+                &nbsp;&nbsp;&nbsp;<a href="../../menu/">Sistema</a>&nbsp;&gt;&nbsp;<a href="#">Hoja 2.1 Prefiltro</a>
             </div>
             <!-- /navegar-->
             <!-- usuario -->
