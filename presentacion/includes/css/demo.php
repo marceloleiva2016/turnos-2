@@ -205,11 +205,11 @@ p {
  }
 
 .button-secondary2 {
-background: $colorPrincipal none repeat scroll 0 0;
-border: medium none;
-border-radius: 4px;
-color: white;
-height: 30px;
+    background: $colorPrincipal none repeat scroll 0 0;
+    border: medium none;
+    border-radius: 4px;
+    color: white;
+    height: 30px;
 }
 
 .topright {

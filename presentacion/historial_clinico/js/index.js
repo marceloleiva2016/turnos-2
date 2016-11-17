@@ -6,3 +6,11 @@ function seleccionadoFiltro(combo)
         llenarFormularios();
     });
 }
+
+function mostrarFormulario(sel, tipo)
+{
+    $("#id").val(sel);
+    $("#idTipoAtencion").val(tipo);
+    $("#formAtencion").attr('action',"formulario.php");
+    $("#formAtencion").submit();
+}

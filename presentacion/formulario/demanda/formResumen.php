@@ -32,27 +32,25 @@ $egreso = $demanda->getEgreso();
 for ($q=0; $q < count($observaciones); $q++)
 {
 ?>
-<div class="apartado">
-    <fieldset>
-        <legend><?=$observaciones[$q]->getDetalle();?></legend>
-        <div class="lstTextos">
-            <?php
-            $items = $observaciones[$q]->getitemsObservacion();
+    <h2><?=$observaciones[$q]->getDetalle();?></h2>
+    <div class="lstTextos">
+        <?php
+        $items = $observaciones[$q]->getitemsObservacion();
 
-            for ($y=0; $y < count($items); $y++)
-            {
-                $title = "Fecha:" .$items[$y]->getFecha()." | Usuario:" .$items[$y]->getUsuario();
-                echo "<li title='".$title."'>";
-                echo "<span class=\" context-menu-one box menu-1\" obsId=\"".$items[$y]->getId()."\" obsUsr=\"".$items[$y]->getUsuario()."\">\n";
-                    
-                print $items[$y]->getDetalle();
-                    
-                echo "</span>";
-                echo "</li>";
-            }
-            ?>
-        </div>
-    </fieldset>
+        for ($y=0; $y < count($items); $y++)
+        {
+            $title = "Fecha:" .$items[$y]->getFecha()." | Usuario:" .$items[$y]->getUsuario();
+            echo "<li title='".$title."'>";
+            echo "*<span class=\" context-menu-one box menu-1\" obsId=\"".$items[$y]->getId()."\" obsUsr=\"".$items[$y]->getUsuario()."\">\n";
+                
+            print $items[$y]->getDetalle();
+                
+            echo "</span>";
+            echo "</li>";
+        }
+        ?>
+        <br>
+    </div>
 </div>
 <?php
 }
@@ -60,10 +58,8 @@ for ($q=0; $q < count($observaciones); $q++)
 if($egreso->getId()!=NULL)
 {
 ?>
-<fieldset>
-    <legend>Egreso</legend>
+    <h2>Egreso</h2>
     <div align="left">
-
         <b>DIAGNOSTICO:</b>
         <?=$egreso->getDiagnostico();?><br>
         <b>DESTINO:</b>
@@ -73,6 +69,5 @@ if($egreso->getId()!=NULL)
         <b>PROFESIONAL:</b>
         <?=$egreso->getUsuario();?>
     </div>
-</fieldset>
 <?php
 }

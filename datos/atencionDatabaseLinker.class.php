@@ -350,6 +350,7 @@ class AtencionDatabaseLinker
                     s.detalle as subespecialidad,
                     CONCAT(p.nombre,' ',p.apellido) as profesional,
                     ta.detalle as tipo_atencion,
+                    a.idtipo_atencion,
                     a.idusuario,
                     DATE(a.fecha_creacion) as fecha,
                     TIME(a.fecha_creacion) as hora,

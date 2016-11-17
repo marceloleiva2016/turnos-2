@@ -65,7 +65,8 @@ echo <<<FINCSS
 
 .cbp_tmtimeline > li .cbp_tmtime span:last-child {
 	font-size: 1em;
-	color: #007e47;
+	color: $colorPrincipal;
+	opacity: 0.5;
 }
 
 .cbp_tmtimeline > li:nth-child(odd) .cbp_tmtime span:last-child {
@@ -75,12 +76,13 @@ echo <<<FINCSS
 /* Right content */
 .cbp_tmtimeline > li .cbp_tmlabel {
 	margin: 0 0 15px 25%;
-	background: #007e47;
+	background: $colorPrincipal;
+	opacity: 0.8;
 	color: #fff;
-	padding-top: 20px;
-	padding-left: 30px; 
-	padding-right: 30px; 
-	padding-bottom: 30px;
+	padding-top: 10px;
+	padding-left: 10px; 
+	padding-right: 10px; 
+	padding-bottom: 10px;
 	font-size: 1.2em;
 	font-weight: 300;
 	line-height: 1.4;
@@ -90,6 +92,8 @@ echo <<<FINCSS
 
 .cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel {
 	background: $colorPrincipal;
+	opacity: 1.5;
+	filter:  alpha(opacity=50);
 }
 
 .cbp_tmtimeline > li .cbp_tmlabel h2 { 
@@ -97,6 +101,10 @@ echo <<<FINCSS
 	padding: 0 0 10px 0;
 	border-bottom: 1px solid rgba(255,255,255,0.4);
 	font-size: 0.9em;
+}
+
+.cbp_tmlabel p{
+	font-size: 0.8em;
 }
 
 /* The triangle */
@@ -108,7 +116,7 @@ echo <<<FINCSS
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-right-color: #007e47;
+	border-right-color: $colorPrincipal;
 	border-width: 10px;
 	top: 10px;
 }
@@ -190,6 +198,13 @@ echo <<<FINCSS
 		left: auto;
 		margin: -55px 5px 0 0px;
 	}	
+}
+
+.button-terc {
+	background: $colorPrincipal none repeat scroll 0 0;
+    border-radius: 4px;
+    color: white;
+    height: 30px;
 }
 
 FINCSS;

@@ -66,9 +66,11 @@ $especialidadesRows = $ListaEspecialidades->data;
 			var tipodoc = <?php echo $tipodoc; ?>;
 			var nrodoc = <?php echo $nrodoc; ?>;
 
-			function llenarFormularios(){
+			function llenarFormularios()
+			{
 				<?php
-				for ($i=0; $i < count($atenciones); $i++) {
+				for ($i=0; $i < count($atenciones); $i++)
+				{
 					echo "$('#atencionNro".$atenciones[$i]['idatencion']."').load('../formulario".$atenciones[$i]['ubicacion']."formResumen.php?id=".$atenciones[$i]['idatencion']."');";
 				}
 				?>
@@ -130,9 +132,17 @@ $especialidadesRows = $ListaEspecialidades->data;
 						<div class='<?php echo "icon ".$atenciones[$i]['icono']; ?>'>
 						</div>
 						<div class="cbp_tmlabel">
-							<h1><?php echo $atenciones[$i]['tipo_atencion']; ?></h1>
-							<h2><?php echo $atenciones[$i]['especialidad'].' | '.$atenciones[$i]['subespecialidad'].' | '.$atenciones[$i]['profesional']; ?></h2>
+							<?php
+
+							echo "<h2>".$atenciones[$i]['tipo_atencion']."</h2>";
+							if($atenciones[$i]['idtipo_atencion']!=3){
+								echo "<h2>".$atenciones[$i]['especialidad'].' | '.$atenciones[$i]['subespecialidad'].' | '.$atenciones[$i]['profesional']."</h2>";	
+							}
+							?>
 							<p id='<?php echo "atencionNro".$atenciones[$i]['idatencion']; ?>' ></p>
+							<?php
+							echo "<input type='button' align='right' class='button-terc' value='VER FORMULARIO' onclick=javascript:mostrarFormulario('".$atenciones[$i]['idturno']."',".$atenciones[$i]['idtipo_atencion']."); />";
+							?>
 						</div>
 					</li>
 					<?php
@@ -141,5 +151,9 @@ $especialidadesRows = $ListaEspecialidades->data;
 				</ul>
 			</div>
 		</div>
+		<form method="post" id="formAtencion" target="_blank" >
+		    <input type="hidden" name="id" value="" id="id" />
+		    <input type="hidden" name="idTipoAtencion" value="" id="idTipoAtencion" />
+		</form>
 	</body>
 </html>
